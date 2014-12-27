@@ -1,0 +1,22 @@
+name: Hunted
+version: 0.1
+description: Hunted plugin for BTC's server
+author: Senmori
+main: net.senmori.hunted.Hunted
+commands:
+  hunted:
+    description: Main hunted plugin command
+    aliases: [h]
+permissions:
+  hunted.admin.create:
+  	default: false
+  hunted.admin.delete:
+  	default: false
+  hunted.admin.edit:
+  	default: false
+  hunted.admin.*:
+    children:
+      hunted.admin.create: true
+      hunted.admin.delete: true
+      hunted.admin.edit: true
+  	  

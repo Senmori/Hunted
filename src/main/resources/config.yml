@@ -1,0 +1,11 @@
+# Default cooldown
+cooldown: 5
+
+# Xp earned per player kill
+xp-per-kill: 20
+
+# Xp earned per use of guardian ston
+xp-per-use: 50
+
+# Debug - don't touch this
+debug true:
