@@ -3,19 +3,43 @@ package net.senmori.hunted.stones;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.senmori.hunted.managers.StoneManager;
+import net.senmori.hunted.util.SerializedLocation;
+
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public abstract class Stone 
 {
-	private static List<Stone> stones;
-	static
+	public enum Type
 	{
-		stones = new ArrayList<Stone>();
+		GUARDIAN, 	// normal guardian stones(rewards, etc)
+		ADMIN, 		// Used in teleporting people to the Hunted arena
+		INFO, 		// Used to give out information(tutorials, hints, etc...)
+		TELEPORT;	// Teleports players to a specified point
 	}
+
+	private SerializedLocation sLoc;
 	
-	Stone()
+	Stone(SerializedLocation loc)
 	{
-		stones.add(this);
+		this.sLoc = loc;
+		StoneManager.add(this);
 	}
 	public abstract void activate(Player player);
+	
+	public Type getType()
+	{
+		return null;
+	}
+	
+	public Location getLocation()
+	{
+		return sLoc.getLocation();
+	}
+	
+	public String getName()
+	{
+		return sLoc.getName();
+	}
 }

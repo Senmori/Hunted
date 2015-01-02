@@ -8,8 +8,8 @@ public class Permissions
 	public static final String ADMIN_EDIT = "hunted.admin.edit";
 	
 	
-	// All error messages stored here, loaded from config
-	public class ErrorMessage
+	// All error messages stored here
+	public class Message
 	{
 		public static final String COLD_STONE = "This stone is cold. Come back in %m %s.";
 	}
@@ -25,9 +25,12 @@ public class Permissions
 		 * - %g - guardian stone closest to %r's location
 		 */
 		// Standard reward message when a player recieves a reward from a guardian stone
-		public static final String STONE_REWARD = "You received a %x!";
+		public static final String STONE_REWARD = "You received %x!";
 		
-		// Standard message to notify the rewardee of how many players are within 'x' blocks of said player
+		// Standard smite message
+		public static final String SMITE_MESSAGE = "Thou hast been smitten! Puny mortal.";
+		
+		// Standard message to notify the rewardee of how many players are within 'x' blocks of said rewardee
 		public static final String NOTIFY_WITHIN = "There are %x players within %n blocks of you.";
 		
 		// Standard message to notify all players of rewardee's location
@@ -38,5 +41,8 @@ public class Permissions
 		
 		// Standard message of their current killstreak, if applicable(new high killstreak, record killstreak, etc..)
 		public static final String KILLSTREAK_MSG = "Current killstreak: %n";
+		
+		// Standard message for irritating reward
+		public static final String IRRITATING_MESSAGE = "Good luck fixing this...";
 	}
 }

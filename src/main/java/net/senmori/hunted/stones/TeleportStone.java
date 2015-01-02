@@ -4,13 +4,15 @@ import net.senmori.hunted.util.SerializedLocation;
 
 import org.bukkit.entity.Player;
 
-public class AdminStone extends Stone
+public class TeleportStone extends Stone
 {
-
-	public AdminStone(SerializedLocation loc)
+	
+	
+	public TeleportStone(SerializedLocation loc)
 	{
 		super(loc);
 	}
+	
 	
 	@Override
 	public void activate(Player player) 
@@ -21,6 +23,7 @@ public class AdminStone extends Stone
 	@Override
 	public Type getType()
 	{
-		return Type.ADMIN;
+		return Type.TELEPORT;
 	}
+	
 }

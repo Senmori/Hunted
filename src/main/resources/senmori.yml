@@ -1,0 +1,46 @@
+kills:
+bow-kills:
+highest-killstreak:
+deaths:
+
+# Achievements are stored in list form
+achievements:
+
+# Unlocked:
+# Keeps track of what the player has unlocked in the kit selection/customization system
+# unlock.potion-tier-<#>: keeps track of which potions you have unlocked (for each tier)
+# unlock.armor: keeps track of which armor types you have unlocked(i.e. you can unlock iron, leather, etc..)
+unlocked:
+	armor: 
+	weapon: 
+	potion-tier-1:
+	potion-tier-2:
+	ench:
+		chestplate:
+		leggings:
+		boots:
+		sword:
+		bow:
+	
+# Unlock-cost:
+# Static list of how much to upgrade to the next item level
+unlock-cost:
+		armor: 1
+		weapon: 1
+		ench-level: 2
+		potion-level: 2
+
+# Custom loadouts are stored here
+# Players can have up to three(3) loadouts
+# <loadout>.armor.<piece>.material: material of this piece
+# <loadout>.armor.<piece>.ench: the enchantment on this armor
+# <loadout>.armor.<piece>.ench-level: level of enchantment
+loadout:
+
+		
+# Boosts that are not used, are stored here
+# XP: boost amount, amount of boosts available
+# 50: xp boost amount(in percentage)
+# available: how many the player has stored
+boosts:
+			

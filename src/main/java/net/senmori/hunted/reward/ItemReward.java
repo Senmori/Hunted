@@ -1,57 +1,47 @@
 package net.senmori.hunted.reward;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+
+import net.senmori.hunted.Hunted;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class ItemReward extends Reward 
 {
-	private enum Type
+	// the possible materials to choose from (leather, iron, chain...)
+	private List<String> materials;
+	
+	private Set<String> weaponLoot; // stone, iron, gold sword
+	private Set<String> itemLoot;   // arrow, anything miscellaneous
+	private Set<String> armorLoot;  // helmet, chest, legs, boots
+	
+	private HashMap<String,Material> armorCache;
+	
+	private String name;
+	public ItemReward(String name) 
 	{
-		/*
-		 * Armor rewards
-		 */
-		LEATHER_CHESTPLATE(Material.LEATHER_CHESTPLATE),
-		LEATHER_LEGGINGS(Material.LEATHER_LEGGINGS),
-		LEATHER_HELMET(Material.LEATHER_HELMET),
-		LEATHER_BOOTS(Material.LEATHER_BOOTS),
-		IRON_CHESTPLATE(Material.IRON_CHESTPLATE),
-		IRON_LEGGINGS(Material.IRON_LEGGINGS),
-		IRON_HELMET(Material.IRON_HELMET),
-		IRON_BOOTS(Material.IRON_BOOTS),
-		CHAIN_CHESTPLATE(Material.CHAINMAIL_CHESTPLATE),
-		CHAIN_LEGGINGS(Material.CHAINMAIL_LEGGINGS),
-		CHAIN_HELMET(Material.CHAINMAIL_HELMET),
-		CHAIN_BOOTS(Material.CHAINMAIL_BOOTS),
+		this.name = name;
+		Hunted.rewardManager.addReward(this);
 		
-		/*
-		 * Weapon rewards
-		 */
-		STONE_SWORD(Material.STONE_SWORD),
-		IRON_SWORD(Material.IRON_SWORD),
-		GOLD_SWORD(Material.GOLD_SWORD),
-		BOW(Material.BOW),
+		materials = Hunted.lootConfig.getStringList("loot.item.armor.material");
 		
-		/*
-		 * Misc. items
-		 */
-		ARROW(Material.ARROW);
-		
-		private Material mat;
-		Type(Material material)
-		{
-			this.mat = material;
-		}
-		
-		public Material getMaterial()
-		{
-			return mat;
-		}
-	}
+		armorLoot = Hunted.lootConfig.getConfigurationSection("loot.item.armor").getKeys(false);
+		weaponLoot = Hunted.lootConfig.getConfigurationSection("loot.item.weapon").getKeys(false);
+	};
 	
 	@Override
-	public void pickLoot(Player player) 
+	public void getLoot(Player player) 
 	{
 		
 	}
 
+	
+	@Override
+	public String getName()
+	{
+		return name;
+	}
 }

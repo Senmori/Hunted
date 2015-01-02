@@ -1,0 +1,37 @@
+loot:
+	item:
+		armor:
+			material:
+				- leather
+				- iron
+				- gold
+				- chainmail
+			piece:
+				- chestplate
+				- leggings
+				- boots
+		weapon:
+			- stone_sword
+			- gold_sword
+			- iron_sword
+			- bow
+		item:
+			- arrow
+	effect:
+		- blindness
+		- slow
+		- weakness
+		- poison
+		- wither
+		- confusion
+	potion:
+		- speed
+		- night_vision
+		- jump
+		- water_breathing
+		- harm
+		- weakness
+		- poison
+		- regen
+		- strength
+	

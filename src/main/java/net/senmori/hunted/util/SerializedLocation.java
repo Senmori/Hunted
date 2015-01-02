@@ -6,17 +6,17 @@ import org.bukkit.World;
 
 public class SerializedLocation 
 {
-	private double x;
-	private double y;
-	private double z;
+	private int x;
+	private int y;
+	private int z;
 	private String world;
 	private String name;
 	
 	public SerializedLocation(Location loc, String name)
 	{
-		this.x = loc.getX();
-		this.y = loc.getY();
-		this.z = loc.getZ();
+		this.x = loc.getBlockX();
+		this.y = loc.getBlockY();
+		this.z = loc.getBlockZ();
 		this.world = loc.getWorld().getName();
 		this.name = name;
 	}

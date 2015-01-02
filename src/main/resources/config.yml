@@ -4,8 +4,20 @@ cooldown: 5
 # Xp earned per player kill
 xp-per-kill: 20
 
-# Xp earned per use of guardian ston
+# Xp earned per use of guardian stone
 xp-per-use: 50
+
+# Max number of potions to give as a reward(between 1 and n)
+max-pots-per-reward: 4
+
+# Maximum amount of time to be affected by a potion effect(in seconds)
+max-effect-length: 12
+
+# Radius in which to search for nearby players
+radius: 50
+
+# Award a killstreak every 'x' amount of kills
+killstreak-amount: 10
 
 # Debug - don't touch this
 debug true:
