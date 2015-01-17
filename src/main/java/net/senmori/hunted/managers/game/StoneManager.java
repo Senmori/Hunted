@@ -1,4 +1,4 @@
-package net.senmori.hunted.managers;
+package net.senmori.hunted.managers.game;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,5 +70,30 @@ public class StoneManager
 			}
 		}
 		return null;
+	}
+	
+	public static List<Stone> getStones()
+	{
+		return stoneList;
+	}
+	
+	public static List<GuardianStone> getGuardianStones()
+	{
+		return gStoneList;
+	}
+	
+	public static List<AdminStone> getAdminStones()
+	{
+		return aStoneList;
+	}
+	
+	public static List<InfoStone> getInfoStones()
+	{
+		return iStoneList;
+	}
+	
+	public static List<TeleportStone> getTeleportStones()
+	{
+		return tStoneList;
 	}
 }

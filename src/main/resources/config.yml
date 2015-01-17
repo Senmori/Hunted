@@ -1,23 +1,33 @@
-# Default cooldown
+# Default cooldown for guardian stones(in minutes)[if the stone has a cooldown]
 cooldown: 5
-
-# Xp earned per player kill
-xp-per-kill: 20
-
-# Xp earned per use of guardian stone
-xp-per-use: 50
-
-# Max number of potions to give as a reward(between 1 and n)
-max-pots-per-reward: 4
 
 # Maximum amount of time to be affected by a potion effect(in seconds)
 max-effect-length: 12
 
+# Maximum enchant level possible
+max-enchant-level: 2
+
+# The chance an item will get an enchantment
+enchant-chance: 10
+
+# The chance a potion will be tier 2
+potion-tier2-chance: 10
+
+# Maximum potion amplifier level
+max-amplifier-level: 2
+
+# The chance that when a player gets a smite reward, they also get teleported to a random location
+# i.e. 10 = 1 in 10 chance(10%)
+smite-teleport-chance: 10
+
 # Radius in which to search for nearby players
 radius: 50
 
-# Award a killstreak every 'x' amount of kills
-killstreak-amount: 10
+# Chance the player will receive an ascented item
+ascented-item-chance: 16
+
+# Chance a player can receive two effects from a guardian stone
+receive-effect-twice: 20
 
 # Debug - don't touch this
-debug true:
+debug: true

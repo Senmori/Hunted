@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.md_5.bungee.api.ChatColor;
 import net.senmori.hunted.Hunted;
-import net.senmori.hunted.managers.StoneManager;
+import net.senmori.hunted.managers.game.StoneManager;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.util.Permissions.RewardMessage;
 

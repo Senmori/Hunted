@@ -3,14 +3,9 @@ package net.senmori.hunted;
 import java.io.File;
 import java.util.logging.Logger;
 
-import net.minecraft.server.v1_8_R1.PacketPlayOutEntityEquipment;
-import net.minecraft.server.v1_8_R1.PacketPlayOutUpdateEntityNBT;
-import net.senmori.hunted.managers.AchievementManager;
-import net.senmori.hunted.managers.CommandManager;
-import net.senmori.hunted.managers.EventManager;
-import net.senmori.hunted.managers.PlayerManager;
-import net.senmori.hunted.managers.RewardManager;
-import net.senmori.hunted.reward.BonusReward;
+import net.senmori.hunted.managers.config.ConfigManager;
+import net.senmori.hunted.managers.game.RewardManager;
+import net.senmori.hunted.managers.plugin.CommandManager;
 import net.senmori.hunted.reward.EffectReward;
 import net.senmori.hunted.reward.IrritatingReward;
 import net.senmori.hunted.reward.ItemReward;
@@ -48,20 +43,21 @@ public class Hunted extends JavaPlugin
 	// managers
 	private CommandManager commandManager;
 	public static RewardManager rewardManager;
-	public static PlayerManager playerManager;
-	public static AchievementManager achManager;
+
 	
 	// config options
 	public static boolean debug;
 	public static int defaultCooldown; // in minutes, convert to milliseconds(n*60000)
-	public static int xpPerKill;
-	public static int xpPerStone;
-	public static int maxPotsPerReward;
-	public static int nearbyRadius;
 	public static int maxEffectLength;
-	public static int killStreakAmount;
-	
-	
+	public static int maxEnchantLevel;
+	public static int enchantChance;
+	public static int maxAmplifierLevel;
+	public static int nearbyRadius;
+	public static int potionTierChance;
+	public static int smiteTeleportChance;
+	public static int ascentedItemChance;
+	public static int receiveEffectTwice;
+
 	public void onEnable()
 	{	
 		pdf = getDescription();
@@ -69,28 +65,27 @@ public class Hunted extends JavaPlugin
 		
 		instance = this;
 		log = Bukkit.getLogger();
+		
+		ConfigManager.setupConfig();
+		
 		// setup commands
 		commandManager = new CommandManager(instance);
 		commandManager.setCommandPrefix("H");
 		
 		// other managers
 		rewardManager = new RewardManager();
-		playerManager = new PlayerManager();
 		
 		// Load rewards
-		rewardManager.addReward(new BonusReward("bonus"));
+		//rewardManager.addReward(new BonusReward("bonus"));
 		rewardManager.addReward(new EffectReward("effect"));
-		rewardManager.addReward(new IrritatingReward("irritating"));
 		rewardManager.addReward(new ItemReward("item"));
 		rewardManager.addReward(new NotifyReward("notify"));
 		rewardManager.addReward(new PotionReward("potion"));
 		rewardManager.addReward(new SmiteReward("smite"));
 		rewardManager.addReward(new TeleportReward("teleport"));
-		
+		rewardManager.addReward(new IrritatingReward("irritating"));
+				
 		instance = this;
-		
-		
-		
 	}
 	
 	
@@ -102,5 +97,10 @@ public class Hunted extends JavaPlugin
 	public static Hunted getInstance()
 	{
 		return instance;
+	}
+	
+	public static RewardManager getRewardManager() 
+	{
+		return rewardManager;
 	}
 }

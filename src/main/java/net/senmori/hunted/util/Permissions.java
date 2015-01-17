@@ -17,30 +17,21 @@ public class Permissions
 	
 	public class RewardMessage
 	{
-		/*
-		 * Standard symbols to use
-		 * - %x - rewardee
-		 * - %i - item reward
-		 * - %n - replace w/ numbers
-		 * - %g - guardian stone closest to %r's location
-		 */
 		// Standard reward message when a player recieves a reward from a guardian stone
-		public static final String STONE_REWARD = "You received %x!";
+		public static final String STONE_REWARD = "You received {0}!";
+		
+		// Standard message for when a player receives an effect reward
+		public static final String EFFECT_REWARD = "Ouch! You've got some {0} going on.";
+		public static final String EFFECT_UNLUCKY = "Wow, you're really unlucky. Have some {0}";
 		
 		// Standard smite message
 		public static final String SMITE_MESSAGE = "Thou hast been smitten! Puny mortal.";
 		
 		// Standard message to notify the rewardee of how many players are within 'x' blocks of said rewardee
-		public static final String NOTIFY_WITHIN = "There are %x players within %n blocks of you.";
+		public static final String NOTIFY_WITHIN = "There are {0} players within {1} blocks of you.";
 		
 		// Standard message to notify all players of rewardee's location
-		public static final String NOTIFY_ALL = "%r is at %g!";
-		
-		// Standard message of how much XP the player earned per kill or stone use
-		public static final String XP_EARNED = "+%n XP";
-		
-		// Standard message of their current killstreak, if applicable(new high killstreak, record killstreak, etc..)
-		public static final String KILLSTREAK_MSG = "Current killstreak: %n";
+		public static final String NOTIFY_ALL = "{0} is at {1}!";
 		
 		// Standard message for irritating reward
 		public static final String IRRITATING_MESSAGE = "Good luck fixing this...";

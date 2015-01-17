@@ -21,6 +21,11 @@ public class SerializedLocation
 		this.name = name;
 	}
 	
+	public SerializedLocation(Location loc)
+	{
+		this(loc,"");
+	}
+	
 	public Location getLocation()
 	{
 		World w = Bukkit.getWorld(world);

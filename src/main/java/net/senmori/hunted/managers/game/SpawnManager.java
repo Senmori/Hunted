@@ -1,4 +1,4 @@
-package net.senmori.hunted.managers;
+package net.senmori.hunted.managers.game;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,18 +6,16 @@ import java.util.Random;
 
 import net.senmori.hunted.util.SerializedLocation;
 
-import org.bukkit.Bukkit;
-
 public class SpawnManager 
 {
 	// Default: respawnLocation = default world spawn, make sure to set this if you want it somewhere else
 	static
 	{
-		respawnLocation = new SerializedLocation(Bukkit.getWorlds().get(0).getSpawnLocation(), "respawn");
+		respawnLocations = new ArrayList<SerializedLocation>();
 		spawnLocations = new ArrayList<SerializedLocation>();
 	}
 	
-	private static SerializedLocation respawnLocation;
+	private static List<SerializedLocation> respawnLocations;
 	private static List<SerializedLocation> spawnLocations;
 	
 	public static void addSpawnLocation(SerializedLocation loc)
@@ -41,14 +39,14 @@ public class SpawnManager
 		return false;
 	}
 	
-	public static void setRespawnLocation(SerializedLocation loc)
+	public static void addRespawnLocation(SerializedLocation loc)
 	{
-		respawnLocation = loc;
+		respawnLocations.add(loc);
 	}
 	
-	public static SerializedLocation getRespawnLoc()
+	public static List<SerializedLocation> getRespawnLocations()
 	{
-		return respawnLocation;
+		return respawnLocations;
 	}
 	
 	public static List<SerializedLocation> getSpawnLocations()
@@ -69,9 +67,15 @@ public class SpawnManager
 		return temp;
 	}
 	
-	public SerializedLocation getRandomSpawnLocation()
+	public static SerializedLocation getRandomSpawnLocation()
 	{
 		Random rand = new Random();
 		return spawnLocations.get(rand.nextInt(spawnLocations.size()));
+	}
+	
+	public static SerializedLocation getRandomRespawnLocation()
+	{
+		Random rand = new Random();
+		return respawnLocations.get(rand.nextInt(respawnLocations.size()));
 	}
 }

@@ -1,9 +1,6 @@
 package net.senmori.hunted.stones;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.senmori.hunted.managers.StoneManager;
+import net.senmori.hunted.managers.game.StoneManager;
 import net.senmori.hunted.util.SerializedLocation;
 
 import org.bukkit.Location;

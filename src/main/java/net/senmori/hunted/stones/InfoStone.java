@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 public class InfoStone extends Stone
 {
 	
-	private String[] info;
+	private List<String> info;
 	public InfoStone(SerializedLocation loc)
 	{
 		super(loc);
@@ -20,7 +20,7 @@ public class InfoStone extends Stone
 	@Override
 	public void activate(Player player) 
 	{
-		player.sendMessage(getInfo());	
+		player.sendMessage((String[]) getInfo().toArray());
 	}
 	
 	@Override
@@ -29,12 +29,12 @@ public class InfoStone extends Stone
 		return Type.INFO;
 	}
 	
-	public String[] getInfo()
+	public List<String> getInfo()
 	{
-		for(int i = 0; i < info.length; i++)
+		for(String str : info)
 		{
-			String s = ChatColor.translateAlternateColorCodes('&', info[i]);
-			info[i] = s;
+			String s = ChatColor.translateAlternateColorCodes('&', str);
+			info.add(s);
 		}
 		return info;
 	}
@@ -44,15 +44,30 @@ public class InfoStone extends Stone
 	 */
 	public void addOrCreateInfo(String path, String newInfo)
 	{
-		List<String> oldList = Hunted.stoneConfig.getStringList("stone_info." + path);
+		List<String> newList = Hunted.stoneConfig.getStringList("stone_info." + path);
 		
-		oldList.add(newInfo);
+		newList.add(newInfo);
 		
-		Hunted.stoneConfig.set("stone_info." + path, oldList);
-		try 
+		Hunted.stoneConfig.set("stone_info." + path, newList);
+		save();
+	}
+	
+	public void addOrCreateInfo(String path, List<String> newInfoList)
+	{
+		List<String> oldInfoList = Hunted.stoneConfig.getStringList("stone_info." + path);
+		
+		oldInfoList.addAll(newInfoList);
+		Hunted.stoneConfig.set("stone_info." + path, oldInfoList);
+		save();
+	}
+	
+	private void save()
+	{
+		try
 		{
 			Hunted.stoneConfig.save(Hunted.stoneConfigFile);
-		} catch (IOException e) 
+		}
+		catch(IOException e)
 		{
 			e.printStackTrace();
 		}

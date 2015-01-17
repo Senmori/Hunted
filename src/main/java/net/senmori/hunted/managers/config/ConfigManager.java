@@ -1,6 +1,7 @@
-package net.senmori.hunted.managers;
+package net.senmori.hunted.managers.config;
 
 import java.io.File;
+import java.util.List;
 
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.stones.AdminStone;
@@ -59,28 +60,37 @@ public class ConfigManager
 		Hunted.defaultCooldown = Hunted.getInstance().getConfig().getInt("cooldown");
 		LogHandler.debug("Default cooldown: " + Hunted.defaultCooldown);
 		
-		Hunted.xpPerKill = Hunted.getInstance().getConfig().getInt("xp-per-kill");
-		LogHandler.debug("Xp per kill: " + Hunted.xpPerKill);
-		
-		Hunted.xpPerStone = Hunted.getInstance().getConfig().getInt("xp-per-use");
-		LogHandler.debug("Xp per use: " + Hunted.xpPerStone);
-		
-		Hunted.maxPotsPerReward = Hunted.getInstance().getConfig().getInt("max-pots-per-reward");
-		LogHandler.debug("Max pots per reward: " + Hunted.maxPotsPerReward);
-		
 		Hunted.maxEffectLength = Hunted.getInstance().getConfig().getInt("max-effect-length");
 		LogHandler.debug("Max effect length: " + Hunted.maxEffectLength);
+		
+		Hunted.maxEnchantLevel = Hunted.getInstance().getConfig().getInt("max-enchant-level");
+		LogHandler.debug("Maximum enchant level: " + Hunted.maxEnchantLevel);
+		
+		Hunted.enchantChance = Hunted.getInstance().getConfig().getInt("enchant-chance");
+		LogHandler.debug("Enchantment chance: " + Hunted.enchantChance);
+		
+		Hunted.potionTierChance = Hunted.getInstance().getConfig().getInt("potion-tier2-chance");
+		LogHandler.debug("Potion Tier Chance: " + Hunted.potionTierChance);
 		
 		Hunted.nearbyRadius = Hunted.getInstance().getConfig().getInt("radius");
 		LogHandler.debug("Radius to search: " + Hunted.nearbyRadius);
 		
-		Hunted.killStreakAmount = Hunted.getInstance().getConfig().getInt("killstreak-amount");
-		LogHandler.debug("Killstreak amount: " + Hunted.killStreakAmount);
+		Hunted.maxAmplifierLevel = Hunted.getInstance().getConfig().getInt("max-amplifier-level");
+		LogHandler.debug("Maximum amplifier level: " + Hunted.maxAmplifierLevel);
+		
+		Hunted.smiteTeleportChance = Hunted.getInstance().getConfig().getInt("smite-teleport-chance");
+		LogHandler.debug("Smite teleport chance: " + Hunted.smiteTeleportChance);
+		
+		Hunted.ascentedItemChance = Hunted.getInstance().getConfig().getInt("ascented-chance");
+		LogHandler.debug("Ascented item chance: " + Hunted.ascentedItemChance);
+		
+		Hunted.receiveEffectTwice = Hunted.getInstance().getConfig().getInt("receive-effect-twice");
+		LogHandler.debug("Receive effect twice: " + Hunted.receiveEffectTwice);
 	}
 	
 	private static void loadStoneConfig()
 	{
-		String node = "guardian_stones";
+		String node = "stones";
 		for(String s : Hunted.stoneConfig.getConfigurationSection(node).getKeys(false))
 		{
 			if(s.isEmpty()) return;
@@ -107,7 +117,13 @@ public class ConfigManager
 					new AdminStone(loc);
 					break;
 				case "info":
-					new InfoStone(loc);
+					InfoStone is = new InfoStone(loc);
+					String info = Hunted.stoneConfig.getString(node + "." + s + ".info");
+					if(info != null)
+					{
+						List<String> infoList = Hunted.stoneConfig.getStringList("stone_info." + s);
+						is.addOrCreateInfo("stone_info." + s, infoList);
+					}
 					break;
 				case "teleport":
 					new TeleportStone(loc);

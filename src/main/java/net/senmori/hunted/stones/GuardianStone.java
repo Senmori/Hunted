@@ -34,8 +34,11 @@ public class GuardianStone extends Stone
 		{
 			int timeUntilActiveMin = (int) TimeUnit.MILLISECONDS.toMinutes((useCustomCooldown ? customCooldown : defaultCooldown) - getTimePassed());
 			int timeUntilActiveSec = (int) TimeUnit.MILLISECONDS.toSeconds(System.nanoTime() - lastActivated);
-			player.sendMessage(ChatColor.YELLOW + String.format(Message.COLD_STONE, timeUntilActiveMin + "m ", timeUntilActiveSec + "s")); 
+			player.sendMessage(ChatColor.YELLOW + String.format(Message.COLD_STONE, timeUntilActiveMin + "m ", timeUntilActiveSec + "s"));
+			return;
 		}
+		
+		Hunted.getRewardManager().generateReward(player);
 	}
 	
 	/**
@@ -54,8 +57,7 @@ public class GuardianStone extends Stone
 	 */
 	public boolean isActive()
 	{
-		if(useCustomCooldown) return getTimePassed() >= this.customCooldown;
-		return getTimePassed() >= this.defaultCooldown;
+		return getTimePassed() >= (useCustomCooldown ? customCooldown : defaultCooldown);
 	}
 	
 	/*

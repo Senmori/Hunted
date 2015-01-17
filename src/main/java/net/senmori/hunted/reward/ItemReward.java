@@ -1,41 +1,92 @@
 package net.senmori.hunted.reward;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Random;
 
+import net.md_5.bungee.api.ChatColor;
 import net.senmori.hunted.Hunted;
+import net.senmori.hunted.util.Permissions.RewardMessage;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class ItemReward extends Reward 
 {
-	// the possible materials to choose from (leather, iron, chain...)
-	private List<String> materials;
-	
-	private Set<String> weaponLoot; // stone, iron, gold sword
-	private Set<String> itemLoot;   // arrow, anything miscellaneous
-	private Set<String> armorLoot;  // helmet, chest, legs, boots
-	
-	private HashMap<String,Material> armorCache;
+	private List<Material> loot;
 	
 	private String name;
 	public ItemReward(String name) 
 	{
 		this.name = name;
 		Hunted.rewardManager.addReward(this);
+		loot = new ArrayList<Material>();
 		
-		materials = Hunted.lootConfig.getStringList("loot.item.armor.material");
+		// load armor
+		for(String mat : Hunted.lootConfig.getStringList("loot.item.armor.material"))
+		{
+			for(String piece : Hunted.lootConfig.getStringList("loot.item.armor.piece"))
+			{
+				String type = mat + "_" + piece;
+				Material material = Material.valueOf(type);
+				Validate.notNull(material, "Error importing " + type + ". Is it misspelled?");
+				if(material != null)
+				{
+					loot.add(material);
+				}
+			}
+		}
 		
-		armorLoot = Hunted.lootConfig.getConfigurationSection("loot.item.armor").getKeys(false);
-		weaponLoot = Hunted.lootConfig.getConfigurationSection("loot.item.weapon").getKeys(false);
+		// load weapons
+		for(String type : Hunted.lootConfig.getStringList("loot.item.weapon"))
+		{
+			Material material = Material.valueOf(type);
+			Validate.notNull(material, "Error importing " + type + ". Is it misspelled?");
+			if(material != null)
+			{
+				loot.add(material);
+			}
+		}
+		
+		// load misc. items
+		for(String item : Hunted.lootConfig.getStringList("loot.item.item"))
+		{
+			Material material = Material.valueOf(item);
+			Validate.notNull(material, "Error importing " + item + ". Is it misspelled?");
+			if(material != null)
+			{
+				loot.add(material);
+			}
+		}
+		
 	};
 	
 	@Override
 	public void getLoot(Player player) 
 	{
+		Random rand = new Random();
+		Material mat = loot.get(rand.nextInt(loot.size()));
+		ItemStack is = new ItemStack(mat);
 		
+		// get enchantment for item if applicable
+		if(is.getEnchantments().size() > 0 && (rand.nextInt(Hunted.enchantChance+1) % Hunted.enchantChance == 0))
+		{
+			Enchantment e = null;
+			for(Enchantment enchant : is.getEnchantments().keySet())
+			{
+				// if random number % chance == 0, apply enchant
+				if(rand.nextInt(Hunted.enchantChance+1) % Hunted.enchantChance == 0)
+				{
+					e = enchant;
+				}
+			}
+			is.addEnchantment(e, rand.nextInt(Hunted.enchantChance+1) % Hunted.enchantChance == 0 ? 1 : 2);
+		}
+		player.getInventory().addItem(is);
+		player.sendMessage(ChatColor.GOLD + String.format(RewardMessage.STONE_REWARD, is.getItemMeta().getDisplayName()));
 	}
 
 	

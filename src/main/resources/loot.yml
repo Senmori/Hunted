@@ -3,9 +3,8 @@ loot:
 		armor:
 			material:
 				- leather
-				- iron
 				- gold
-				- chainmail
+				- iron
 			piece:
 				- chestplate
 				- leggings
@@ -17,6 +16,7 @@ loot:
 			- bow
 		item:
 			- arrow
+			- ender_pearl
 	effect:
 		- blindness
 		- slow
@@ -29,9 +29,23 @@ loot:
 		- night_vision
 		- jump
 		- water_breathing
-		- harm
+		- instant_damage
 		- weakness
 		- poison
 		- regen
-		- strength
+	enchantment:
+		- protection_enviromental
+		- protection_explosions
+		- protection_fire
+		- protection_projectile
+		- depth_strider
+		- damage_all
+		- fire_aspect
+		- knockback
+		- arrow_damage
+		- arrow_fire
+		- arrow_knockback
+		- arrow_infinite
+		- durability
+	ascented:
 	

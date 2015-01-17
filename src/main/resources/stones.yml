@@ -1,28 +1,26 @@
+# Stone template:
+# stones:
+#   x:
+#   y:
+#   z:
+#   world:
+#   type:
+#   cooldown:
+#   info:
+#
 #
 # Permissible type:
 # - guardian, admin, info, teleport
 # All other types will be ignored, and yell at you
 # Once set, please do not change. Ever.
 #
-# Cooldown: (in seconds)
+# Cooldown: (in minutes)
 # - Cooldown must be > 0, else the default-cooldown in config.yml will be used
 #
 # Info:
 # - Used with information stones to tell it what string to send to player(s)
 #
 
-guardian_stones:
-	example_name:
-		x:
-		y:
-		z:
-		world:
-		cooldown: 
-		type: admin 
-		info: example
-
-
+stones:
+		
 stone_info:
-  example: 
-  	- "The stone will say this. The reference would be 'example.'"
-  	- "You can also add more than one line! :D"

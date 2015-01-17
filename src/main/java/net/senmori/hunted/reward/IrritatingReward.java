@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.md_5.bungee.api.ChatColor;
 import net.senmori.hunted.Hunted;
+import net.senmori.hunted.util.LogHandler;
 import net.senmori.hunted.util.Permissions.RewardMessage;
 
 import org.bukkit.entity.Player;
@@ -31,7 +32,7 @@ public class IrritatingReward extends Reward
 		for(int i = 0; i <= inventory.length; i++)
 		{
 			int oldSlot = i;
-			int newSlot = rand.nextInt(inventory.length);
+			int newSlot = rand.nextInt(inventory.length+1);
 			
 			PlayerInventory pInv = player.getInventory();
 			// if oldSlot has an item, and new slot doesn't, move item to new slot
@@ -50,6 +51,7 @@ public class IrritatingReward extends Reward
 			}
 		}
 		player.sendMessage(ChatColor.GOLD + RewardMessage.IRRITATING_MESSAGE);
+		LogHandler.debug(player.getDisplayName() + " receieved an irritating reward.");
 	}
 	
 	@Override
