@@ -86,6 +86,9 @@ public class ConfigManager
 		
 		Hunted.receiveEffectTwice = Hunted.getInstance().getConfig().getInt("receive-effect-twice");
 		LogHandler.debug("Receive effect twice: " + Hunted.receiveEffectTwice);
+		
+		Hunted.maxArrowsPerReward = Hunted.getInstance().getConfig().getInt("max-arrows");
+		LogHandler.debug("Max Arrows: " + Hunted.maxArrowsPerReward);
 	}
 	
 	private static void loadStoneConfig()

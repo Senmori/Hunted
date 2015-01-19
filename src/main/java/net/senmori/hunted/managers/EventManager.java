@@ -1,4 +1,4 @@
-package net.senmori.hunted.managers.plugin;
+package net.senmori.hunted.managers;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,9 +3,9 @@ package net.senmori.hunted;
 import java.io.File;
 import java.util.logging.Logger;
 
+import net.senmori.hunted.managers.CommandManager;
 import net.senmori.hunted.managers.config.ConfigManager;
 import net.senmori.hunted.managers.game.RewardManager;
-import net.senmori.hunted.managers.plugin.CommandManager;
 import net.senmori.hunted.reward.EffectReward;
 import net.senmori.hunted.reward.IrritatingReward;
 import net.senmori.hunted.reward.ItemReward;
@@ -57,6 +57,8 @@ public class Hunted extends JavaPlugin
 	public static int smiteTeleportChance;
 	public static int ascentedItemChance;
 	public static int receiveEffectTwice;
+	public static int maxArrowsPerReward;
+	public static int maxPotsPerReward;
 
 	public void onEnable()
 	{	

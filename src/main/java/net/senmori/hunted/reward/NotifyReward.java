@@ -7,7 +7,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.managers.game.StoneManager;
 import net.senmori.hunted.stones.GuardianStone;
-import net.senmori.hunted.util.Permissions.RewardMessage;
+import net.senmori.hunted.util.Reference.RewardMessage;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

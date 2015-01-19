@@ -6,7 +6,8 @@ import java.util.Random;
 
 import net.md_5.bungee.api.ChatColor;
 import net.senmori.hunted.Hunted;
-import net.senmori.hunted.util.Permissions.RewardMessage;
+import net.senmori.hunted.util.Reference.Message;
+import net.senmori.hunted.util.Reference.RewardMessage;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
@@ -26,13 +27,12 @@ public class ItemReward extends Reward
 		loot = new ArrayList<Material>();
 		
 		// load armor
-		for(String mat : Hunted.lootConfig.getStringList("loot.item.armor.material"))
+		for(String mat : Hunted.lootConfig.getStringList("loot.item.armor"))
 		{
-			for(String piece : Hunted.lootConfig.getStringList("loot.item.armor.piece"))
+			for(String piece : Hunted.lootConfig.getStringList("loot.item.armor"))
 			{
-				String type = mat + "_" + piece;
-				Material material = Material.valueOf(type);
-				Validate.notNull(material, "Error importing " + type + ". Is it misspelled?");
+				Material material = Material.valueOf(mat + "_" + piece);
+				Validate.notNull(material, String.format(Message.IMPORT_ERROR, material.toString().toLowerCase()));
 				if(material != null)
 				{
 					loot.add(material);
@@ -44,7 +44,7 @@ public class ItemReward extends Reward
 		for(String type : Hunted.lootConfig.getStringList("loot.item.weapon"))
 		{
 			Material material = Material.valueOf(type);
-			Validate.notNull(material, "Error importing " + type + ". Is it misspelled?");
+			Validate.notNull(material, String.format(Message.IMPORT_ERROR, material.toString().toLowerCase()));
 			if(material != null)
 			{
 				loot.add(material);
@@ -55,7 +55,7 @@ public class ItemReward extends Reward
 		for(String item : Hunted.lootConfig.getStringList("loot.item.item"))
 		{
 			Material material = Material.valueOf(item);
-			Validate.notNull(material, "Error importing " + item + ". Is it misspelled?");
+			Validate.notNull(material, String.format(Message.IMPORT_ERROR, material.toString().toLowerCase()));
 			if(material != null)
 			{
 				loot.add(material);

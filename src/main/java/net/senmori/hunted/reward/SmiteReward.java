@@ -4,7 +4,7 @@ import java.util.Random;
 
 import net.md_5.bungee.api.ChatColor;
 import net.senmori.hunted.Hunted;
-import net.senmori.hunted.util.Permissions.RewardMessage;
+import net.senmori.hunted.util.Reference.RewardMessage;
 
 import org.bukkit.entity.Player;
 

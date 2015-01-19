@@ -1,51 +1,53 @@
-loot:
-	item:
-		armor:
-			material:
-				- leather
-				- gold
-				- iron
-			piece:
-				- chestplate
-				- leggings
-				- boots
-		weapon:
-			- stone_sword
-			- gold_sword
-			- iron_sword
-			- bow
-		item:
-			- arrow
-			- ender_pearl
-	effect:
-		- blindness
-		- slow
-		- weakness
-		- poison
-		- wither
-		- confusion
-	potion:
-		- speed
-		- night_vision
-		- jump
-		- water_breathing
-		- instant_damage
-		- weakness
-		- poison
-		- regen
-	enchantment:
-		- protection_enviromental
-		- protection_explosions
-		- protection_fire
-		- protection_projectile
-		- depth_strider
-		- damage_all
-		- fire_aspect
-		- knockback
-		- arrow_damage
-		- arrow_fire
-		- arrow_knockback
-		- arrow_infinite
-		- durability
-	ascented:
+armor:
+    - leather_leggings
+    - leather_chestplate
+    - leather_boots
+    - gold_leggings
+    - gold_chestplate
+    - gold_boots
+    - chainmail_leggings
+    - chainmail_chestplate
+    - chainmail_boots
+    - iron_leggings
+    - iron_chestplate
+    - iron_boots
+weapon:
+   - stone_sword
+   - gold_sword
+   - iron_sword
+   - bow
+item:
+   - arrow
+   - ender_pearl
+effect:
+   - blindness
+   - slow
+   - weakness
+   - poison
+   - wither
+   - confusion
+potion:
+   - speed
+   - night_vision
+   - jump
+   - water_breathing
+   - instant_damage
+   - weakness
+   - poison
+   - regen
+enchantment:
+   - protection_enviromental
+   - protection_explosions
+   - protection_fire
+   - protection_projectile
+   - depth_strider
+   - damage_all
+   - fire_aspect
+   - knockback
+   - arrow_damage
+   - arrow_fire
+   - arrow_knockback
+   - arrow_infinite
+   - durability
+ascented:
 	

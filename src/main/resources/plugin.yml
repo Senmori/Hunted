@@ -14,6 +14,8 @@ permissions:
   	default: false
   hunted.admin.edit:
   	default: false
+  hunted.debug.receive:
+  	default: false
   hunted.admin.*:
     children:
       hunted.admin.create: true

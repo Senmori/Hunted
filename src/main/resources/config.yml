@@ -10,6 +10,12 @@ max-enchant-level: 2
 # The chance an item will get an enchantment
 enchant-chance: 10
 
+# Can players receive potions when they spawn into Hunted
+can-receive-potions: true
+
+# Max potions a player can receive as a reward
+max-potions: 3
+
 # The chance a potion will be tier 2
 potion-tier2-chance: 10
 
@@ -28,6 +34,9 @@ ascented-item-chance: 16
 
 # Chance a player can receive two effects from a guardian stone
 receive-effect-twice: 20
+
+# Max arrows a player can receive as a reward
+max-arrows: 32
 
 # Debug - don't touch this
 debug: true

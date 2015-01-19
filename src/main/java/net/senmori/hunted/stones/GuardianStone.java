@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit;
 
 import net.md_5.bungee.api.ChatColor;
 import net.senmori.hunted.Hunted;
-import net.senmori.hunted.util.Permissions.Message;
+import net.senmori.hunted.util.Reference.Message;
 import net.senmori.hunted.util.SerializedLocation;
 
 import org.bukkit.entity.Player;
@@ -23,7 +23,6 @@ public class GuardianStone extends Stone
 		this.defaultCooldown = Hunted.defaultCooldown;
 		// set stone to active
 		this.lastActivated = System.nanoTime() - (useCustomCooldown ? customCooldown : defaultCooldown);
-		
 	}
 	
 	@Override
@@ -37,7 +36,6 @@ public class GuardianStone extends Stone
 			player.sendMessage(ChatColor.YELLOW + String.format(Message.COLD_STONE, timeUntilActiveMin + "m ", timeUntilActiveSec + "s"));
 			return;
 		}
-		
 		Hunted.getRewardManager().generateReward(player);
 	}
 	
@@ -57,7 +55,7 @@ public class GuardianStone extends Stone
 	 */
 	public boolean isActive()
 	{
-		return getTimePassed() >= (useCustomCooldown ? customCooldown : defaultCooldown);
+		return getTimePassed() >= TimeUnit.MILLISECONDS.toMinutes(useCustomCooldown ? customCooldown : defaultCooldown);
 	}
 	
 	/*
