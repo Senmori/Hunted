@@ -10,19 +10,28 @@ public class Reference
 		public class Permissions
 		{
 			// Command permissions
-			public static final String ADMIN_CREATE = "hunted.admin.create";
-			public static final String ADMIN_DELETE = "hunted.admin.delete";
-			public static final String ADMIN_EDIT = "hunted.admin.edit";
+			public static final String COMMAND_ADD  = "hunted.commands.add";
+			public static final String COMMAND_DELETE = "hunted.commands.delete";
+			public static final String COMMAND_EDIT = "hunted.commands.edit";
+			public static final String COMMAND_LIST = "hunted.commands.list";
 			
-			// Misc. permissions
+			// Debug permissions
 			public static final String ADMIN_DEBUG = "hunted.debug.receive";
+
+			// Interaction permissions
+			public static final String ADMIN_BREAK = "hunted.admin.break";
+			public static final String ADMIN_PLACE = "hunted.admin.place";
+			public static final String PLAYER_INTERACT_STONE = "hunted.interact.stone";
+			public static final String PLAYER_INTERACT_STONE_GUARDIAN = "hunted.interact.stone.guardian";
+			public static final String PLAYER_INTERACT_STONE_ADMIN = "hunted.interact.stone.admin";
+			public static final String PLAYER_INTERACT_STONE_INFO = "hunted.interact.stone.info";
+			public static final String PLAYER_INTERACT_STONE_TELEPORT = "hunted.interact.stone.teleport";
 		}
 	
 		// All error messages stored here
 		public class Message
 		{
-			public static final String COLD_STONE = "This stone is cold. Come back in {0} {1}.";
-			public static final String IMPORT_ERROR = "Error importing {0}. Is it mispelled?";
+			public static final String IMPORT_ERROR = "Error importing %s. Is it mispelled?";
 		}
 		
 		// All debug messages stored here
@@ -31,12 +40,12 @@ public class Reference
 			private static ChatColor debugColor = ChatColor.GREEN;
 			
 			// Debug messages for when armor/weapons/potions are created when a player spawns into Hunted
-			public static final String ARMOR_GEN = "Generated {0} pieces of armor for {1}.";
-			public static final String WEAPON_GEN = "Generated {0} weapons for {1}.";
-			public static final String POTION_GEN = "Generated {0} potions for {1}.";
+			public static final String ARMOR_GEN = "Generated %s pieces of armor for %s.";
+			public static final String WEAPON_GEN = "Generated %s weapons for %s.";
+			public static final String POTION_GEN = "Generated %s potions for %s.";
 			
 			// Debug message for when a player receives a reward
-			public static final String REWARD = "{0} received {1}.";
+			public static final String REWARD = "%s received %s.";
 			
 			
 			public static void sendMessage(Player player, String message)
@@ -49,21 +58,23 @@ public class Reference
 		
 		public class RewardMessage
 		{
+			public static final String COLD_STONE = "This stone is cold. Come back in %s.";
+			
 			// Standard reward message when a player recieves a reward from a guardian stone
-			public static final String STONE_REWARD = "You received {0}!";
+			public static final String STONE_REWARD = "You received %s!";
 			
 			// Standard message for when a player receives an effect reward
-			public static final String EFFECT_REWARD = "Ouch! You've got some {0} going on.";
-			public static final String EFFECT_UNLUCKY = "Wow, you're really unlucky. Have some {0}";
+			public static final String EFFECT_REWARD = "Ouch! You've got some %s going on.";
+			public static final String EFFECT_UNLUCKY = "Wow, you're really unlucky. Have some %s";
 			
 			// Standard smite message
 			public static final String SMITE_MESSAGE = "Thou hast been smitten! Puny mortal.";
 			
 			// Standard message to notify the rewardee of how many players are within 'x' blocks of said rewardee
-			public static final String NOTIFY_WITHIN = "There are {0} players within {1} blocks of you.";
+			public static final String NOTIFY_WITHIN = "There are %s players within %s blocks of you.";
 			
 			// Standard message to notify all players of rewardee's location
-			public static final String NOTIFY_ALL = "{0} is at {1}!";
+			public static final String NOTIFY_ALL = "%s is at %s!";
 			
 			// Standard message for irritating reward
 			public static final String IRRITATING_MESSAGE = "Good luck fixing this...";

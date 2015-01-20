@@ -17,7 +17,7 @@ public class IrritatingReward extends Reward
 	public IrritatingReward(String name) 
 	{
 		this.name = name;
-		Hunted.rewardManager.addReward(this);
+		Hunted.getRewardManager().addReward(this);
 	};
 	
 	/*

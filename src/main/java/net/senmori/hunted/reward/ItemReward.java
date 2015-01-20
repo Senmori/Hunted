@@ -23,7 +23,7 @@ public class ItemReward extends Reward
 	public ItemReward(String name) 
 	{
 		this.name = name;
-		Hunted.rewardManager.addReward(this);
+		Hunted.getRewardManager().addReward(this);
 		loot = new ArrayList<Material>();
 		
 		// load armor

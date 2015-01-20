@@ -18,7 +18,7 @@ public class NotifyReward extends Reward
 	public NotifyReward(String name) 
 	{
 		this.name = name;
-		Hunted.rewardManager.addReward(this);
+		Hunted.getRewardManager().addReward(this);
 	};
 	
 	@Override
@@ -43,7 +43,7 @@ public class NotifyReward extends Reward
 		for(Player p : players)
 		{
 			String name = null;
-			for(GuardianStone g : StoneManager.gStoneList)
+			for(GuardianStone g : StoneManager.guardianStoneList)
 			{
 				// reach distance for SMP is 5, use that as default
 				if(g.getLocation().distanceSquared(player.getLocation()) <= 5)

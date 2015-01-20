@@ -1,4 +1,4 @@
-package net.senmori.hunted.managers.config;
+package net.senmori.hunted.managers;
 
 import java.io.File;
 import java.util.List;
@@ -89,6 +89,9 @@ public class ConfigManager
 		
 		Hunted.maxArrowsPerReward = Hunted.getInstance().getConfig().getInt("max-arrows");
 		LogHandler.debug("Max Arrows: " + Hunted.maxArrowsPerReward);
+		
+		Hunted.activeWorld = Hunted.getInstance().getConfig().getString("world");
+		LogHandler.debug("Active world: " + Hunted.activeWorld);
 	}
 	
 	private static void loadStoneConfig()

@@ -12,7 +12,7 @@ public class TeleportReward extends Reward
 	private String name;
 	public TeleportReward(String name) 
 	{
-		Hunted.rewardManager.addReward(this);
+		Hunted.getRewardManager().addReward(this);
 	};
 	
 	@Override

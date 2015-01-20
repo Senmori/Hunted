@@ -1,6 +1,7 @@
 package net.senmori.hunted.managers.game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.senmori.hunted.stones.AdminStone;
@@ -10,23 +11,44 @@ import net.senmori.hunted.stones.Stone;
 import net.senmori.hunted.stones.TeleportStone;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 
 public class StoneManager 
 {
 	public static List<Stone> stoneList;
 	
-	public static List<GuardianStone> gStoneList;
-	public static List<AdminStone> aStoneList;
-	public static List<InfoStone> iStoneList;
-	public static List<TeleportStone> tStoneList;
+	public static List<GuardianStone> guardianStoneList;
+	public static List<AdminStone> adminStoneList;
+	public static List<InfoStone> infoStoneList;
+	public static List<TeleportStone> teleportStoneList;
+	
+	public static List<BlockFace> faces;
 	
 	static
 	{
 		stoneList = new ArrayList<Stone>();
-		gStoneList = new ArrayList<GuardianStone>();
-		aStoneList = new ArrayList<AdminStone>();
-		iStoneList = new ArrayList<InfoStone>();
-		tStoneList = new ArrayList<TeleportStone>();
+		guardianStoneList = new ArrayList<GuardianStone>();
+		adminStoneList = new ArrayList<AdminStone>();
+		infoStoneList = new ArrayList<InfoStone>();
+		teleportStoneList = new ArrayList<TeleportStone>();
+		faces = Arrays.asList(BlockFace.UP, BlockFace.DOWN, BlockFace.NORTH, BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH);
+	}
+	
+	/*
+	 * Returns whether or not a material can activate a stone
+	 */
+	public static boolean isValidActivator(Material material)
+	{
+		switch(material)
+		{
+			case STONE_BUTTON:
+			case WOOD_BUTTON:
+			case WALL_SIGN:
+				return true;
+			default:
+				return false;
+		}
 	}
 	
 	public static void add(Stone stone)
@@ -36,13 +58,17 @@ public class StoneManager
 		switch(stone.getType())
 		{
 			case GUARDIAN:
-					gStoneList.add((GuardianStone) stone);
+					guardianStoneList.add((GuardianStone) stone);
+					return;
 			case ADMIN:
-					aStoneList.add((AdminStone)stone);
+					adminStoneList.add((AdminStone)stone);
+					return;
 			case INFO:
-					iStoneList.add((InfoStone)stone);
+					infoStoneList.add((InfoStone)stone);
+					return;
 			case TELEPORT:
-					tStoneList.add((TeleportStone)stone);
+					teleportStoneList.add((TeleportStone)stone);
+					return;
 			default:
 					return;
 		}
@@ -79,21 +105,21 @@ public class StoneManager
 	
 	public static List<GuardianStone> getGuardianStones()
 	{
-		return gStoneList;
+		return guardianStoneList;
 	}
 	
 	public static List<AdminStone> getAdminStones()
 	{
-		return aStoneList;
+		return adminStoneList;
 	}
 	
 	public static List<InfoStone> getInfoStones()
 	{
-		return iStoneList;
+		return infoStoneList;
 	}
 	
 	public static List<TeleportStone> getTeleportStones()
 	{
-		return tStoneList;
+		return teleportStoneList;
 	}
 }

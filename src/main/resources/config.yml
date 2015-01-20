@@ -38,5 +38,8 @@ receive-effect-twice: 20
 # Max arrows a player can receive as a reward
 max-arrows: 32
 
+
+# World to use for 'Hunted'
+world: Hunted
 # Debug - don't touch this
 debug: true

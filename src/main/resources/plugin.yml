@@ -6,19 +6,30 @@ main: net.senmori.hunted.Hunted
 commands:
   hunted:
     description: Main hunted plugin command
-    aliases: [h]
+    aliases: [ht]
 permissions:
-  hunted.admin.create:
+  hunted.commands.add:
   	default: false
-  hunted.admin.delete:
+  hunted.commands.delete:
   	default: false
-  hunted.admin.edit:
+  hunted.commands.edit:
   	default: false
+  hunted.commands.list:
+    default: false
   hunted.debug.receive:
   	default: false
+  hunted.admin.break:
+    default: false
+  hunted.admin.place:
+    default: false
   hunted.admin.*:
     children:
-      hunted.admin.create: true
-      hunted.admin.delete: true
-      hunted.admin.edit: true
+      hunted.admin.break: true
+      hunted.admin.place: true
+  hunted.commands.*:
+    children:
+      hunted.commands.add: true
+      hunted.commands.delete: true
+      hunted.commands.edit: true
+      hunted.commands.list: true
   	  

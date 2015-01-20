@@ -18,6 +18,9 @@ public class SpawnManager
 	private static List<SerializedLocation> respawnLocations;
 	private static List<SerializedLocation> spawnLocations;
 	
+	/*
+	 * Add spawn location(Hunted arena)
+	 */
 	public static void addSpawnLocation(SerializedLocation loc)
 	{
 		spawnLocations.add(loc);
@@ -31,19 +34,59 @@ public class SpawnManager
 		{
 			if(sl.getLocation().equals(loc.getLocation()))
 			{
-				spawnLocations.remove(sl);
-				return true;
+				return spawnLocations.remove(sl);
 			}
 		}
 		// that location didn't exist, therefore we can't remove it
 		return false;
 	}
 	
+	/*
+	 * Add respawn location(Hunted spawn area)
+	 */
 	public static void addRespawnLocation(SerializedLocation loc)
 	{
 		respawnLocations.add(loc);
 	}
 	
+	public static boolean removeRespawnLocation(SerializedLocation loc)
+	{
+		if(respawnLocations.isEmpty()) return true;
+		for(SerializedLocation sl : respawnLocations)
+		{
+			if(sl.getLocation().equals(loc))
+			{
+				return respawnLocations.remove(sl);
+			}
+		}
+		
+		return false;
+	}
+	
+	public SerializedLocation getLocationByName(String name)
+	{
+		for(SerializedLocation loc : getSpawnLocations())
+		{
+			if(loc.getName().equalsIgnoreCase(name))
+			{
+				return loc;
+			}
+		}
+		return null;
+	}
+	
+	public static SerializedLocation getRandomSpawnLocation()
+	{
+		Random rand = new Random();
+		return spawnLocations.get(rand.nextInt(spawnLocations.size()+1));
+	}
+	
+	public static SerializedLocation getRandomRespawnLocation()
+	{
+		Random rand = new Random();
+		return respawnLocations.get(rand.nextInt(respawnLocations.size()+1));
+	}
+		
 	public static List<SerializedLocation> getRespawnLocations()
 	{
 		return respawnLocations;
@@ -52,30 +95,5 @@ public class SpawnManager
 	public static List<SerializedLocation> getSpawnLocations()
 	{
 		return spawnLocations;
-	}
-	
-	public List<SerializedLocation> getLocationByName(String name)
-	{
-		List<SerializedLocation> temp = new ArrayList<SerializedLocation>();
-		for(SerializedLocation loc : getSpawnLocations())
-		{
-			if(loc.getName().equalsIgnoreCase(name))
-			{
-				temp.add(loc);
-			}
-		}
-		return temp;
-	}
-	
-	public static SerializedLocation getRandomSpawnLocation()
-	{
-		Random rand = new Random();
-		return spawnLocations.get(rand.nextInt(spawnLocations.size()));
-	}
-	
-	public static SerializedLocation getRandomRespawnLocation()
-	{
-		Random rand = new Random();
-		return respawnLocations.get(rand.nextInt(respawnLocations.size()));
 	}
 }

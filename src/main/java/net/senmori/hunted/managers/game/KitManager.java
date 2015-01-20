@@ -5,12 +5,10 @@ import java.util.List;
 import java.util.Random;
 
 import net.senmori.hunted.Hunted;
-import net.senmori.hunted.util.Reference;
 import net.senmori.hunted.util.Reference.LootPath;
 import net.senmori.hunted.util.Reference.Message;
 
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

@@ -8,13 +8,7 @@ import net.senmori.hunted.Hunted;
 import net.senmori.hunted.util.Reference.DebugMessage;
 import net.senmori.hunted.util.Reference.RewardMessage;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permissible;
-import org.bukkit.permissions.PermissibleBase;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -24,7 +18,7 @@ public class EffectReward extends Reward
 	private String name;
 	public EffectReward(String name) 
 	{
-		Hunted.rewardManager.addReward(this);
+		Hunted.getRewardManager().addReward(this);
 		potionEffects = Hunted.lootConfig.getStringList("loot.effect");
 	};
 	

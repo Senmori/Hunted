@@ -4,7 +4,8 @@ import java.io.File;
 import java.util.logging.Logger;
 
 import net.senmori.hunted.managers.CommandManager;
-import net.senmori.hunted.managers.config.ConfigManager;
+import net.senmori.hunted.managers.ConfigManager;
+import net.senmori.hunted.managers.game.PlayerManager;
 import net.senmori.hunted.managers.game.RewardManager;
 import net.senmori.hunted.reward.EffectReward;
 import net.senmori.hunted.reward.IrritatingReward;
@@ -42,7 +43,8 @@ public class Hunted extends JavaPlugin
 	
 	// managers
 	private CommandManager commandManager;
-	public static RewardManager rewardManager;
+	private static RewardManager rewardManager;
+	private static PlayerManager playerManager;
 
 	
 	// config options
@@ -59,6 +61,7 @@ public class Hunted extends JavaPlugin
 	public static int receiveEffectTwice;
 	public static int maxArrowsPerReward;
 	public static int maxPotsPerReward;
+	public static String activeWorld;
 
 	public void onEnable()
 	{	
@@ -86,6 +89,9 @@ public class Hunted extends JavaPlugin
 		rewardManager.addReward(new SmiteReward("smite"));
 		rewardManager.addReward(new TeleportReward("teleport"));
 		rewardManager.addReward(new IrritatingReward("irritating"));
+		
+		// player manager
+		playerManager = new PlayerManager();
 				
 		instance = this;
 	}
@@ -104,5 +110,10 @@ public class Hunted extends JavaPlugin
 	public static RewardManager getRewardManager() 
 	{
 		return rewardManager;
+	}
+	
+	public static PlayerManager getPlayerManager()
+	{
+		return playerManager;
 	}
 }

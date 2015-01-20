@@ -14,7 +14,7 @@ public class SmiteReward extends Reward
 	public SmiteReward(String name) 
 	{
 		this.name = name;
-		Hunted.rewardManager.addReward(this);
+		Hunted.getRewardManager().addReward(this);
 	}
 	
 	@Override
@@ -27,7 +27,7 @@ public class SmiteReward extends Reward
 		int chance = Hunted.getInstance().getConfig().getInt("smite-teleport-chance");
 		if(rand.nextInt(chance+1) % chance == 0)
 		{
-			Hunted.rewardManager.getReward("teleport").getLoot(player);
+			Hunted.getRewardManager().getReward("teleport").getLoot(player);
 		}
 	}
 	
