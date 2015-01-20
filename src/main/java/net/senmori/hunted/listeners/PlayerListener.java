@@ -7,15 +7,14 @@ import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.stones.Stone;
 import net.senmori.hunted.stones.Stone.Type;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.material.Attachable;
 
 public class PlayerListener extends EventManager {
@@ -27,7 +26,8 @@ public class PlayerListener extends EventManager {
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e)
 	{
-		// ignore everything but buttons and wall signs
+		if(!e.getPlayer().getWorld().getName().equalsIgnoreCase(Hunted.activeWorld)) return;
+		// ignore everything but buttons and wall sign
 		if(!StoneManager.isValidActivator(e.getClickedBlock().getType()))
 		{
 			e.setCancelled(true);
@@ -63,23 +63,30 @@ public class PlayerListener extends EventManager {
 	public void onPlayerJoin(PlayerLoginEvent e)
 	{
 		if(!e.getPlayer().getWorld().getName().equalsIgnoreCase(Hunted.activeWorld)) return;
-		
 		Hunted.getPlayerManager().setupPlayer(e.getPlayer());
 	}
 	
+	// handle players logging out
 	@EventHandler
 	public void onPlayerLeave(PlayerQuitEvent e)
 	{
 		if(!e.getPlayer().getWorld().getName().equalsIgnoreCase(Hunted.activeWorld)) return;
-		
 		Hunted.getPlayerManager().setupPlayer(e.getPlayer());
 	}
 	
+	// handle kicking of players
 	@EventHandler
 	public void onPlayerKick(PlayerKickEvent e)
 	{
 		if(!e.getPlayer().getWorld().getName().equalsIgnoreCase(Hunted.activeWorld)) return;
-		
+		Hunted.getPlayerManager().setupPlayer(e.getPlayer());
+	}
+	
+	// handle changing of worlds(tp most likely)
+	@EventHandler
+	public void onPlayerBan(PlayerChangedWorldEvent e)
+	{
+		if(!e.getPlayer().getWorld().getName().equalsIgnoreCase(Hunted.activeWorld)) return;
 		Hunted.getPlayerManager().setupPlayer(e.getPlayer());
 	}
 }

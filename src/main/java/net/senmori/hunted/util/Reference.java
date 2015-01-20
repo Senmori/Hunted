@@ -15,9 +15,6 @@ public class Reference
 			public static final String COMMAND_EDIT = "hunted.commands.edit";
 			public static final String COMMAND_LIST = "hunted.commands.list";
 			
-			// Debug permissions
-			public static final String ADMIN_DEBUG = "hunted.debug.receive";
-
 			// Interaction permissions
 			public static final String ADMIN_BREAK = "hunted.admin.break";
 			public static final String ADMIN_PLACE = "hunted.admin.place";
@@ -26,6 +23,10 @@ public class Reference
 			public static final String PLAYER_INTERACT_STONE_ADMIN = "hunted.interact.stone.admin";
 			public static final String PLAYER_INTERACT_STONE_INFO = "hunted.interact.stone.info";
 			public static final String PLAYER_INTERACT_STONE_TELEPORT = "hunted.interact.stone.teleport";
+			
+			// Misc. permissions
+			public static final String ADMIN_EXEMPT = "hunted.admin.exempt";
+			public static final String ADMIN_DEBUG = "hunted.debug.receive";
 		}
 	
 		// All error messages stored here

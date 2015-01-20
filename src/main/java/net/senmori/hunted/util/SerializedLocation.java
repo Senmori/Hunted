@@ -45,4 +45,9 @@ public class SerializedLocation
 	{
 		return this.getLocation().equals(loc.getLocation());
 	}
+	
+	public String toString()
+	{
+		return this.world + "," + this.x + "," + this.y + "," + this.z;
+	}
 }

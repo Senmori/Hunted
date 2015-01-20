@@ -5,7 +5,9 @@ import net.senmori.hunted.managers.EventManager;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPistonEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.BlockRedstoneEvent;
 
 public class BlockListener extends EventManager {
 
@@ -26,5 +28,18 @@ public class BlockListener extends EventManager {
 		e.setCancelled(Hunted.getPlayerManager().canPlaceBlocks(e.getPlayer()));
 		e.setBuild(Hunted.getPlayerManager().canPlaceBlocks(e.getPlayer()));
 	}
-
+	
+	@EventHandler
+	public void onBlockRedstoneEvent(BlockRedstoneEvent e)
+	{
+		if(!e.getBlock().getWorld().getName().equalsIgnoreCase(Hunted.activeWorld)) return;
+		e.setNewCurrent(e.getOldCurrent());
+	}
+	
+	@EventHandler
+	public void onBlockstuff(BlockPistonEvent e)
+	{
+		if(!e.getBlock().getWorld().getName().equalsIgnoreCase(Hunted.activeWorld)) return;
+		e.setCancelled(true);
+	}
 }

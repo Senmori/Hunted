@@ -100,7 +100,8 @@ public class KitManager
 		Random rand = new Random();
 		for(int i = 0; i < rand.nextInt(Hunted.maxPotsPerReward+1); i++)
 		{
-			player.getInventory().addItem(new Potion(potions.get(rand.nextInt(potions.size()+1)), rand.nextInt(Hunted.potionTierChance+1) % Hunted.potionTierChance == 0 ? 1 : 2).toItemStack(1));
+			Potion pot = new Potion(potions.get(rand.nextInt(potions.size()+1)), rand.nextInt(Hunted.potionTierChance+1) % Hunted.potionTierChance == 0 ? 1 : 2);
+			player.getInventory().addItem(pot.toItemStack(1));
 		}
 	}
 	
