@@ -17,76 +17,84 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.material.Attachable;
 
-public class PlayerListener extends EventManager {
+public class PlayerListener extends EventManager
+{
 
-	public PlayerListener() {
+	public PlayerListener()
+	{
 		registerEvent(this, Hunted.getInstance());
 	}
-	
+
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e)
 	{
-		if(!e.getPlayer().getWorld().getName().equalsIgnoreCase(Hunted.activeWorld)) return;
+		if (!e.getPlayer().getWorld().getName()
+		        .equalsIgnoreCase(Hunted.activeWorld)) return;
 		// ignore everything but buttons and wall sign
-		if(!StoneManager.isValidActivator(e.getClickedBlock().getType()))
+		if (!StoneManager.isValidActivator(e.getClickedBlock().getType()))
 		{
 			e.setCancelled(true);
 			e.setUseInteractedBlock(Result.DENY);
 			e.setUseItemInHand(Result.DENY);
 			return;
 		}
-		
-		Block stone = null;
-		if( e.getClickedBlock() instanceof Attachable)
+
+		Block block = null;
+		if (e.getClickedBlock() instanceof Attachable)
 		{
 			Attachable attach = (Attachable) e.getClickedBlock();
-			stone = e.getClickedBlock().getRelative(attach.getAttachedFace());
+			block = e.getClickedBlock().getRelative(attach.getAttachedFace());
 		}
-		
+
 		// if stone is null, then what was the button attached to O.o
-		if(stone != null)
+		if (block != null)
 		{
-			Stone s = StoneManager.getStone(stone.getLocation());
-			if(!Hunted.getPlayerManager().canInteractWithStone(s, e.getPlayer())) return;
-			if(s.getType().equals(Type.GUARDIAN))
+			Stone s = StoneManager.getStone(block.getLocation());
+			if (!Hunted.getPlayerManager().canInteractWithStone(s,
+			        e.getPlayer())) return;
+			if (s.getType().equals(Type.GUARDIAN))
 			{
-				// if this is a guardian stone, light up nearby redstone_lamps on/off
-				GuardianStone gStone = (GuardianStone)s;
-				gStone.toggleIndicators(stone);
+				// if this is a guardian stone, light up nearby redstone_lamps
+				// on/off
+				((GuardianStone) s).toggleIndicators(block);
 			}
 			s.activate(e.getPlayer());
 		}
 	}
-	
+
 	// handle players logging in/out of hunted arena
 	@EventHandler
 	public void onPlayerJoin(PlayerLoginEvent e)
 	{
-		if(!e.getPlayer().getWorld().getName().equalsIgnoreCase(Hunted.activeWorld)) return;
+		if (!e.getPlayer().getWorld().getName()
+		        .equalsIgnoreCase(Hunted.activeWorld)) return;
 		Hunted.getPlayerManager().setupPlayer(e.getPlayer());
 	}
-	
+
 	// handle players logging out
 	@EventHandler
 	public void onPlayerLeave(PlayerQuitEvent e)
 	{
-		if(!e.getPlayer().getWorld().getName().equalsIgnoreCase(Hunted.activeWorld)) return;
+		if (!e.getPlayer().getWorld().getName()
+		        .equalsIgnoreCase(Hunted.activeWorld)) return;
 		Hunted.getPlayerManager().setupPlayer(e.getPlayer());
 	}
-	
+
 	// handle kicking of players
 	@EventHandler
 	public void onPlayerKick(PlayerKickEvent e)
 	{
-		if(!e.getPlayer().getWorld().getName().equalsIgnoreCase(Hunted.activeWorld)) return;
+		if (!e.getPlayer().getWorld().getName()
+		        .equalsIgnoreCase(Hunted.activeWorld)) return;
 		Hunted.getPlayerManager().setupPlayer(e.getPlayer());
 	}
-	
+
 	// handle changing of worlds(tp most likely)
 	@EventHandler
 	public void onPlayerBan(PlayerChangedWorldEvent e)
 	{
-		if(!e.getPlayer().getWorld().getName().equalsIgnoreCase(Hunted.activeWorld)) return;
+		if (!e.getPlayer().getWorld().getName()
+		        .equalsIgnoreCase(Hunted.activeWorld)) return;
 		Hunted.getPlayerManager().setupPlayer(e.getPlayer());
 	}
 }

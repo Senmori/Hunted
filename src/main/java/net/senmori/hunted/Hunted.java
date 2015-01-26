@@ -22,34 +22,33 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Hunted extends JavaPlugin
 {
-	//static variables
+	// static variables
 	private static Hunted instance;
 	public static Logger log;
-	
+
 	// File variables
 	public static File pluginConfigFile;
 	public static File stoneConfigFile;
 	public static File lootConfigFile;
-	
+
 	// config variables
 	public static FileConfiguration pluginConfig; // plugin config
 	public static FileConfiguration stoneConfig; // guardian stone config
 	public static FileConfiguration lootConfig;  // loot table config
-	
-	
+
 	// plugin vars
 	private PluginDescriptionFile pdf;
 	public static String name;
-	
+
 	// managers
 	private CommandManager commandManager;
 	private static RewardManager rewardManager;
 	private static PlayerManager playerManager;
 
-	
 	// config options
 	public static boolean debug;
-	public static int defaultCooldown; // in minutes, convert to milliseconds(n*60000)
+	public static int defaultCooldown; // in minutes, convert to
+									   // milliseconds(n*60000)
 	public static int maxEffectLength;
 	public static int maxEnchantLevel;
 	public static int enchantChance;
@@ -64,24 +63,24 @@ public class Hunted extends JavaPlugin
 	public static String activeWorld;
 
 	public void onEnable()
-	{	
+	{
 		pdf = getDescription();
 		name = pdf.getName();
-		
+
 		instance = this;
 		log = Bukkit.getLogger();
-		
+
 		ConfigManager.setupConfig();
-		
+
 		// setup commands
 		commandManager = new CommandManager(instance);
 		commandManager.setCommandPrefix("H");
-		
+
 		// other managers
 		rewardManager = new RewardManager();
-		
+
 		// Load rewards
-		//rewardManager.addReward(new BonusReward("bonus"));
+		// rewardManager.addReward(new BonusReward("bonus"));
 		rewardManager.addReward(new EffectReward("effect"));
 		rewardManager.addReward(new ItemReward("item"));
 		rewardManager.addReward(new NotifyReward("notify"));
@@ -89,29 +88,28 @@ public class Hunted extends JavaPlugin
 		rewardManager.addReward(new SmiteReward("smite"));
 		rewardManager.addReward(new TeleportReward("teleport"));
 		rewardManager.addReward(new IrritatingReward("irritating"));
-		
+
 		// player manager
 		playerManager = new PlayerManager();
-				
+
 		instance = this;
 	}
-	
-	
+
 	public void onDisable()
 	{
-		
+
 	}
-	
+
 	public static Hunted getInstance()
 	{
 		return instance;
 	}
-	
-	public static RewardManager getRewardManager() 
+
+	public static RewardManager getRewardManager()
 	{
 		return rewardManager;
 	}
-	
+
 	public static PlayerManager getPlayerManager()
 	{
 		return playerManager;
