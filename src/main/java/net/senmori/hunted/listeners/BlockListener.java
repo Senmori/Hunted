@@ -50,9 +50,9 @@ public class BlockListener extends EventManager {
 	
 	// called when a block is ignited, except by when a player places fire
 	@EventHandler
-	public void onBlockIgnite(BlockIgniteEvent event)
+	public void onBlockIgnite(BlockIgniteEvent e)
 	{
-		if(!event.getBlock().getWorld().getName().equalsIgnoreCase(Hunted.activeWorld)) return;
-		event.setCancelled(true);
+		if(!e.getBlock().getWorld().getName().equalsIgnoreCase(Hunted.activeWorld)) return;
+		e.setCancelled(true);
 	}
 }

@@ -11,7 +11,6 @@ public abstract class Stone
 	public enum Type
 	{
 		GUARDIAN, 	// normal guardian stones(rewards, etc)
-		ADMIN, 		// Used in teleporting people to the Hunted arena
 		INFO, 		// Used to give out information(tutorials, hints, etc...)
 		TELEPORT;	// Teleports players to a specified point
 	}

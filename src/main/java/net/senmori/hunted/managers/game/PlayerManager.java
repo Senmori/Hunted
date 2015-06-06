@@ -33,8 +33,6 @@ public class PlayerManager {
 		{
 		case GUARDIAN:
 			return player.hasPermission(Permissions.PLAYER_INTERACT_STONE_GUARDIAN);
-		case ADMIN:
-			return player.hasPermission(Permissions.PLAYER_INTERACT_STONE_ADMIN);
 		case INFO:
 			return player.hasPermission(Permissions.PLAYER_INTERACT_STONE_INFO);
 		case TELEPORT:

@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.List;
 
 import net.senmori.hunted.Hunted;
-import net.senmori.hunted.stones.AdminStone;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.stones.InfoStone;
 import net.senmori.hunted.stones.TeleportStone;
@@ -13,7 +12,6 @@ import net.senmori.hunted.util.LogHandler;
 import net.senmori.hunted.util.SerializedLocation;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ConfigManager 
@@ -94,6 +92,11 @@ public class ConfigManager
 		LogHandler.debug("Max Arrows: " + Hunted.maxArrowsPerReward);
 		
 		Hunted.activeWorld = Hunted.getInstance().getConfig().getString("world");
+		// if the active world isn't provided use the first one.
+		if(Hunted.activeWorld.isEmpty() || Hunted.activeWorld.length() < 1)
+		{
+			Hunted.activeWorld = Bukkit.getWorlds().get(0).toString();
+		}
 		LogHandler.debug("Active world: " + Hunted.activeWorld);
 	}
 	
@@ -110,7 +113,7 @@ public class ConfigManager
 			String world = Hunted.stoneConfig.getString(node + "." + s + ".world");
 			String type = Hunted.stoneConfig.getString(node + "." + s + ".type");
 			
-			SerializedLocation loc = new SerializedLocation(new Location(Bukkit.getWorld(world), (double)x, (double)y, (double)z), s);
+			SerializedLocation loc = new SerializedLocation(x,y,z,world,s);
 			
 			switch(type)
 			{
@@ -121,9 +124,6 @@ public class ConfigManager
 						{
 							temp.setCustomCooldown(cooldown);
 						}
-					break;
-				case "admin":
-					new AdminStone(loc);
 					break;
 				case "info":
 					InfoStone is = new InfoStone(loc);

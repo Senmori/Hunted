@@ -45,6 +45,30 @@ public class SerializedLocation
 		this(loc, "");
 	}
 	
+	public SerializedLocation(int x, int y, int z, String world, String name)
+	{
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.world = world;
+		
+		// only change name if no name is given by default
+		if(name.isEmpty() || name.length() < 1)
+		{
+			Location loc = new Location(Bukkit.getWorld(world), (double)x,(double)y, (double)z);
+			// is it a guardian stone?
+			for(Stone s : StoneManager.getStones())
+			{
+				if(s.getLocation().equals(loc))
+				{
+					name = s.getType().toString().substring(1).toLowerCase();
+					name += "-" + Hunted.getStoneConfig().getConfigurationSection("stones").getKeys(false).size()+1;
+				}
+			}
+		}
+		this.name = name;
+	}
+	
 	public Location getLocation()
 	{
 		World w = Bukkit.getWorld(world);

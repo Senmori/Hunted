@@ -28,8 +28,7 @@ public class PlayerListener extends EventManager
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e)
 	{
-		if (!e.getPlayer().getWorld().getName()
-		        .equalsIgnoreCase(Hunted.activeWorld)) return;
+		if (!e.getPlayer().getWorld().getName().equalsIgnoreCase(Hunted.activeWorld)) return;
 		// ignore everything but buttons and wall sign
 		if (!StoneManager.isValidActivator(e.getClickedBlock().getType()))
 		{
@@ -50,8 +49,7 @@ public class PlayerListener extends EventManager
 		if (block != null)
 		{
 			Stone s = StoneManager.getStone(block.getLocation());
-			if (!Hunted.getPlayerManager().canInteractWithStone(s,
-			        e.getPlayer())) return;
+			if (!Hunted.getPlayerManager().canInteractWithStone(s, e.getPlayer())) return;
 			if (s.getType().equals(Type.GUARDIAN))
 			{
 				// if this is a guardian stone, light up nearby redstone_lamps
@@ -66,8 +64,8 @@ public class PlayerListener extends EventManager
 	@EventHandler
 	public void onPlayerJoin(PlayerLoginEvent e)
 	{
-		if (!e.getPlayer().getWorld().getName()
-		        .equalsIgnoreCase(Hunted.activeWorld)) return;
+		if (!e.getPlayer().getWorld().getName().equalsIgnoreCase(Hunted.activeWorld)) return;
+		if(Hunted.getPlayerManager().isExemptFromSetup(e.getPlayer())) return;
 		Hunted.getPlayerManager().setupPlayer(e.getPlayer());
 	}
 
@@ -75,8 +73,8 @@ public class PlayerListener extends EventManager
 	@EventHandler
 	public void onPlayerLeave(PlayerQuitEvent e)
 	{
-		if (!e.getPlayer().getWorld().getName()
-		        .equalsIgnoreCase(Hunted.activeWorld)) return;
+		if (!e.getPlayer().getWorld().getName().equalsIgnoreCase(Hunted.activeWorld)) return;
+		if(Hunted.getPlayerManager().isExemptFromSetup(e.getPlayer())) return;
 		Hunted.getPlayerManager().setupPlayer(e.getPlayer());
 	}
 
@@ -84,8 +82,7 @@ public class PlayerListener extends EventManager
 	@EventHandler
 	public void onPlayerKick(PlayerKickEvent e)
 	{
-		if (!e.getPlayer().getWorld().getName()
-		        .equalsIgnoreCase(Hunted.activeWorld)) return;
+		if (!e.getPlayer().getWorld().getName().equalsIgnoreCase(Hunted.activeWorld)) return;
 		Hunted.getPlayerManager().setupPlayer(e.getPlayer());
 	}
 
@@ -93,8 +90,8 @@ public class PlayerListener extends EventManager
 	@EventHandler
 	public void onPlayerBan(PlayerChangedWorldEvent e)
 	{
-		if (!e.getPlayer().getWorld().getName()
-		        .equalsIgnoreCase(Hunted.activeWorld)) return;
+		if (!e.getFrom().toString().equalsIgnoreCase(Hunted.activeWorld)) return;
+		if(Hunted.getPlayerManager().isExemptFromSetup(e.getPlayer())) return;
 		Hunted.getPlayerManager().setupPlayer(e.getPlayer());
 	}
 }

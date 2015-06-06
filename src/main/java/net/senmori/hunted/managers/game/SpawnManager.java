@@ -7,16 +7,18 @@ import java.util.Random;
 import net.senmori.hunted.util.SerializedLocation;
 
 public class SpawnManager 
-{
+{	
+	// respawnLocations = where players spawn when they die, or are entering the Hunted world
+	private static List<SerializedLocation> respawnLocations;
+	// spawnLocations = where players spawn when they enter the Hunted arena
+	private static List<SerializedLocation> spawnLocations;
+	
 	// Default: respawnLocation = default world spawn, make sure to set this if you want it somewhere else
 	static
 	{
 		respawnLocations = new ArrayList<SerializedLocation>();
 		spawnLocations = new ArrayList<SerializedLocation>();
 	}
-	
-	private static List<SerializedLocation> respawnLocations;
-	private static List<SerializedLocation> spawnLocations;
 	
 	/*
 	 * Add spawn location(Hunted arena)

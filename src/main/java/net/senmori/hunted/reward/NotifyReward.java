@@ -25,7 +25,7 @@ public class NotifyReward extends Reward
 	public void getLoot(Player player) 
 	{
 		// generate random number between 1 and 5
-		int rNum = (int) ( Math.random() * (5-1) + 1);
+		int rNum = (int) (Math.random() * (5-1) + 1);
 		
 		// if number is 5[20% chance], notify all players of rewardee's location
 		if(rNum % 5 == 0)

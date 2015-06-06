@@ -18,15 +18,12 @@ public class Reference
 			// Interaction permissions
 			public static final String ADMIN_BREAK = "hunted.admin.break";
 			public static final String ADMIN_PLACE = "hunted.admin.place";
-			public static final String PLAYER_INTERACT_STONE = "hunted.interact.stone";
 			public static final String PLAYER_INTERACT_STONE_GUARDIAN = "hunted.interact.stone.guardian";
-			public static final String PLAYER_INTERACT_STONE_ADMIN = "hunted.interact.stone.admin";
 			public static final String PLAYER_INTERACT_STONE_INFO = "hunted.interact.stone.info";
 			public static final String PLAYER_INTERACT_STONE_TELEPORT = "hunted.interact.stone.teleport";
 			
 			// Misc. permissions
 			public static final String ADMIN_EXEMPT = "hunted.admin.exempt";
-			public static final String ADMIN_DEBUG = "hunted.debug.receive";
 		}
 	
 		// All error messages stored here
@@ -51,7 +48,7 @@ public class Reference
 			
 			public static void sendMessage(Player player, String message)
 			{
-				if(!Hunted.debug || !player.hasPermission(Permissions.ADMIN_DEBUG)) return;
+				if(!Hunted.debug) return;
 				player.sendMessage(debugColor + message);
 				LogHandler.debug(message);
 			}
@@ -59,7 +56,7 @@ public class Reference
 		
 		public class RewardMessage
 		{
-			public static final String COLD_STONE = "This stone is cold. Come back in %s.";
+			public static final String COLD_STONE = "This stone is cold. Come back in %s minute(s).";
 			
 			// Standard reward message when a player recieves a reward from a guardian stone
 			public static final String STONE_REWARD = "You received %s!";

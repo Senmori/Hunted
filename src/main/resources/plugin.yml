@@ -1,6 +1,6 @@
 name: Hunted
 version: 0.1
-description: Hunted plugin for BTC's server
+description: Hunted plugin
 author: Senmori
 main: net.senmori.hunted.Hunted
 commands:
@@ -8,6 +8,12 @@ commands:
     description: Main hunted plugin command
     aliases: [ht]
 permissions:
+  hunted.interact.stone.guardian:
+    default: true
+  hunted.interact.stone.info:
+    default: true
+  hunted.interact.stone.teleport:
+    default: true
   hunted.commands.add:
   	default: false
   hunted.commands.delete:
@@ -22,6 +28,11 @@ permissions:
     default: false
   hunted.admin.place:
     default: false
+  hunted.interact.*:
+    children:
+      hunted.interact.stone.guardian: true
+      hunted.interact.stone.info: true
+      hunted.interact.stone.teleport: true
   hunted.admin.*:
     children:
       hunted.admin.break: true

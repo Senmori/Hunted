@@ -36,7 +36,7 @@ public class GuardianStone extends Stone
 		if(!isActive())
 		{
 			int timeUntilActiveMin = (int) TimeUnit.MILLISECONDS.toMinutes(getElapsedTime() - (useCustomCooldown ? customCooldown : defaultCooldown));
-			player.sendMessage(ChatColor.YELLOW + String.format(RewardMessage.COLD_STONE, timeUntilActiveMin + "m"));
+			player.sendMessage(ChatColor.YELLOW + String.format(RewardMessage.COLD_STONE, timeUntilActiveMin));
 			return;
 		}
 		Hunted.getRewardManager().generateReward(player);

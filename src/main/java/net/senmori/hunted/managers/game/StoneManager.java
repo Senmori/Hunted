@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.senmori.hunted.stones.AdminStone;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.stones.InfoStone;
 import net.senmori.hunted.stones.Stone;
@@ -19,7 +18,6 @@ public class StoneManager
 	public static List<Stone> masterStoneList;
 	
 	public static List<GuardianStone> guardianStoneList;
-	public static List<AdminStone> adminStoneList;
 	public static List<InfoStone> infoStoneList;
 	public static List<TeleportStone> teleportStoneList;
 	
@@ -29,7 +27,6 @@ public class StoneManager
 	{
 		masterStoneList = new ArrayList<Stone>();
 		guardianStoneList = new ArrayList<GuardianStone>();
-		adminStoneList = new ArrayList<AdminStone>();
 		infoStoneList = new ArrayList<InfoStone>();
 		teleportStoneList = new ArrayList<TeleportStone>();
 		faces = Arrays.asList(BlockFace.UP, BlockFace.DOWN, BlockFace.NORTH, BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH);
@@ -59,9 +56,6 @@ public class StoneManager
 		{
 			case GUARDIAN:
 					guardianStoneList.add((GuardianStone) stone);
-					return;
-			case ADMIN:
-					adminStoneList.add((AdminStone)stone);
 					return;
 			case INFO:
 					infoStoneList.add((InfoStone)stone);
@@ -107,12 +101,7 @@ public class StoneManager
 	{
 		return guardianStoneList;
 	}
-	
-	public static List<AdminStone> getAdminStones()
-	{
-		return adminStoneList;
-	}
-	
+
 	public static List<InfoStone> getInfoStones()
 	{
 		return infoStoneList;
