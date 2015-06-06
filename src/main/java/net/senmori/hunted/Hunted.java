@@ -3,6 +3,8 @@ package net.senmori.hunted;
 import java.io.File;
 import java.util.logging.Logger;
 
+import net.senmori.hunted.listeners.BlockListener;
+import net.senmori.hunted.listeners.PlayerListener;
 import net.senmori.hunted.managers.CommandManager;
 import net.senmori.hunted.managers.ConfigManager;
 import net.senmori.hunted.managers.game.PlayerManager;
@@ -17,6 +19,7 @@ import net.senmori.hunted.reward.TeleportReward;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -71,6 +74,10 @@ public class Hunted extends JavaPlugin
 		log = Bukkit.getLogger();
 
 		ConfigManager.setupConfig();
+		
+		// EventManager & listeners
+		new BlockListener();
+		new PlayerListener();
 
 		// setup commands
 		commandManager = new CommandManager(instance);
@@ -113,5 +120,35 @@ public class Hunted extends JavaPlugin
 	public static PlayerManager getPlayerManager()
 	{
 		return playerManager;
+	}
+	
+	public FileConfiguration getLootConfig()
+	{
+		if(lootConfig == null)
+		{
+			lootConfig = YamlConfiguration.loadConfiguration(lootConfigFile);
+			return lootConfig;
+		}
+		return lootConfig;
+	}
+	
+	public static FileConfiguration getStoneConfig()
+	{
+		if(stoneConfig == null)
+		{
+			stoneConfig = YamlConfiguration.loadConfiguration(stoneConfigFile);
+			return stoneConfig;
+		}
+		return stoneConfig;
+	}
+	
+	public static FileConfiguration getPluginConfig()
+	{
+		if(pluginConfig == null)
+		{
+			pluginConfig = YamlConfiguration.loadConfiguration(pluginConfigFile);
+			return pluginConfig;
+		}
+		return pluginConfig;
 	}
 }

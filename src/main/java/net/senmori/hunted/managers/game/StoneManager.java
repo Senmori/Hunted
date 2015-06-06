@@ -16,7 +16,7 @@ import org.bukkit.block.BlockFace;
 
 public class StoneManager 
 {
-	public static List<Stone> stoneList;
+	public static List<Stone> masterStoneList;
 	
 	public static List<GuardianStone> guardianStoneList;
 	public static List<AdminStone> adminStoneList;
@@ -27,7 +27,7 @@ public class StoneManager
 	
 	static
 	{
-		stoneList = new ArrayList<Stone>();
+		masterStoneList = new ArrayList<Stone>();
 		guardianStoneList = new ArrayList<GuardianStone>();
 		adminStoneList = new ArrayList<AdminStone>();
 		infoStoneList = new ArrayList<InfoStone>();
@@ -54,7 +54,7 @@ public class StoneManager
 	public static void add(Stone stone)
 	{
 		if(stone == null || stone.getType() == null) return;
-		stoneList.add(stone);
+		masterStoneList.add(stone);
 		switch(stone.getType())
 		{
 			case GUARDIAN:
@@ -76,7 +76,7 @@ public class StoneManager
 	
 	public static Stone getStone(Location loc)
 	{
-		for(Stone s : stoneList)
+		for(Stone s : masterStoneList)
 		{
 			if(s.getLocation().equals(loc))
 			{
@@ -88,7 +88,7 @@ public class StoneManager
 	
 	public static Stone getStone(String name)
 	{
-		for(Stone s : stoneList)
+		for(Stone s : masterStoneList)
 		{
 			if(s.getName().equalsIgnoreCase(name))
 			{
@@ -100,7 +100,7 @@ public class StoneManager
 	
 	public static List<Stone> getStones()
 	{
-		return stoneList;
+		return masterStoneList;
 	}
 	
 	public static List<GuardianStone> getGuardianStones()

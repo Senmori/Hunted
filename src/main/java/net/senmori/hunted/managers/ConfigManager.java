@@ -20,6 +20,7 @@ public class ConfigManager
 {
 	public static void setupConfig()
 	{
+		// main plugin configuration (game options)
 		Hunted.pluginConfig = Hunted.getInstance().getConfig();
 		
 		Hunted.pluginConfigFile = new File(Hunted.getInstance().getDataFolder(), "config.yml");
@@ -29,6 +30,7 @@ public class ConfigManager
 		    FileUtil.copy(Hunted.getInstance().getResource("config.yml"), Hunted.pluginConfigFile);
 		}
 		
+		// config where guardian stones are stored
 		Hunted.stoneConfigFile = new File(Hunted.getInstance().getDataFolder(), "stones.yml");
 		if(!Hunted.stoneConfigFile.exists())
 		{
@@ -36,6 +38,7 @@ public class ConfigManager
 			FileUtil.copy(Hunted.getInstance().getResource("stones.yml"), Hunted.stoneConfigFile);
 		}
 		
+		// config where all possible loot is stored
 		Hunted.lootConfigFile = new File(Hunted.getInstance().getDataFolder(), "loot.yml");
 		if(!Hunted.lootConfigFile.exists())
 		{

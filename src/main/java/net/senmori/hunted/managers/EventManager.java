@@ -9,16 +9,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public abstract class EventManager implements Listener
 {
-	private static JavaPlugin plugin;
 	private static List<Listener> listeners = new ArrayList<Listener>();
 	
 
 	protected <T extends EventManager> void registerEvent(Listener c, JavaPlugin instance)
 	{
-		plugin = instance;
 	    addListener(c, instance);
-	    PluginManager pm = plugin.getServer().getPluginManager();
-		pm.registerEvents(c, plugin);
+	    PluginManager pm = instance.getServer().getPluginManager();
+		pm.registerEvents(c, instance);
 	}
 	
 	private void addListener(Listener c, JavaPlugin instance)
