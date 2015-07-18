@@ -27,3 +27,4 @@ server/
 .externalToolBuilders/
 *.bat
 *.txt
+*.iml
