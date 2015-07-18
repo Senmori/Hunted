@@ -11,13 +11,13 @@ public class SpawnManager
 	// respawnLocations = where players spawn when they die, or are entering the Hunted world
 	private static List<SerializedLocation> respawnLocations;
 	// spawnLocations = where players spawn when they enter the Hunted arena
-	private static List<SerializedLocation> spawnLocations;
+	private static List<SerializedLocation> lobbyLocations;
 	
 	// Default: respawnLocation = default world spawn, make sure to set this if you want it somewhere else
 	static
 	{
 		respawnLocations = new ArrayList<SerializedLocation>();
-		spawnLocations = new ArrayList<SerializedLocation>();
+		lobbyLocations = new ArrayList<SerializedLocation>();
 	}
 	
 	/*
@@ -25,18 +25,18 @@ public class SpawnManager
 	 */
 	public static void addSpawnLocation(SerializedLocation loc)
 	{
-		spawnLocations.add(loc);
+		lobbyLocations.add(loc);
 	}
 	
 	public static boolean removeSpawnLocation(SerializedLocation loc)
 	{
 		// HashMap is empty, can't remove what's not there
-		if(spawnLocations.isEmpty()) return true;
-		for(SerializedLocation sl : spawnLocations)
+		if(lobbyLocations.isEmpty()) return true;
+		for(SerializedLocation sl : lobbyLocations)
 		{
 			if(sl.getLocation().equals(loc.getLocation()))
 			{
-				return spawnLocations.remove(sl);
+				return lobbyLocations.remove(sl);
 			}
 		}
 		// that location didn't exist, therefore we can't remove it
@@ -80,7 +80,7 @@ public class SpawnManager
 	public static SerializedLocation getRandomSpawnLocation()
 	{
 		Random rand = new Random();
-		return spawnLocations.get(rand.nextInt(spawnLocations.size()+1));
+		return lobbyLocations.get(rand.nextInt(lobbyLocations.size()+1));
 	}
 	
 	public static SerializedLocation getRandomRespawnLocation()
@@ -96,6 +96,25 @@ public class SpawnManager
 	
 	public static List<SerializedLocation> getSpawnLocations()
 	{
-		return spawnLocations;
+		return lobbyLocations;
+	}
+	
+	// 	respawnSection.set(loc.getName(), loc.getLocation().getBlockX() + "|" + loc.getLocation().getBlockY() + "|" + loc.getLocation().getBlockZ());
+	// 	spawnSection.set(loc.getName(), loc.getLocation().getBlockX() + "|" + loc.getLocation().getBlockY() + "|" + loc.getLocation().getBlockZ());
+    public static void saveLocations()
+	{
+		for(SerializedLocation loc : getRespawnLocations())
+		{
+			net.senmori.hunted.Hunted.stoneConfig.set("respawn_loc." + loc.getName() + ".x", loc.getLocation().getBlockX());
+			net.senmori.hunted.Hunted.stoneConfig.set("respawn_loc." + loc.getName() + ".y", loc.getLocation().getBlockY());
+			net.senmori.hunted.Hunted.stoneConfig.set("respawn_loc." + loc.getName() + ".z", loc.getLocation().getBlockZ());
+		}
+		
+		for(SerializedLocation loc : getSpawnLocations())
+		{
+			net.senmori.hunted.Hunted.stoneConfig.set("spawn_loc." + loc.getName() + ".x", loc.getLocation().getBlockX());
+			net.senmori.hunted.Hunted.stoneConfig.set("spawn_loc." + loc.getName() + ".y", loc.getLocation().getBlockY());
+			net.senmori.hunted.Hunted.stoneConfig.set("spawn_loc." + loc.getName() + ".z", loc.getLocation().getBlockZ());
+		}
 	}
 }

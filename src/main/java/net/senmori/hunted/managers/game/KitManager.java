@@ -1,32 +1,25 @@
 package net.senmori.hunted.managers.game;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 
 import net.senmori.hunted.Hunted;
-import net.senmori.hunted.util.Reference.LootPath;
-import net.senmori.hunted.util.Reference.Message;
+import net.senmori.hunted.armor.ArmorEnum;
+import net.senmori.hunted.weapon.WeaponType;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.Potion;
-import org.bukkit.potion.PotionType;
 
 public class KitManager 
 {
-	private List<Material> armor;
-	private List<Material> weapons;
-	private List<PotionType> potions;
+	private List<Material> items;
 	
 	public KitManager()
 	{
-		armor = new ArrayList<Material>();
-		weapons = new ArrayList<Material>();
-		potions = new ArrayList<PotionType>();
-		
+		items = new ArrayList<Material>();
 		fillLists();
 	}
 	
@@ -39,15 +32,14 @@ public class KitManager
 	 * - select up to {@value Hunted#maxPotsPerReward} potions
 	 * @param player
 	 */
-	public void generateKitFor(Player player)
+	public void generateKit(Player player)
 	{
-		fillArmor(player);
-		fillWeapons(player);
-		fillPotions(player);
+		generateArmor(player);
+		generateWeapons(player);
+		generatePotions(player);
 	}
 	
-	
-	private void fillArmor(Player player)
+	public void generateArmor(Player player)
 	{
 		List<Material> armorPieces = new ArrayList<Material>();
 		Random rand = new Random();
@@ -55,12 +47,16 @@ public class KitManager
 		for(int i = 0; i < rand.nextInt(4); i++)
 		{
 			Material randomPiece;
-			do 
+			do
 			{
-				randomPiece = armor.get(rand.nextInt(armor.size()+1));
-			} 
+				int slot = rand.nextInt(ArmorEnum.values().length -1) + 1;
+				randomPiece = ArmorEnum.values()[slot].getType();
+				// if the list already contains a similar piece of armor, choose another
+
+				//randomPiece = armor.get(rand.nextInt(armor.size()+1));
+			}
 			while(!armorPieces.contains(randomPiece) && randomPiece != null);
-			armor.add(randomPiece);
+			armorPieces.add(randomPiece);
 		}
 		
 		ItemStack[] arm = {null,null,null,null};
@@ -71,38 +67,29 @@ public class KitManager
 				arm[i] = new ItemStack(m);
 			}
 		}
-		
 		player.getInventory().setArmorContents(arm);
 	}
 	
-	private void fillWeapons(Player player)
+	public void generateWeapons(Player player)
 	{
-		List<Material> wep = new ArrayList<Material>();
-		Random rand = new Random();
-		for(int i = 0; i < rand.nextInt(3); i++)
-		{
-			Material rMat = weapons.get(rand.nextInt(weapons.size()+1));
-			do
-			{
-				rMat = weapons.get(rand.nextInt(weapons.size()+1));
-			}while(wep.contains(rMat));
-			wep.add(rMat);
-		}
+		Material weapon = null;
 		
-		for(Material mat : wep)
+		weapon = WeaponType.values()[(int)Math.random()*(WeaponType.values().length - 1) +1].getType();
+		//weapon = Hunted.getKitManager().weapons.get((int)(Math.random()*(WeaponType.values().length -1) +1));
+		
+		if(weapon.equals(Material.BOW))
 		{
-			player.getInventory().addItem(new ItemStack(mat));
+			player.getInventory().addItem(new ItemStack(Material.ARROW, (int) (Math.random() * (Hunted.maxArrowsPerReward -1) +1)));
 		}
+		player.getInventory().addItem(new ItemStack(weapon));
 	}
 	
-	private void fillPotions(Player player)
+	/*
+	 * Generate potion(s) for a player
+	 */
+	public void generatePotions(Player player)
 	{
-		Random rand = new Random();
-		for(int i = 0; i < rand.nextInt(Hunted.maxPotsPerReward+1); i++)
-		{
-			Potion pot = new Potion(potions.get(rand.nextInt(potions.size()+1)), rand.nextInt(Hunted.potionTierChance+1) % Hunted.potionTierChance == 0 ? 2 : 1);
-			player.getInventory().addItem(pot.toItemStack(1));
-		}
+		
 	}
 	
 	/*
@@ -110,37 +97,11 @@ public class KitManager
 	 */
 	private void fillLists()
 	{
-		// fill armor
-		for(String material : Hunted.lootConfig.getStringList(LootPath.ARMOR))
-		{
-			Material mat = Material.valueOf(material);
-			Validate.notNull(mat, String.format(Message.IMPORT_ERROR, mat.toString().toLowerCase()));
-			if(mat != null && !armor.contains(mat))
-			{
-				armor.add(mat);
-			}
-		}
 		
-		// fill weapons
-		for(String material : Hunted.lootConfig.getStringList(LootPath.WEAPON))
-		{
-			Material mat = Material.valueOf(material);
-			Validate.notNull(mat, String.format(Message.IMPORT_ERROR, mat.toString().toLowerCase()));
-			if(mat != null && !weapons.contains(mat))
-			{
-				weapons.add(mat);
-			}
-		}
-		
-		// fill potions
-		for(String type : Hunted.lootConfig.getStringList(LootPath.POTION))
-		{
-			PotionType pt = PotionType.valueOf(type);
-			Validate.notNull(pt, String.format(Message.IMPORT_ERROR, pt.toString().toLowerCase()));
-			if(pt != null && !potions.contains(pt))
-			{
-				potions.add(pt);
-			}
-		}
+	}
+	
+	public List<Material> getItems()
+	{
+		return items;
 	}
 }

@@ -3,7 +3,6 @@ package net.senmori.hunted.reward;
 import java.util.Random;
 
 import net.md_5.bungee.api.ChatColor;
-import net.senmori.hunted.Hunted;
 import net.senmori.hunted.util.LogHandler;
 import net.senmori.hunted.util.Reference.RewardMessage;
 
@@ -17,14 +16,13 @@ public class IrritatingReward extends Reward
 	public IrritatingReward(String name) 
 	{
 		this.name = name;
-		Hunted.getRewardManager().addReward(this);
-	};
+	}
 	
 	/*
 	 * Rearrange player's inventory, quite annoying...
 	 */
 	@Override
-	public void getLoot(Player player) 
+	public void generateLoot(Player player) 
 	{
 		ItemStack[] inventory = player.getInventory().getContents();
 		Random rand = new Random();
@@ -51,7 +49,7 @@ public class IrritatingReward extends Reward
 			}
 		}
 		player.sendMessage(ChatColor.GOLD + RewardMessage.IRRITATING_MESSAGE);
-		LogHandler.debug(player.getDisplayName() + " receieved an irritating reward.");
+		LogHandler.info(player.getDisplayName() + " receieved an irritating reward.");
 	}
 	
 	@Override

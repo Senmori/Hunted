@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.md_5.bungee.api.ChatColor;
-import net.senmori.hunted.Hunted;
 import net.senmori.hunted.managers.game.StoneManager;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.util.Reference.RewardMessage;
@@ -18,11 +17,10 @@ public class NotifyReward extends Reward
 	public NotifyReward(String name) 
 	{
 		this.name = name;
-		Hunted.getRewardManager().addReward(this);
 	};
 	
 	@Override
-	public void getLoot(Player player) 
+	public void generateLoot(Player player) 
 	{
 		// generate random number between 1 and 5
 		int rNum = (int) (Math.random() * (5-1) + 1);
@@ -67,12 +65,14 @@ public class NotifyReward extends Reward
 		
 		for(Player p : Bukkit.getServer().getWorld(player.getWorld().getName()).getPlayers())
 		{
-			if(p.getLocation().distanceSquared(player.getLocation()) <= Hunted.nearbyRadius)
+			if(p.getLocation().distanceSquared(player.getLocation()) <= net.senmori.hunted.Hunted.nearbyRadius)
 			{
 				players.add(p);
 			}
 		}
-		player.sendMessage(ChatColor.AQUA + String.format(RewardMessage.NOTIFY_WITHIN, players.size(), Hunted.nearbyRadius));
+		player.sendMessage(ChatColor.AQUA + String.format(RewardMessage.NOTIFY_WITHIN, players.size(), net.senmori
+																											   .hunted
+																											   .Hunted.nearbyRadius));
 		players.clear(); // clear list just in case it gets stuck in memory
 	}
 	

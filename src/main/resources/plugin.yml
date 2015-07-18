@@ -1,46 +1,33 @@
-name: Hunted
-version: 0.1
-description: Hunted plugin
-author: Senmori
-main: net.senmori.hunted.Hunted
+name: ${project.name}
+version: ${project.version}
+description: ${project.description}
+author: ${author}
+main: ${main.Class}
 commands:
-  hunted:
-    description: Main hunted plugin command
-    aliases: [ht]
+    ht:
+        description: Hunted plugin command
+        aliases: [hunted]
 permissions:
-  hunted.interact.stone.guardian:
-    default: true
-  hunted.interact.stone.info:
-    default: true
-  hunted.interact.stone.teleport:
-    default: true
-  hunted.commands.add:
-  	default: false
-  hunted.commands.delete:
-  	default: false
-  hunted.commands.edit:
-  	default: false
-  hunted.commands.list:
-    default: false
-  hunted.debug.receive:
-  	default: false
-  hunted.admin.break:
-    default: false
-  hunted.admin.place:
-    default: false
-  hunted.interact.*:
-    children:
-      hunted.interact.stone.guardian: true
-      hunted.interact.stone.info: true
-      hunted.interact.stone.teleport: true
-  hunted.admin.*:
-    children:
-      hunted.admin.break: true
-      hunted.admin.place: true
-  hunted.commands.*:
-    children:
-      hunted.commands.add: true
-      hunted.commands.delete: true
-      hunted.commands.edit: true
-      hunted.commands.list: true
-  	  
+    hunted.interact.user:
+        default: true
+        children:
+            hunted.interact.stone.guardian: true
+            hunted.interact.stone.teleport: true
+            hunted.commands.stuck: true
+    hunted.commands.admin:
+        default: false
+        children:
+            hunted.interact.user: true
+            hunted.commands.add: true
+            hunted.commands.delete: true
+            hunted.commands.edit: true
+            hunted.commands.list: true
+            hunted.commands.exempt: true
+            hunted.commands.stuck.other: true
+    hunted.interact.admin:
+        default: false
+        children:
+            hunted.admin.break: true
+            hunted.admin.place: true
+    hunted.admin.exempt:
+        default: false

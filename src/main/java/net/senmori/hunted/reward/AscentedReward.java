@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.senmori.hunted.Hunted;
+import net.senmori.hunted.util.LogHandler;
 
 import org.bukkit.entity.Player;
 
@@ -21,18 +21,18 @@ public class AscentedReward extends Reward
 	}
 	
 	@Override
-	public void getLoot(Player player) 
+	public void generateLoot(Player player) 
 	{	
 		// give ascented item
-		if(rand.nextInt(Hunted.ascentedItemChance+1) % Hunted.ascentedItemChance == 0)
+		if(rand.nextInt(net.senmori.hunted.Hunted.ascentedItemChance+1) % net.senmori.hunted.Hunted.ascentedItemChance == 0)
 		{
-			ascentedItems.addAll(Hunted.lootConfig.getConfigurationSection("loot.ascented").getKeys(false));
+			ascentedItems.addAll(net.senmori.hunted.Hunted.lootConfig.getConfigurationSection("loot.ascented").getKeys(false));
 			
-			String item = ascentedItems.get(rand.nextInt(ascentedItems.size()+1));
+			//String item = ascentedItems.get(rand.nextInt(ascentedItems.size()+1));
 			
 			return;
 		}
-		Hunted.getRewardManager().generateReward(player);
+		LogHandler.info("Generated an ascented reward!");
 	}
 	
 	@Override

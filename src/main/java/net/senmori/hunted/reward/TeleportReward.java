@@ -1,6 +1,5 @@
 package net.senmori.hunted.reward;
 
-import net.senmori.hunted.Hunted;
 import net.senmori.hunted.managers.game.SpawnManager;
 import net.senmori.hunted.util.LogHandler;
 
@@ -12,11 +11,11 @@ public class TeleportReward extends Reward
 	private String name;
 	public TeleportReward(String name) 
 	{
-		Hunted.getRewardManager().addReward(this);
+		this.name = name;
 	};
 	
 	@Override
-	public void getLoot(Player player) 
+	public void generateLoot(Player player) 
 	{
 		Location toLoc = SpawnManager.getRandomSpawnLocation().getLocation();
 		do 

@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.senmori.hunted.commands.Subcommand;
+import net.senmori.hunted.util.LogHandler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CommandManager implements CommandExecutor
@@ -23,6 +25,7 @@ public class CommandManager implements CommandExecutor
 	{
 		this.plugin = plugin;
 		addCommandManager(this);
+		
 	}
 
 	public void registerCommand(Subcommand command)
@@ -49,7 +52,7 @@ public class CommandManager implements CommandExecutor
 			{
 				argsList.add(args[i]);
 			}
-				
+			
 			for (Subcommand command : commands)
 			{
 				if (command.getName().equals(commandName) || command.getAliases().contains(commandName))
@@ -61,7 +64,7 @@ public class CommandManager implements CommandExecutor
 		}
 		else
 		{
-			Bukkit.dispatchCommand(sender, commandPrefix + " help");
+			Bukkit.dispatchCommand(sender, "help " + commandPrefix);
 		}
 
 		return true;

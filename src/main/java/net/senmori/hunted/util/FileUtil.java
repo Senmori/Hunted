@@ -12,10 +12,10 @@ public class FileUtil
         try 
         {
             OutputStream out = new FileOutputStream(file);
-            byte[] buf = new byte[1024];
-            int len;
+            byte[] buf = new byte[4096];
+            int len = 0;
             
-            while((len = in.read(buf)) > 0)
+            while((len = in.read(buf)) != -1)
             {
                 out.write(buf,0,len);
             }

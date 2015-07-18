@@ -2,13 +2,11 @@ package net.senmori.hunted.util;
 
 import java.util.logging.Level;
 
-import net.senmori.hunted.Hunted;
-
 public class LogHandler 
 {
 	public static void log(Level level, String message)
 	{
-		Hunted.log.log(level, "[" + Hunted.name + "] " + message);
+		net.senmori.hunted.Hunted.log.log(level, "[" + net.senmori.hunted.Hunted.name + "] " + message);
 	}
 	
 	public static void all(String message)
@@ -18,8 +16,8 @@ public class LogHandler
 	
 	public static void debug(String message)
 	{
-		if(!Hunted.debug) return;
-		log(Level.CONFIG,message);
+		if(net.senmori.hunted.Hunted.debug)
+			log(Level.CONFIG,message);
 	}
 	
 	public static void dbWarning(String message)

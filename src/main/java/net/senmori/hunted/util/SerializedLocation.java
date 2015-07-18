@@ -1,9 +1,5 @@
 package net.senmori.hunted.util;
 
-import net.senmori.hunted.Hunted;
-import net.senmori.hunted.managers.game.StoneManager;
-import net.senmori.hunted.stones.Stone;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -22,51 +18,12 @@ public class SerializedLocation
 		this.y = loc.getBlockY();
 		this.z = loc.getBlockZ();
 		this.world = loc.getWorld().getName();
-		
-		
-		// only change name if no name is given by default
-		if(name.isEmpty() || name.length() < 1)
-		{
-			// is it a guardian stone?
-			for(Stone s : StoneManager.getStones())
-			{
-				if(s.getLocation().equals(loc))
-				{
-					name = s.getType().toString().substring(1).toLowerCase();
-					name += "-" + Hunted.getStoneConfig().getConfigurationSection("stones").getKeys(false).size()+1;
-				}
-			}
-		}
 		this.name = name;
-	}
-	
-	public SerializedLocation(Location loc)
-	{
-		this(loc, "");
 	}
 	
 	public SerializedLocation(int x, int y, int z, String world, String name)
 	{
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.world = world;
-		
-		// only change name if no name is given by default
-		if(name.isEmpty() || name.length() < 1)
-		{
-			Location loc = new Location(Bukkit.getWorld(world), (double)x,(double)y, (double)z);
-			// is it a guardian stone?
-			for(Stone s : StoneManager.getStones())
-			{
-				if(s.getLocation().equals(loc))
-				{
-					name = s.getType().toString().substring(1).toLowerCase();
-					name += "-" + Hunted.getStoneConfig().getConfigurationSection("stones").getKeys(false).size()+1;
-				}
-			}
-		}
-		this.name = name;
+		this(new Location(Bukkit.getWorld(world),x,y,z),name);
 	}
 	
 	public Location getLocation()

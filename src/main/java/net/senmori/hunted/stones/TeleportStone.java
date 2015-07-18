@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 public class TeleportStone extends Stone
 {
-	
+	private String name;
 	
 	public TeleportStone(SerializedLocation loc)
 	{
