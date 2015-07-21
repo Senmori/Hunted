@@ -1,6 +1,6 @@
 package net.senmori.hunted.kit.potion;
 
-import net.senmori.hunted.kit.enums.Potion.Category;
+import net.senmori.hunted.kit.potion.Potion.Category;
 
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;

@@ -3,7 +3,7 @@ package net.senmori.hunted.kit.armor;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.senmori.hunted.kit.enums.Armor.ArmorSlot;
+import net.senmori.hunted.kit.armor.Armor.ArmorSlot;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;

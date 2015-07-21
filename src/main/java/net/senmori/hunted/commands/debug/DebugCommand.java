@@ -3,8 +3,8 @@ package net.senmori.hunted.commands.debug;
 import java.util.Random;
 
 import net.senmori.hunted.commands.Subcommand;
-import net.senmori.hunted.kit.enums.Potion.PotionEffectEnum;
 import net.senmori.hunted.kit.potion.HuntedPotion;
+import net.senmori.hunted.kit.potion.Potion.PotionEffectEnum;
 import net.senmori.hunted.util.LogHandler;
 import net.senmori.hunted.util.Reference.Permissions;
 

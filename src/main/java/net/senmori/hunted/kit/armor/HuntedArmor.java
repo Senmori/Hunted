@@ -1,6 +1,6 @@
 package net.senmori.hunted.kit.armor;
 
-import net.senmori.hunted.kit.enums.Armor.ArmorSlot;
+import net.senmori.hunted.kit.armor.Armor.ArmorSlot;
 
 import org.bukkit.Material;
 

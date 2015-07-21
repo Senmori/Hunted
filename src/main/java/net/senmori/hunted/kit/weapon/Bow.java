@@ -1,4 +1,4 @@
-package net.senmori.hunted.kit.enums;
+package net.senmori.hunted.kit.weapon;
 
 public class Bow
 {

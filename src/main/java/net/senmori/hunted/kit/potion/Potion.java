@@ -1,4 +1,4 @@
-package net.senmori.hunted.kit.enums;
+package net.senmori.hunted.kit.potion;
 
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;

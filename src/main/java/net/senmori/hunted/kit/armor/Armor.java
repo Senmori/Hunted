@@ -1,4 +1,4 @@
-package net.senmori.hunted.kit.enums;
+package net.senmori.hunted.kit.armor;
 
 import org.bukkit.Material;
 
