@@ -20,9 +20,9 @@ public class AddSpawn extends Subcommand
 	@Override
 	protected void perform()
 	{
-		int count = SpawnManager.getSpawnLocations().size() + 1;
-		SerializedLocation newSpawnLocation = new SerializedLocation(getPlayer().getLocation(), "SpawnLoc-" + count);
-		SpawnManager.addSpawnLocation(newSpawnLocation);
+		int count = SpawnManager.getHuntedLocations().size() + 1;
+		SerializedLocation newSpawnLocation = new SerializedLocation(getPlayer().getLocation(), "HLoc-" + count);
+		SpawnManager.addHuntedLocation(newSpawnLocation);
 		getPlayer().sendMessage(ChatColor.GREEN + "Successfully created new spawn location (" + newSpawnLocation.getName() + ")" + count);
 	}
 

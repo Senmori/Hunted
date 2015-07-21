@@ -11,7 +11,7 @@ public class AddRespawn extends Subcommand
 
 	public AddRespawn()
 	{
-		this.name = "respawn";
+		this.name = "lobby";
 		this.needsPlayer = true;
 		this.description = "Adds respawn locations to the Hunted arena.";
 		this.permission = Permissions.COMMAND_ADD;
@@ -20,10 +20,11 @@ public class AddRespawn extends Subcommand
 	@Override
 	protected void perform()
 	{
-		int count = SpawnManager.getRespawnLocations().size() +1;
-		SerializedLocation newRespawnLocation = new SerializedLocation(getPlayer().getLocation(), "RLoc-" + count);
-		SpawnManager.addRespawnLocation(newRespawnLocation);
-		getPlayer().sendMessage(ChatColor.GREEN + "Successfully added a new respawn location (" + newRespawnLocation.getName() + ")");
+		String locName = args[args.length];
+		int count = SpawnManager.getLobbyLocations().size() +1;
+		SerializedLocation newLobbyLocation = new SerializedLocation(getPlayer().getLocation(), "RLoc-" + count);
+		SpawnManager.addLobbyLocation(newLobbyLocation);
+		getPlayer().sendMessage(ChatColor.GREEN + "Successfully added a new lobby location (" + newLobbyLocation.getName() + ")");
 	}
 
 }

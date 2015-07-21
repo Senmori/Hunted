@@ -2,18 +2,18 @@ package net.senmori.hunted.commands.add.parameters;
 
 import java.util.Set;
 
+import net.md_5.bungee.api.ChatColor;
+import net.senmori.hunted.commands.Subcommand;
+import net.senmori.hunted.stones.GuardianStone;
+import net.senmori.hunted.stones.Stone.StoneType;
+import net.senmori.hunted.stones.TeleportStone;
+import net.senmori.hunted.util.Reference.ErrorMessage;
+import net.senmori.hunted.util.Reference.Permissions;
+import net.senmori.hunted.util.SerializedLocation;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-
-import net.senmori.hunted.commands.Subcommand;
-import net.senmori.hunted.stones.GuardianStone;
-import net.senmori.hunted.stones.TeleportStone;
-import net.senmori.hunted.stones.Stone.Type;
-import net.senmori.hunted.util.SerializedLocation;
-import net.senmori.hunted.util.Reference.DebugMessage;
-import net.senmori.hunted.util.Reference.ErrorMessage;
-import net.senmori.hunted.util.Reference.Permissions;
 
 public class AddStone extends Subcommand
 {
@@ -28,22 +28,24 @@ public class AddStone extends Subcommand
     protected void perform()
     {
 		Block targetBlock = getPlayer().getTargetBlock((Set<Material>)null, 5);
+		String stoneName = args.length == 2 ? args[1] : "";
 		
 		// player isn't looking at a valid block
 		if(targetBlock == null)
 		{
-			DebugMessage.sendMessage(getPlayer(), ErrorMessage.STONE_CREATION_ERROR);
+			getPlayer().sendMessage(ChatColor.YELLOW + ErrorMessage.STONE_CREATION_ERROR);
+			return;
 			
 		}
 		switch(this.args[0])
 		{
 			case "guardian":
 			case "-g":
-				createNewStone(Type.GUARDIAN,targetBlock.getLocation());
+				createNewStone(StoneType.GUARDIAN, targetBlock.getLocation(), stoneName);
 				break;
 			case "teleport":
 			case "-t":
-				createNewStone(Type.TELEPORT,targetBlock.getLocation());
+				createNewStone(StoneType.TELEPORT, targetBlock.getLocation(), stoneName);
 				break;
 			default:
 				break;
@@ -51,7 +53,7 @@ public class AddStone extends Subcommand
 		}
     }
 	
-	private void createNewStone(Type type, Location loc, String name)
+	private void createNewStone(StoneType type, Location loc, String name)
 	{
 		switch(type)
 		{
@@ -64,9 +66,5 @@ public class AddStone extends Subcommand
 			default:
 				break;
 		}
-	}
-	private void createNewStone(Type type, Location loc)
-	{
-		createNewStone(type, loc, "");
 	}
 }

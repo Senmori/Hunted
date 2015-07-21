@@ -1,5 +1,7 @@
 package net.senmori.hunted.util;
 
+import net.senmori.hunted.managers.ConfigManager;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -29,68 +31,39 @@ public class Reference
 		// All error messages stored here
 		public class ErrorMessage
 		{
+			/** Error string for if there is a problem importing something from the config */
 			public static final String IMPORT_ERROR = "Error importing %s. Is it mispelled?";
+			/** Error string when trying to create a {@link Stone} */
 			public static final String STONE_CREATION_ERROR = "You must be looking at a block in order to create a guardian stone!";
-		}
-		
-		// All debug messages stored here
-		public static class DebugMessage
-		{
-			private static ChatColor debugColor = ChatColor.GREEN;
-			
-			// Debug messages for when armor/weapons/potions are created when a player spawns into Hunted
-			public static final String ARMOR_GEN = "Generated %s pieces of armor for %s.";
-			public static final String WEAPON_GEN = "Generated %s weapons for %s.";
-			public static final String POTION_GEN = "Generated %s potions for %s.";
-			
-			// Debug message for when a player receives a reward
-			public static final String REWARD = "%s received %s.";
-			
-			
-			public static void sendMessage(Player player, String message)
-			{
-				if(!net.senmori.hunted.Hunted.debug) return;
-				player.sendMessage(debugColor + message);
-				LogHandler.debug(message);
-			}
 		}
 		
 		public class RewardMessage
 		{
+			/** Returns if the appropriate {@link Stone} is active or not */
 			public static final String COLD_STONE = "This stone is cold. Come back in %s minute(s).";
 			
-			// Standard reward message when a player recieves a reward from a guardian stone
+			/** Standard reward message whena player receives a reward from a {@link GuardianStone} */
 			public static final String STONE_REWARD = "You received %s!";
 			
-			// Standard message for when a player receives an effect reward
+			/** Standard message for when a player receives an effect reward */
 			public static final String EFFECT_REWARD = "Ouch! You've got some %s going on.";
 			public static final String EFFECT_UNLUCKY = "Wow, you're really unlucky. Have some %s";
 			
-			// Standard smite message
+			/** Standard smite message */
 			public static final String SMITE_MESSAGE = "Thou hast been smitten! Puny mortal.";
 			
-			// Standard message to notify the rewardee of how many players are within 'x' blocks of said rewardee
+
+			/** Standard message to notify the rewardee of how many players are within an 'x' block radius */
 			public static final String NOTIFY_WITHIN = "There are %s players within %s blocks of you.";
 			
-			// Standard message to notify all players of rewardee's location
+			/** Standard message to notify all players(except rewardee) of the rewardee's location */
 			public static final String NOTIFY_ALL = "%s is at %s!";
 			
-			// Standard message for irritating reward
+			/** Standard message for when rewardee receives an irritating reward */
 			public static final String IRRITATING_MESSAGE = "Good luck fixing this...";
 		}
 		
-		
-		public class LootPath
-		{
-			public static final String ARMOR = "armor";
-			public static final String WEAPON = "weapon";
-			public static final String ITEM = "item";
-			public static final String EFFECT = "effect";
-			public static final String POTION = "potion";
-			public static final String ENCHANTMENTS = "enchantment";
-			public static final String ASCENTED = "ascented";
-		}
-		
+		/** Data that is stored for whenever a custom mob egg is used/spawned */
 		public class MONSTER_EGG_DATA
 		{
 			public static final byte CREEPER= 50;

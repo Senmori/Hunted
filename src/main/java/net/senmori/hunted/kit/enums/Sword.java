@@ -1,11 +1,11 @@
-package net.senmori.hunted.weapon.sword;
+package net.senmori.hunted.kit.enums;
 
-public class SwordEnum
+public class Sword
 {
 	/*
 	 * Sword names without adverbs
 	 */
-   public enum Swords {
+   public enum SwordName {
        RAGE("Rage"),
        NIGHTFALL("Night's Fall"),
        STORM("Storm"),
@@ -56,7 +56,7 @@ public class SwordEnum
 
        private String name;
 
-        Swords(String name) {
+        SwordName(String name) {
             this.name = name;
         }
         

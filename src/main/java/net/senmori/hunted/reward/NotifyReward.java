@@ -2,8 +2,11 @@ package net.senmori.hunted.reward;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import net.md_5.bungee.api.ChatColor;
+import net.senmori.hunted.Hunted;
+import net.senmori.hunted.managers.ConfigManager;
 import net.senmori.hunted.managers.game.StoneManager;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.util.Reference.RewardMessage;
@@ -17,7 +20,7 @@ public class NotifyReward extends Reward
 	public NotifyReward(String name) 
 	{
 		this.name = name;
-	};
+	}
 	
 	@Override
 	public void generateLoot(Player player) 
@@ -36,12 +39,12 @@ public class NotifyReward extends Reward
 	
 	private void notifyAll(Player player)
 	{
-		List<Player> players = Bukkit.getWorld(player.getWorld().getName()).getPlayers();
 		
-		for(Player p : players)
+		for(String uuid : Hunted.getPlayerManager().getPlayers().keySet())
 		{
+			if(uuid.equalsIgnoreCase(player.getUniqueId().toString())) continue; // ignore player who actived this stone
 			String name = null;
-			for(GuardianStone g : StoneManager.guardianStoneList)
+			for(GuardianStone g : StoneManager.getGuardianStones())
 			{
 				// reach distance for SMP is 5, use that as default
 				if(g.getLocation().distanceSquared(player.getLocation()) <= 5)
@@ -55,24 +58,22 @@ public class NotifyReward extends Reward
 					name = g.getName();
 				}
 			}
-			p.sendMessage(ChatColor.AQUA + String.format(RewardMessage.NOTIFY_ALL, player.getName(), name));
+			Bukkit.getPlayer(UUID.fromString(uuid)).sendMessage(ChatColor.AQUA + String.format(RewardMessage.NOTIFY_ALL, player.getName(), name));
 		}
 	}
 	
 	private void notifyWithin(Player player)
 	{
-		List<Player> players = new ArrayList<Player>();
+		List<String> players = new ArrayList<>();
 		
 		for(Player p : Bukkit.getServer().getWorld(player.getWorld().getName()).getPlayers())
 		{
-			if(p.getLocation().distanceSquared(player.getLocation()) <= net.senmori.hunted.Hunted.nearbyRadius)
+			if(p.getLocation().distanceSquared(player.getLocation()) <= ConfigManager.nearbyRadius)
 			{
-				players.add(p);
+				players.add(p.getUniqueId().toString());
 			}
 		}
-		player.sendMessage(ChatColor.AQUA + String.format(RewardMessage.NOTIFY_WITHIN, players.size(), net.senmori
-																											   .hunted
-																											   .Hunted.nearbyRadius));
+		player.sendMessage(ChatColor.AQUA + String.format(RewardMessage.NOTIFY_WITHIN, players.size(), ConfigManager.nearbyRadius));
 		players.clear(); // clear list just in case it gets stuck in memory
 	}
 	

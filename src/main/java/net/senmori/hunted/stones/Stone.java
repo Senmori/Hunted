@@ -8,7 +8,13 @@ import org.bukkit.entity.Player;
 
 public abstract class Stone 
 {
-	public enum Type
+	/**
+	 * The type of stones Hunted supports <br>
+	 * {@link #GUARDIAN} - used for rewards, etc <br>
+	 * {@link #TELEPORT} - used to teleport players to random locations <br>
+	 *
+	 */
+	public enum StoneType
 	{
 		GUARDIAN, 	// normal guardian stones(rewards, etc)
 		TELEPORT;	// Teleports players to a specified point
@@ -19,11 +25,11 @@ public abstract class Stone
 	Stone(SerializedLocation loc)
 	{
 		this.sLoc = loc;
-		StoneManager.add(this);
+		StoneManager.register(this);
 	}
 	public abstract void activate(Player player);
 	
-	public Type getType()
+	public StoneType getType()
 	{
 		return null;
 	}

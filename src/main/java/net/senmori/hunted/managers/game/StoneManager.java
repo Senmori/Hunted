@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.senmori.hunted.Hunted;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.stones.Stone;
+import net.senmori.hunted.stones.Stone.StoneType;
 import net.senmori.hunted.stones.TeleportStone;
-import net.senmori.hunted.stones.Stone.Type;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,9 +31,7 @@ public class StoneManager
 		faces = Arrays.asList(BlockFace.UP, BlockFace.DOWN, BlockFace.NORTH, BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH);
 	}
 	
-	/*
-	 * Returns whether or not a material can activate a stone
-	 */
+	/** Returns whether or not the provided {@link Material} is a valid activator for a {@link Stone} */
 	public static boolean isValidActivator(Material material)
 	{
 		switch(material)
@@ -46,7 +45,8 @@ public class StoneManager
 		}
 	}
 	
-	public static void add(Stone stone)
+	/** Adds a new {@link Stone} */
+	public static void register(Stone stone)
 	{
 		if(stone == null || stone.getType() == null) return;
 		masterStoneList.add(stone);
@@ -63,6 +63,7 @@ public class StoneManager
 		}
 	}
 	
+	/** Gets a {@link Stone} no matter the type by location*/
 	public static Stone getStone(Location loc)
 	{
 		for(Stone s : masterStoneList)
@@ -75,6 +76,7 @@ public class StoneManager
 		return null;
 	}
 	
+	/** Gets a {@link Stone} by name, no matter the location or type */
 	public static Stone getStone(String name)
 	{
 		for(Stone s : masterStoneList)
@@ -87,16 +89,19 @@ public class StoneManager
 		return null;
 	}
 	
+	/** Returns all registered {@link Stone} */
 	public static List<Stone> getStones()
 	{
 		return masterStoneList;
 	}
 	
+	/** Returns all registered {@link GuardianStone} */
 	public static List<GuardianStone> getGuardianStones()
 	{
 		return guardianStoneList;
 	}
 	
+	/** Returns all registered {@link TeleportStone} */
 	public static List<TeleportStone> getTeleportStones()
 	{
 		return teleportStoneList;
@@ -104,19 +109,16 @@ public class StoneManager
 	
 	public static void saveLocations()
 	{
-		for(String name : net.senmori.hunted.Hunted.stoneConfig.getConfigurationSection("stones").getKeys(false))
+		for(Stone stone : getStones())
 		{
-			for(Stone stone : getStones())
+			Hunted.getInstance().getConfig().set("stones." + stone.getName() + ".x", stone.getLocation().getBlockX());
+			Hunted.getInstance().getConfig().set("stones." + stone.getName() + ".y", stone.getLocation().getBlockY());
+			Hunted.getInstance().getConfig().set("stones." + stone.getName() + ".z", stone.getLocation().getBlockZ());
+			Hunted.getInstance().getConfig().set("stones." + stone.getName() + ".type", stone.getType().toString());
+			
+			if(stone.getType().equals(StoneType.GUARDIAN))
 			{
-				net.senmori.hunted.Hunted.stoneConfig.set("stones." + name + ".x", stone.getLocation().getBlockX());
-				net.senmori.hunted.Hunted.stoneConfig.set("stones." + name + ".y", stone.getLocation().getBlockY());
-				net.senmori.hunted.Hunted.stoneConfig.set("stones." + name + ".z", stone.getLocation().getBlockZ());
-				net.senmori.hunted.Hunted.stoneConfig.set("stones." + name + ".type", stone.getType().toString());
-				
-				if(stone.getType().equals(Type.GUARDIAN))
-				{
-					net.senmori.hunted.Hunted.stoneConfig.set("stones." + name + ".cooldown", ((GuardianStone)stone).getCooldown());
-				}
+				Hunted.getInstance().getConfig().set("stones." + stone.getName() + ".cooldown", ((GuardianStone)stone).getCooldown());
 			}
 		}
 	}

@@ -7,24 +7,23 @@ import org.bukkit.entity.Player;
 
 public class TeleportStone extends Stone
 {
-	private String name;
 	
 	public TeleportStone(SerializedLocation loc)
 	{
 		super(loc);
 	}
 	
-	
+	/** Main method, call this to active this {@link TeleportStone} */
 	@Override
 	public void activate(Player player) 
 	{
-		player.teleport(SpawnManager.getRandomSpawnLocation().getLocation());
+		player.teleport(SpawnManager.getRandomHuntedLocation().getLocation());
 	}
 	
 	@Override
-	public Type getType()
+	public StoneType getType()
 	{
-		return Type.TELEPORT;
+		return StoneType.TELEPORT;
 	}
 	
 }

@@ -17,10 +17,10 @@ public class TeleportReward extends Reward
 	@Override
 	public void generateLoot(Player player) 
 	{
-		Location toLoc = SpawnManager.getRandomSpawnLocation().getLocation();
+		Location toLoc = SpawnManager.getRandomHuntedLocation().getLocation();
 		do 
 		{
-			toLoc = SpawnManager.getRandomSpawnLocation().getLocation();
+			toLoc = SpawnManager.getRandomHuntedLocation().getLocation();
 			LogHandler.debug("Teleport location is less than 50 blocks away. Choosing new location!");
 		}
 		while(toLoc.distanceSquared(player.getLocation()) <= 50);

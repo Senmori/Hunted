@@ -1,12 +1,12 @@
-package net.senmori.hunted.weapon.bow;
+package net.senmori.hunted.kit.enums;
 
-public class BowEnum
+public class Bow
 {
 
 	/*
 	 * Sword names without adverbs
 	 */
-   public enum Bow {
+   public enum BowName {
        WHISPERWIND("Whisperwind"),
        HATRED_STING("Hatred's Sting"),
        WITHDRAW("WithDraw"),
@@ -43,7 +43,7 @@ public class BowEnum
 
        private String name;
        
-        Bow(String name) {
+        BowName(String name) {
             this.name = name;
         }
         

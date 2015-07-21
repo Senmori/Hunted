@@ -10,4 +10,9 @@ public abstract class Ability
 	
 	
 	public abstract void perform();
+	
+	public String getName()
+	{
+		return name;
+	}
 }

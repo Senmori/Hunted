@@ -1,5 +1,7 @@
 package net.senmori.hunted.reward;
 
+import net.senmori.hunted.managers.ConfigManager;
+
 import org.bukkit.entity.Player;
 
 public class EffectReward extends Reward 
@@ -8,7 +10,7 @@ public class EffectReward extends Reward
 	public EffectReward(String name) 
 	{
 		this.name = name;
-	};
+	}
 	
 	@Override
 	public void generateLoot(Player player) 
@@ -24,6 +26,6 @@ public class EffectReward extends Reward
 	
 	private int getRandomPotionLength(int min)
 	{
-		return (int) (Math.random() * (net.senmori.hunted.Hunted.maxEffectLength - min) + min);
+		return (int) (Math.random() * (ConfigManager.maxEffectLength - min) + min);
 	}
 }

@@ -1,32 +1,37 @@
-# Default cooldown for guardian stones(in minutes)[if the stone has a cooldown]
-cooldown: 5
-# Maximum amount of time to be affected by a potion effect(in seconds)
-max-effect-length: 12
-# Maximum enchant level possible
-max-enchant-level: 2
-# The chance an item will get an enchantment (n/100)
-enchant-chance: 10
-# Can players receive potions when they spawn into Hunted
-can-receive-potions: true
-# Max potions a player can receive as a reward
-max-potions: 3
-# The chance a potion will be tier 2 (n/100)
-potion-tier2-chance: 10
-# Maximum potion amplifier level
-max-amplifier-level: 2
-# The chance that when a player gets a smite reward, they also get teleported to a random location (n/100)
-smite-teleport-chance: 10
-# Radius in which to search for nearby players
-radius: 50
-# Chance the player will receive an ascented item(n/100)
-ascented-item-chance: 16
-# Chance a player can receive two effects from a guardian stone
-# i.e. 20 = 20/100
-receive-effect-twice: 20
-# Max arrows a player can receive as a reward
-# Max 64
-max-arrows: 32
-# World to use for 'Hunted'
-world: Hunted
-# Debug - don't touch this
-debug: true
+
+settings:
+  # Default cooldown for guardian stones(in minutes)
+  cooldown: 5
+  # Maximum amount of time to be affected by a potion effect(in seconds)
+  # This does not affect rewards bought in the Hunted store
+  # This also does not affect actual potion items
+  max-effect-length: 60
+  # Minimum effect length of potions(in seconds)
+  # This does not effect rewards bought in the Hunted store
+  # This also does not affect actual potion items
+  min-effect-length: 10
+  # Maximum enchant level possible
+  max-enchant-level: 5
+  # Can players receive potions when they spawn into Hunted
+  can-receive-potions: true
+  # Max potions a player can receive as a reward
+  max-potions: 3
+  # The chance a potion will be tier 2 (n/100)
+  potion-tier2-chance: 10
+  # Maximum potion amplifier level
+  max-amplifier-level: 2
+  # The chance that when a player gets a smite reward, they also get teleported to a random location (n/100)
+  smite-teleport-chance: 10
+  # Radius in which to search for nearby players
+  radius: 50
+  # Chance the player will receive an ascented item(n/100)
+  ascented-item-chance: 10
+  # Chance a player can receive two effects from a guardian stone
+  receive-effect-twice: 10
+  # Max arrows a player can receive as a reward
+  # Max 64
+  max-arrows: 32
+  # World to use for 'Hunted'
+  world: Hunted
+  # Debug - don't touch this
+  debug: false

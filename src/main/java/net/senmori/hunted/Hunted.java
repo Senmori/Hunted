@@ -1,28 +1,37 @@
 package net.senmori.hunted;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Logger;
+
 import net.senmori.hunted.commands.add.AddCommand;
 import net.senmori.hunted.commands.debug.DebugCommand;
 import net.senmori.hunted.commands.delete.DeleteCommand;
 import net.senmori.hunted.commands.edit.EditCommand;
-import net.senmori.hunted.commands.exempt.ExemptCommand;
 import net.senmori.hunted.commands.list.ListCommand;
 import net.senmori.hunted.commands.stuck.StuckCommand;
 import net.senmori.hunted.listeners.BlockListener;
 import net.senmori.hunted.listeners.PlayerListener;
 import net.senmori.hunted.managers.CommandManager;
-import net.senmori.hunted.managers.config.ConfigManager;
-import net.senmori.hunted.managers.config.LootConfigManager;
-import net.senmori.hunted.managers.config.StoneConfigManager;
-import net.senmori.hunted.managers.game.*;
-import net.senmori.hunted.reward.*;
+import net.senmori.hunted.managers.ConfigManager;
+import net.senmori.hunted.managers.game.KitManager;
+import net.senmori.hunted.managers.game.PlayerManager;
+import net.senmori.hunted.managers.game.RewardManager;
+import net.senmori.hunted.managers.game.SpawnManager;
+import net.senmori.hunted.managers.game.StoneManager;
+import net.senmori.hunted.managers.game.WeaponManager;
+import net.senmori.hunted.reward.EffectReward;
+import net.senmori.hunted.reward.IrritatingReward;
+import net.senmori.hunted.reward.ItemReward;
+import net.senmori.hunted.reward.NotifyReward;
+import net.senmori.hunted.reward.PotionReward;
+import net.senmori.hunted.reward.SmiteReward;
+import net.senmori.hunted.reward.TeleportReward;
 import net.senmori.hunted.util.LogHandler;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Logger;
 
 public class Hunted extends JavaPlugin
 {
@@ -32,13 +41,9 @@ public class Hunted extends JavaPlugin
 
 	// File variables
 	public static File pluginConfigFile;
-	public static File lootConfigFile;
-	public static File stoneConfigFile;
 
-	// config variables
-	public static FileConfiguration pluginConfig; // plugin config
-	public static FileConfiguration stoneConfig; // guardian stone config
-	public static FileConfiguration lootConfig;  // loot table config
+	// config
+	public static FileConfiguration config; // plugin config
 
 	// plugin vars
 	private PluginDescriptionFile pdf;
@@ -49,22 +54,7 @@ public class Hunted extends JavaPlugin
 	private static RewardManager rewardManager;
 	private static PlayerManager playerManager;
 	private static KitManager kitManager;
-
-	// config options
-	public static boolean debug;
-	public static int defaultCooldown; // in minutes, convert to milliseconds(n*60000)
-	public static int maxEffectLength;
-	public static int maxEnchantLevel;
-	public static int enchantChance;
-	public static int maxAmplifierLevel;
-	public static int nearbyRadius;
-	public static int potionTierChance;
-	public static int smiteTeleportChance;
-	public static int ascentedItemChance;
-	public static int receiveEffectTwice;
-	public static int maxArrowsPerReward;
-	public static int maxPotsPerReward;
-	public static String activeWorld;
+	private static WeaponManager weaponManager;
 
 	public void onEnable()
 	{
@@ -77,16 +67,11 @@ public class Hunted extends JavaPlugin
 
 		// Configs
 		ConfigManager.init();
-		LootConfigManager.init();
-		StoneConfigManager.init();
 		
-		// player manager
+		// managers
 		playerManager = new PlayerManager();
-		LogHandler.info("Player Manager enabled!");
-		
-		// kit manager
 		kitManager = new KitManager();
-		LogHandler.info("Kit Manager enabled");
+		weaponManager = new WeaponManager();
 		
 		
 		//Listeners
@@ -102,7 +87,6 @@ public class Hunted extends JavaPlugin
 		commandManager.registerCommand(new DebugCommand());
 		commandManager.registerCommand(new DeleteCommand());
 		commandManager.registerCommand(new EditCommand());
-		commandManager.registerCommand(new ExemptCommand());
 		commandManager.registerCommand(new ListCommand());
 		commandManager.registerCommand(new StuckCommand());
 		LogHandler.info("Commands loaded!");
@@ -128,9 +112,7 @@ public class Hunted extends JavaPlugin
 		// save config files
 		try
         {
-	        Hunted.pluginConfig.save(Hunted.pluginConfigFile);
-	        Hunted.stoneConfig.save(Hunted.stoneConfigFile);
-	        Hunted.lootConfig.save(Hunted.lootConfigFile);
+	        Hunted.config.save(Hunted.pluginConfigFile);
         } catch (IOException e)
         {
 	        e.printStackTrace();
@@ -155,5 +137,10 @@ public class Hunted extends JavaPlugin
 	public static KitManager getKitManager()
 	{
 		return kitManager;
+	}
+	
+	public static WeaponManager getWeaponManager()
+	{
+		return weaponManager;
 	}
 }

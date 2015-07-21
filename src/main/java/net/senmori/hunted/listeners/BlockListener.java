@@ -1,5 +1,7 @@
 package net.senmori.hunted.listeners;
 
+import net.senmori.hunted.managers.ConfigManager;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -15,7 +17,7 @@ public class BlockListener implements Listener
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent e)
 	{
-		if(!e.getBlock().getWorld().getName().equalsIgnoreCase(net.senmori.hunted.Hunted.activeWorld)) return;
+		if(!e.getBlock().getWorld().getName().equalsIgnoreCase(ConfigManager.activeWorld)) return;
 		e.setCancelled(net.senmori.hunted.Hunted.getPlayerManager().canBreakBlocks(e.getPlayer()));
 	}
 	
@@ -23,7 +25,7 @@ public class BlockListener implements Listener
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent e)
 	{
-		if(!e.getBlock().getWorld().getName().equalsIgnoreCase(net.senmori.hunted.Hunted.activeWorld)) return;
+		if(!e.getBlock().getWorld().getName().equalsIgnoreCase(ConfigManager.activeWorld)) return;
 		e.setCancelled(net.senmori.hunted.Hunted.getPlayerManager().canPlaceBlocks(e.getPlayer()));
 		e.setBuild(net.senmori.hunted.Hunted.getPlayerManager().canPlaceBlocks(e.getPlayer()));
 	}
@@ -32,7 +34,7 @@ public class BlockListener implements Listener
 	@EventHandler
 	public void onBlockRedstoneEvent(BlockRedstoneEvent e)
 	{
-		if(!e.getBlock().getWorld().getName().equalsIgnoreCase(net.senmori.hunted.Hunted.activeWorld)) return;
+		if(!e.getBlock().getWorld().getName().equalsIgnoreCase(ConfigManager.activeWorld)) return;
 		e.setNewCurrent(e.getOldCurrent());
 	}
 	
@@ -40,14 +42,14 @@ public class BlockListener implements Listener
 	@EventHandler
 	public void onPistonExtend(BlockPistonExtendEvent e)
 	{
-		if(!e.getBlock().getWorld().getName().equalsIgnoreCase(net.senmori.hunted.Hunted.activeWorld)) return;
+		if(!e.getBlock().getWorld().getName().equalsIgnoreCase(ConfigManager.activeWorld)) return;
 		e.setCancelled(true);
 	}
 	
 	@EventHandler
 	public void onPistonRetract(BlockPistonRetractEvent e)
 	{
-		if(!e.getBlock().getWorld().getName().equalsIgnoreCase(net.senmori.hunted.Hunted.activeWorld)) return;
+		if(!e.getBlock().getWorld().getName().equalsIgnoreCase(ConfigManager.activeWorld)) return;
 		e.setCancelled(true);
 	}
 	
@@ -55,7 +57,7 @@ public class BlockListener implements Listener
 	@EventHandler
 	public void onBlockIgnite(BlockIgniteEvent e)
 	{
-		if(!e.getBlock().getWorld().getName().equalsIgnoreCase(net.senmori.hunted.Hunted.activeWorld)) return;
+		if(!e.getBlock().getWorld().getName().equalsIgnoreCase(ConfigManager.activeWorld)) return;
 		e.setCancelled(true);
 	}
 }
