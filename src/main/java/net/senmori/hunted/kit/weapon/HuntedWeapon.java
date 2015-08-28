@@ -1,5 +1,7 @@
 package net.senmori.hunted.kit.weapon;
 
+import net.senmori.hunted.kit.AbstractWeapon;
+
 
 public class HuntedWeapon extends AbstractWeapon
 {

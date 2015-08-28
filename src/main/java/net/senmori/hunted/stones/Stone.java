@@ -1,7 +1,8 @@
 package net.senmori.hunted.stones;
 
+import net.senmori.hunted.Hunted;
+import net.senmori.hunted.lib.SerializedLocation;
 import net.senmori.hunted.managers.game.StoneManager;
-import net.senmori.hunted.util.SerializedLocation;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -25,7 +26,7 @@ public abstract class Stone
 	Stone(SerializedLocation loc)
 	{
 		this.sLoc = loc;
-		StoneManager.register(this);
+		Hunted.getInstance().getStoneManager().register(this);
 	}
 	public abstract void activate(Player player);
 	

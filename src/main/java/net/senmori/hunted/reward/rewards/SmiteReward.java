@@ -1,8 +1,10 @@
-package net.senmori.hunted.reward;
+package net.senmori.hunted.reward.rewards;
 
 import java.util.Random;
 
 import net.md_5.bungee.api.ChatColor;
+import net.senmori.hunted.Hunted;
+import net.senmori.hunted.reward.Reward;
 import net.senmori.hunted.util.Reference.RewardMessage;
 
 import org.bukkit.entity.Player;
@@ -25,7 +27,7 @@ public class SmiteReward extends Reward
 		int chance = net.senmori.hunted.Hunted.getInstance().getConfig().getInt("smite-teleport-chance");
 		if(rand.nextInt(chance+1) % chance == 0)
 		{
-			net.senmori.hunted.Hunted.getRewardManager().getReward("teleport").generateLoot(player);
+			Hunted.getInstance().getRewardManager().getReward("teleport").generateLoot(player);
 		}
 	}
 	

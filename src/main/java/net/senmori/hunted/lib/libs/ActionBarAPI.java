@@ -1,4 +1,4 @@
-package net.senmori.hunted.lib;
+package net.senmori.hunted.lib.libs;
 
 /*
 * Copyright (c) 2014 hamzaxx

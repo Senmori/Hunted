@@ -9,6 +9,7 @@ public abstract class Ability
 	}
 	
 	
+	public abstract boolean shouldPerform();
 	public abstract void perform();
 	
 	public String getName()

@@ -1,7 +1,8 @@
 package net.senmori.hunted.stones;
 
+import net.senmori.hunted.Hunted;
+import net.senmori.hunted.lib.SerializedLocation;
 import net.senmori.hunted.managers.game.SpawnManager;
-import net.senmori.hunted.util.SerializedLocation;
 
 import org.bukkit.entity.Player;
 
@@ -17,7 +18,7 @@ public class TeleportStone extends Stone
 	@Override
 	public void activate(Player player) 
 	{
-		player.teleport(SpawnManager.getRandomHuntedLocation().getLocation());
+		player.teleport(Hunted.getInstance().getSpawnManager().getRandomHuntedLocation().getLocation());
 	}
 	
 	@Override

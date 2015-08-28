@@ -2,7 +2,7 @@ package net.senmori.hunted.util;
 
 import java.util.logging.Level;
 
-import net.senmori.hunted.managers.ConfigManager;
+import net.senmori.hunted.Hunted;
 
 public class LogHandler 
 {
@@ -18,7 +18,7 @@ public class LogHandler
 	
 	public static void debug(String message)
 	{
-		if(ConfigManager.debug)
+		if(Hunted.getInstance().getConfigManager().debug)
 			log(Level.CONFIG,message);
 	}
 	

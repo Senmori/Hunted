@@ -54,7 +54,7 @@ public class Bow
    }
    
    /*
-    * Adverbs that can be appended onto the end of a weapon name for more customization
+    * Titles that can be appended onto the end of a weapon name for more customization
     */
     public enum BowTitle {
         STRING_UNHOLY_MIGHT("String of Unholy Might"),

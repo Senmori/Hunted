@@ -1,4 +1,6 @@
-package net.senmori.hunted.reward;
+package net.senmori.hunted.reward.rewards;
+
+import net.senmori.hunted.reward.Reward;
 
 import org.bukkit.entity.Player;
 

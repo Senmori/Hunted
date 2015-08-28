@@ -1,7 +1,9 @@
-package net.senmori.hunted.kit.weapon;
+package net.senmori.hunted.kit;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import net.senmori.hunted.kit.weapon.WeaponType;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;

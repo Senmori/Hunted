@@ -1,8 +1,9 @@
-package net.senmori.hunted.reward;
+package net.senmori.hunted.reward.rewards;
 
 import java.util.Random;
 
 import net.md_5.bungee.api.ChatColor;
+import net.senmori.hunted.reward.Reward;
 import net.senmori.hunted.util.LogHandler;
 import net.senmori.hunted.util.Reference.RewardMessage;
 
@@ -49,7 +50,6 @@ public class IrritatingReward extends Reward
 			}
 		}
 		player.sendMessage(ChatColor.GOLD + RewardMessage.IRRITATING_MESSAGE);
-		LogHandler.info(player.getDisplayName() + " receieved an irritating reward.");
 	}
 	
 	@Override

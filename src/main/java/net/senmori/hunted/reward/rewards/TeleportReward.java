@@ -1,6 +1,8 @@
-package net.senmori.hunted.reward;
+package net.senmori.hunted.reward.rewards;
 
+import net.senmori.hunted.Hunted;
 import net.senmori.hunted.managers.game.SpawnManager;
+import net.senmori.hunted.reward.Reward;
 import net.senmori.hunted.util.LogHandler;
 
 import org.bukkit.Location;
@@ -17,10 +19,10 @@ public class TeleportReward extends Reward
 	@Override
 	public void generateLoot(Player player) 
 	{
-		Location toLoc = SpawnManager.getRandomHuntedLocation().getLocation();
+		Location toLoc = Hunted.getInstance().getSpawnManager().getRandomHuntedLocation().getLocation();
 		do 
 		{
-			toLoc = SpawnManager.getRandomHuntedLocation().getLocation();
+			toLoc = Hunted.getInstance().getSpawnManager().getRandomHuntedLocation().getLocation();
 			LogHandler.debug("Teleport location is less than 50 blocks away. Choosing new location!");
 		}
 		while(toLoc.distanceSquared(player.getLocation()) <= 50);

@@ -13,7 +13,6 @@ public class ListCommand extends Subcommand {
 		this.needsPlayer = true;
 		this.permission = Permissions.COMMAND_LIST;
 		this.description = "Used to list various things about this plugin.";
-		this.optionalArgs = Arrays.asList("-s [name/ID]", "-c [config]", "-k [loot]");
 	}
 
 	@Override

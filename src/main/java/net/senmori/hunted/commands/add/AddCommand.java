@@ -18,7 +18,7 @@ public class AddCommand extends Subcommand {
 		
 		this.name = "add";
 		this.needsPlayer = true;
-		this.description = "Command to add guardian stones and/or items";
+		this.description = "Command to add guardian stones and/or respawn/spawn locations";
 		this.permission = Permissions.COMMAND_ADD;
 		this.optionalArgs = Arrays.asList("stone|lobby|spawn");
 		

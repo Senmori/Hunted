@@ -13,13 +13,13 @@ public class EditCommand extends Subcommand {
 		this.needsPlayer = true;
 		this.permission = Permissions.COMMAND_EDIT;
 		this.description = "Command used to edit a guardian stone and/or config options.";
-		this.optionalArgs = Arrays.asList("-c/config","-s/stone");
+		this.optionalArgs = Arrays.asList("config","stone");
 	}
 
 	@Override
 	protected void perform() 
 	{
-		getPlayer().sendMessage("test" + name);
+		getPlayer().sendMessage("test " + name);
 	}
 
 }

@@ -4,12 +4,12 @@ import java.util.Set;
 
 import net.md_5.bungee.api.ChatColor;
 import net.senmori.hunted.commands.Subcommand;
+import net.senmori.hunted.lib.SerializedLocation;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.stones.Stone.StoneType;
 import net.senmori.hunted.stones.TeleportStone;
 import net.senmori.hunted.util.Reference.ErrorMessage;
 import net.senmori.hunted.util.Reference.Permissions;
-import net.senmori.hunted.util.SerializedLocation;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,7 +29,11 @@ public class AddStone extends Subcommand
     {
 		Block targetBlock = getPlayer().getTargetBlock((Set<Material>)null, 5);
 		String stoneName = args.length == 2 ? args[1] : "";
-		
+		int count = 0;
+		for(String i : args)
+		{
+			getPlayer().sendMessage("Arg " + count++ +  ": " + i);
+		}
 		// player isn't looking at a valid block
 		if(targetBlock == null)
 		{

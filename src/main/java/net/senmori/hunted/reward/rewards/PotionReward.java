@@ -1,6 +1,8 @@
-package net.senmori.hunted.reward;
+package net.senmori.hunted.reward.rewards;
 
 import java.util.List;
+
+import net.senmori.hunted.reward.Reward;
 
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionType;

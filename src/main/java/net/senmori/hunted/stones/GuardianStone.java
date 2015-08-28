@@ -4,41 +4,35 @@ import java.util.concurrent.TimeUnit;
 
 import net.md_5.bungee.api.ChatColor;
 import net.senmori.hunted.Hunted;
-import net.senmori.hunted.managers.ConfigManager;
-import net.senmori.hunted.managers.game.StoneManager;
+import net.senmori.hunted.lib.SerializedLocation;
 import net.senmori.hunted.util.Reference.RewardMessage;
-import net.senmori.hunted.util.SerializedLocation;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
-public class GuardianStone extends Stone
-{	
+public class GuardianStone extends Stone {	
 	private long lastActivated; // System time[in ms] in which stone was last used
-	private long cooldown; // Default cooldown limit[in minutes]
+	private long cooldown; // Default cooldown [in minutes]
 	
-	public GuardianStone(SerializedLocation loc)
-	{
+	public GuardianStone(SerializedLocation loc) {
 		super(loc);
-		this.cooldown = TimeUnit.MINUTES.toMillis(ConfigManager.defaultCooldown);
+		this.cooldown = TimeUnit.MINUTES.toMillis(Hunted.getInstance().getConfigManager().defaultCooldown);
 		// set stone to active
 		this.lastActivated = System.nanoTime() - TimeUnit.MINUTES.toMillis(cooldown);
 	}
 	
 	/** Main method, call this to active this {@link GuardianStone} */
 	@Override
-	public void activate(Player player)
-	{
+	public void activate(Player player) {
 		// stone isn't active, send message
-		if(!isActive())
-		{
+		if(!isActive()) {
 			int timeUntilActiveMin = (int) TimeUnit.MILLISECONDS.toMinutes(getElapsedTime() - cooldown);
 			player.sendMessage(ChatColor.YELLOW + String.format(RewardMessage.COLD_STONE, timeUntilActiveMin));
 			return;
 		}
-		Hunted.getRewardManager().generateReward(player);
+		Hunted.getInstance().getRewardManager().generateReward(player);
 		this.lastActivated = System.nanoTime();
 	}
 	
@@ -48,12 +42,12 @@ public class GuardianStone extends Stone
 	 * - !isActive() = lamps OFF <br>
 	 * @param block - The indicator block {@link Material#REDSTONE_LAMP_OFF} or {@link Material#REDSTONE_LAMP_ON} <br>
 	 */
-	public void toggleIndicators(Block block)
-	{
+	public void toggleIndicators(Block block) {
 		if(!block.getType().equals(Material.REDSTONE_LAMP_OFF) || !block.getType().equals(Material.REDSTONE_LAMP_ON)) return;
-		for(BlockFace face : StoneManager.faces)
-		{
-			block.setType(this.isActive() ? Material.REDSTONE_LAMP_ON : Material.REDSTONE_LAMP_OFF);
+		for(BlockFace face : Hunted.getInstance().getStoneManager().getValidFaces()) {
+		    if(block.getRelative(face).getType().equals(Material.REDSTONE_LAMP_OFF) || block.getRelative(face).getType().equals(Material.REDSTONE_LAMP_ON)) {
+		        block.setType(this.isActive() ? Material.REDSTONE_LAMP_ON : Material.REDSTONE_LAMP_OFF);
+		    }
 		}
 	}
 	
@@ -61,8 +55,7 @@ public class GuardianStone extends Stone
 	 * Set cooldown for guardian stone
 	 * @param {@link #cooldown} - time in minutes
 	 */
-	public void setCooldown(int cooldown)
-	{
+	public void setCooldown(int cooldown) {
 		this.cooldown = TimeUnit.MINUTES.toMillis(cooldown);
 	}
 	
@@ -70,27 +63,24 @@ public class GuardianStone extends Stone
 	 * Returns if the guardian stone is active or not
 	 * @return 
 	 */
-	public boolean isActive()
-	{
+	public boolean isActive() {
 		return getElapsedTime() >= TimeUnit.MILLISECONDS.toMinutes(cooldown);
 	}
 	
 	/**
 	 * Returns how long ago this stone was activated(in minutes)
 	 */
-	public int getElapsedTime()
-	{
+	public int getElapsedTime() {
 		return (int) TimeUnit.MILLISECONDS.toMinutes(System.nanoTime() - lastActivated);
 	}
 	
+    public int getCooldown() {
+        return (int) TimeUnit.MILLISECONDS.toMinutes(cooldown);
+    }
+	
 	@Override
-	public StoneType getType()
-	{
+	public StoneType getType() {
 		return StoneType.GUARDIAN;
 	}
-	
-	public int getCooldown()
-	{
-		return (int) TimeUnit.MILLISECONDS.toMinutes(cooldown);
-	}
+
 }

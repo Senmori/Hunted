@@ -1,59 +1,75 @@
 package net.senmori.hunted.managers.game;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import net.senmori.hunted.Hunted;
-import net.senmori.hunted.util.SerializedLocation;
+import net.senmori.hunted.lib.SerializedLocation;
 
 import org.bukkit.Location;
 
 public class SpawnManager 
 {	
 	/** Where players spawn when they die or enter the Hunted world */
-	private static Set<SerializedLocation> lobbyLocations;
+	private Set<SerializedLocation> lobbyLocations;
 	/** Where players spawn when they enter the Hunted arena */
-	private static Set<SerializedLocation> huntedLocations;
+	private Set<SerializedLocation> huntedLocations;
+	/** Where players will spawn when they enter the Hunted store */
+	private Set<SerializedLocation> storeLocations;
+	
+	private Hunted plugin;
 	
 	// Default: respawnLocation = default world spawn, make sure to set this if you want it somewhere else
-	static
-	{
+	public SpawnManager(Hunted plugin) {
+	    this.plugin = plugin;
 		huntedLocations = new HashSet<>();
 		lobbyLocations = new HashSet<>();
+		storeLocations = new HashSet<>();
 	}
 	
 	/**
 	 * Add a  location to {@link #huntedLocations} <br>
 	 * @param loc - {@link SerializedLocation}
 	 */
-	public static void addHuntedLocation(SerializedLocation loc)
+	public void addHuntedLocation(SerializedLocation loc)
 	{
 		huntedLocations.add(loc);
 	}
 	
 	/** Add a  location to {@link #huntedLocations} */
-	public static void addHuntedLocation(Location loc, String locName)
+	public void addHuntedLocation(Location loc, String locName)
 	{
 		huntedLocations.add(new SerializedLocation(loc, locName));
 	}
 	
 	/** Add a location to {@link #lobbyLocations} */
-	public static void addLobbyLocation(SerializedLocation loc)
+	public void addLobbyLocation(SerializedLocation loc)
 	{
 		lobbyLocations.add(loc);
 	}
 	
 	/** Add a location to {@link #lobbyLocations} */
-	public static void addLobbyLocation(Location loc, String locName)
+	public void addLobbyLocation(Location loc, String locName)
 	{
 		lobbyLocations.add(new SerializedLocation(loc, locName));
 	}
 	
+	/** Add a location to {@link #storeLocations} */
+	public void addStoreLocation(SerializedLocation loc) {
+	    storeLocations.add(loc);
+	}
+	
+	/** Add a location to {@link #storeLocations} */
+	public void addStoreLocation(Location loc, String name) {
+	    storeLocations.add(new SerializedLocation(loc, name));
+	}
+	
 	/** Remove a location from {@link #lobbyLocations} */
-	public static boolean removeLobbyLocation(SerializedLocation loc)
+	public boolean removeLobbyLocation(SerializedLocation loc)
 	{
 		// HashMap is empty, can't remove what's not there
 		if(lobbyLocations.isEmpty()) return true;
@@ -69,7 +85,7 @@ public class SpawnManager
 	}
 	
 	/** Remove a location from {@link #huntedLocations} */
-	public static boolean removeHuntedLocation(SerializedLocation loc)
+	public boolean removeHuntedLocation(SerializedLocation loc)
 	{
 		if(huntedLocations.isEmpty()) return true;
 		for(SerializedLocation sl : huntedLocations)
@@ -81,6 +97,16 @@ public class SpawnManager
 		}
 		
 		return false;
+	}
+	
+	public boolean removeStoreLocation(SerializedLocation loc) {
+	    if(storeLocations.isEmpty()) return true;
+	    for(SerializedLocation sl : storeLocations) {
+	        if(sl.getLocation().equals(loc)) {
+	            return storeLocations.remove(sl);
+	        }
+	    }
+	    return false;
 	}
 	
 	/** Get a location by name, from either {@link #lobbyLocations} or {@link #huntedLocations} */
@@ -100,8 +126,9 @@ public class SpawnManager
 	 * Return a random serialized location from {@link #huntedLocations}
 	 * @return
 	 */
-	public static SerializedLocation getRandomHuntedLocation()
+	public SerializedLocation getRandomHuntedLocation()
 	{
+		if(huntedLocations.isEmpty() || huntedLocations == null) return null;
 		List<SerializedLocation> list = new ArrayList<>();
 		list.addAll(huntedLocations);
 		Collections.shuffle(list);
@@ -112,50 +139,48 @@ public class SpawnManager
 	 * Return a random serialized location from {@link #lobbyLocations}
 	 * @return
 	 */
-	public static SerializedLocation getRandomLobbyLocation()
+	public SerializedLocation getRandomLobbyLocation()
 	{
+		if(lobbyLocations.isEmpty() || lobbyLocations == null) return null;
 		List<SerializedLocation> list = new ArrayList<>();
 		list.addAll(lobbyLocations);
 		Collections.shuffle(list);
 		return list.get(0);
 	}
+	
+	/**
+	 * Return a random serialized location from {@link #storeLocations}
+	 * @return
+	 */
+	public SerializedLocation getRandomStoreLocation() {
+	    if(storeLocations.isEmpty() || storeLocations == null) return null;
+	    List<SerializedLocation> list = new ArrayList<>();
+	    list.addAll(storeLocations);
+	    Collections.shuffle(list);
+	    return list.get(0);
+	}
 		
 	/** Return all {@link #lobbyLocations} */
-	public static Set<SerializedLocation> getLobbyLocations()
-	{
+	public Set<SerializedLocation> getLobbyLocations() {
 		return lobbyLocations;
 	}
 	
 	/** Return all {@link #huntedLocations} */
-	public static Set<SerializedLocation> getHuntedLocations()
-	{
+	public Set<SerializedLocation> getHuntedLocations() {
 		return huntedLocations;
 	}
 	
+	public Set<SerializedLocation> getStoreLocations() {
+	    return storeLocations;
+	}
+	
+	
 	/** Return all registered locations */
-	public static Set<SerializedLocation> getLocations()
-	{
+	public Set<SerializedLocation> getLocations() {
 		Set<SerializedLocation> locations = new HashSet<>();
 		locations.addAll(lobbyLocations);
 		locations.addAll(huntedLocations);
+		locations.addAll(storeLocations);
 		return locations;
-	}
-	
-	/** Save all registered locations */
-    public static void saveLocations()
-	{
-		for(SerializedLocation loc : getHuntedLocations())
-		{
-			Hunted.getInstance().getConfig().set("hunted_loc." + loc.getName() + ".x", loc.getLocation().getBlockX());
-			Hunted.getInstance().getConfig().set("hunted_loc." + loc.getName() + ".y", loc.getLocation().getBlockY());
-			Hunted.getInstance().getConfig().set("hunted_loc." + loc.getName() + ".z", loc.getLocation().getBlockZ());
-		}
-		
-		for(SerializedLocation loc : getLobbyLocations())
-		{
-			Hunted.getInstance().getConfig().set("lobby_loc." + loc.getName() + ".x", loc.getLocation().getBlockX());
-			Hunted.getInstance().getConfig().set("lobby_loc." + loc.getName() + ".y", loc.getLocation().getBlockY());
-			Hunted.getInstance().getConfig().set("lobby_loc." + loc.getName() + ".z", loc.getLocation().getBlockZ());
-		}
 	}
 }

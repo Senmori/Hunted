@@ -67,7 +67,7 @@ public class Sword
    }
    
    /*
-    * Adverbs that can be appended onto the end of a weapon name for more customization
+    * Titles that can be appended onto the end of a weapon name for more customization
     */
     public enum SwordTitle {
         DEFILER("Defiler of the Dead"),
