@@ -8,7 +8,9 @@ import net.senmori.hunted.stones.Stone;
 import net.senmori.hunted.stones.Stone.StoneType;
 import net.senmori.hunted.tasks.LogOutTimer;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
@@ -30,6 +32,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.material.Attachable;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValueAdapter;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerListener implements Listener {
 	private Hunted plugin;
