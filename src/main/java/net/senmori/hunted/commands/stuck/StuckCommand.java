@@ -26,8 +26,7 @@ public class StuckCommand extends Subcommand {
 		if(args.length > 0) {
 			if (getPlayer().hasPermission(Permissions.COMMAND_STUCK_OTHER)) {
                 if (Bukkit.getPlayer(args[0]) != null) {
-                    Bukkit.getPlayer(args[0]).teleport(
-                                    Hunted.getInstance().getSpawnManager().getRandomHuntedLocation().getLocation());
+                    Bukkit.getPlayer(args[0]).teleport(Hunted.getInstance().getSpawnManager().getRandomHuntedLocation().getLocation());
                     return;
                 }
             } else {

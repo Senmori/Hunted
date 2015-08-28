@@ -19,8 +19,7 @@ public class AddRespawn extends Subcommand
 	}
 
 	@Override
-	protected void perform()
-	{
+	protected void perform() {
 	    int count = Hunted.getInstance().getSpawnManager().getLobbyLocations().size() +1;
 	    String locName = "RLoc-";
 		if(args.length >= 1) {

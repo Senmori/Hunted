@@ -7,10 +7,6 @@ import java.util.Map;
 
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.MapConfiguration;
-import net.senmori.hunted.lib.SerializedLocation;
-import net.senmori.hunted.managers.game.SpawnManager;
-import net.senmori.hunted.stones.GuardianStone;
-import net.senmori.hunted.stones.TeleportStone;
 import net.senmori.hunted.util.LogHandler;
 
 import org.bukkit.Bukkit;

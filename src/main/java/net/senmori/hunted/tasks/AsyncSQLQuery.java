@@ -15,7 +15,6 @@ import net.senmori.hunted.lib.sql.Database;
 import net.senmori.hunted.util.LogHandler;
 
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 public class AsyncSQLQuery extends BukkitRunnable {
     

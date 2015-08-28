@@ -15,8 +15,7 @@ public class DebugCommand extends Subcommand
 	}
 
 	@Override
-	protected void perform()
-	{
+	protected void perform() {
 		Hunted.getInstance().getPotionManager().getPotion(getPlayer());
 		Hunted.getInstance().getPotionManager().getSplashPotion(getPlayer());
 		getPlayer().sendMessage("Current GameState: " + Hunted.getInstance().getPlayerManager().getState(getPlayer().getUniqueId().toString()).toString());

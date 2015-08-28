@@ -3,10 +3,8 @@ package net.senmori.hunted.util;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.stones.Stone;
 
-public class Reference 
-{	
-		public class Permissions
-		{
+public class Reference {	
+		public class Permissions {
 			// Command permissions
 			public static final String COMMAND_ADD  = "hunted.commands.add";
 			// Add command parameter permissions
@@ -40,8 +38,7 @@ public class Reference
 		}
 	
 		// All error messages stored here
-		public class ErrorMessage
-		{
+		public class ErrorMessage {
 			public static final String IMPORT_ERROR = "Error importing %s. Is it mispelled?";
 
 			public static final String STONE_CREATION_ERROR = "You must be looking at a block in order to create a guardian stone!";
@@ -62,8 +59,7 @@ public class Reference
 		 * %loc : location(or name of stone) where the notify_all reward will display </br>
 		 * %n : amount of players within %radius blocks of %player </br>
 		 */
-		public class RewardMessage
-		{
+		public class RewardMessage {
 			/** Returns if the appropriate {@link Stone} is active or not */
 			public static final String COLD_STONE = "This stone is cold. Come back in %t minute(s).";
 			
@@ -89,8 +85,7 @@ public class Reference
 		}
 		
 		/** Data that is stored for whenever a custom mob egg is used/spawned */
-		public class MonsterEggData
-		{
+		public class MonsterEggData {
 			public static final byte CREEPER= 50;
 			public static final byte SKELETON = 51;
 			public static final byte SPIDER = 52;

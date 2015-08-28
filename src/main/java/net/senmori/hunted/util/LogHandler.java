@@ -8,7 +8,7 @@ public class LogHandler
 {
 	public static void log(Level level, String message)
 	{
-		net.senmori.hunted.Hunted.log.log(level, "[" + net.senmori.hunted.Hunted.name + "] " + message);
+		Hunted.log.log(level, "[" + Hunted.name + "] " + message);
 	}
 	
 	public static void all(String message)

@@ -19,8 +19,7 @@ public class AddSpawn extends Subcommand
 	}
 
 	@Override
-	protected void perform()
-	{
+	protected void perform() {
 		int count = Hunted.getInstance().getSpawnManager().getHuntedLocations().size() + 1;
 		SerializedLocation newSpawnLocation = new SerializedLocation(getPlayer().getLocation(), "HLoc-" + count);
 		Hunted.getInstance().getSpawnManager().addHuntedLocation(newSpawnLocation);

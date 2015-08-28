@@ -1,5 +1,6 @@
 package net.senmori.hunted.listeners;
 
+import net.minecraft.server.v1_8_R3.Material;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.game.GameState;
 import net.senmori.hunted.stones.GuardianStone;
@@ -19,12 +20,16 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.material.Attachable;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValueAdapter;
 
 public class PlayerListener implements Listener {
 	private Hunted plugin;
@@ -84,6 +89,29 @@ public class PlayerListener implements Listener {
 	        
 	    }
 		
+	}
+	
+	@EventHandler
+	public void onPlayerDropItem(PlayerDropItemEvent e) {
+	    
+	    if(plugin.getPlayerManager().getState(e.getPlayer().getUniqueId().toString()).equals(GameState.IN_GAME)) {
+	        if(plugin.getConfigManager().activeWorld.equals(e.getPlayer().getLocation().getWorld().getName())) {
+	            if(e.getItemDrop().getItemStack().getType().equals(Material.TNT)) {
+	                e.getItemDrop().setMetadata("tnt-explosion", new FixedMetadataValue(Hunted.getInstance(), true));
+	            } 
+	        }
+	    }
+	}
+	
+	@EventHandler
+	public void onPlayerPickupItem(PlayerPickupItemEvent e) {
+        if(plugin.getPlayerManager().getState(e.getPlayer().getUniqueId().toString()).equals(GameState.IN_GAME)) {
+            if(plugin.getConfigManager().activeWorld.equals(e.getPlayer().getLocation().getWorld().getName())) {
+                if(e.getItem().hasMetadata("tnt-explosion")) {
+                    e.setCancelled(true);
+                }
+            }
+        }
 	}
 
 	// handle players logging in/out of hunted arena

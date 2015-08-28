@@ -15,13 +15,13 @@ public class PlayerKill {
     private EntityType targetType;
     private Timestamp timestamp;
     
-    public PlayerKill(Entity aggressor, Entity target, KillMethod killMethod, int distance) {
-        this.aggressorUUID = aggressor.getUniqueId().toString();
-        this.targetUUID = target.getUniqueId().toString();
+    public PlayerKill(Entity killer, Entity killed, KillMethod killMethod, int distance) {
+        this.aggressorUUID = killer.getUniqueId().toString();
+        this.targetUUID = killed.getUniqueId().toString();
         this.killMethod = killMethod;
         this.killDistance = distance;
-        this.aggressorType = aggressor.getType();
-        this.targetType = target.getType();
+        this.aggressorType = killer.getType();
+        this.targetType = killed.getType();
         this.timestamp = new Timestamp(System.nanoTime());
     }
     

@@ -38,7 +38,6 @@ public class LogOutTimer extends BukkitRunnable {
               }
            }
        }
-        
     }
 
 }

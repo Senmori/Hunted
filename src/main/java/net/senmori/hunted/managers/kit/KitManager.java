@@ -8,6 +8,8 @@ import org.bukkit.inventory.ItemStack;
 
 public class KitManager {
     private Hunted plugin;
+    
+    
 	public KitManager(Hunted plugin) {
 	    this.plugin = plugin;
 	}
