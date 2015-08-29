@@ -76,7 +76,7 @@
            </executions>
            <configuration>
            		<minimizeJar>true</minimizeJar>
-        <createDependencyReducedPom>false</createDependencyReducedPom>
+       			<createDependencyReducedPom>false</createDependencyReducedPom>
                <artifactSet>
                    <includes>
                    		<include>org.slf4j:*</include>
@@ -88,6 +88,4 @@
        </plugin>
     </plugins>
   </build>
-  
-  
 </project>

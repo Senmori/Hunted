@@ -24,14 +24,17 @@ settings:
   smite-teleport-chance: 10
   # Radius in which to search for nearby players
   radius: 50
-  # Chance the player will receive an ascented item(n/100)
+  # Chance the player will receive an ascented item(n%)
   ascented-item-chance: 10
-  # Chance a player can receive two effects from a guardian stone
+  # Chance a player can receive two effects from a guardian stone(n%)
   receive-effect-twice: 10
   # Max arrows a player can receive as a reward, max 64
   max-arrows: 32
   # World to use for Hunted
   world: world
+  # What map configuration is currently active
+  # If empty, will use the first one found.
+  active-map-configuration: ''
   # Debug - don't touch this unless you like spam
   # Also, you need a certain permission to see debug messages, just in case
   debug: false

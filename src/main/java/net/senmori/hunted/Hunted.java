@@ -151,6 +151,10 @@ public class Hunted extends JavaPlugin {
 
 	public void onDisable() {
 	    getConfigManager().save();
+	    
+	    if(hikari != null) {
+	        hikari.close();
+	    }
 	}
 
 	public static Hunted getInstance() {

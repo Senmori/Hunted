@@ -6,6 +6,7 @@ import net.senmori.hunted.lib.game.GameState;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.stones.Stone;
 import net.senmori.hunted.stones.Stone.StoneType;
+import net.senmori.hunted.tasks.DelayedTntExplosion;
 import net.senmori.hunted.tasks.LogOutTimer;
 
 import org.bukkit.Bukkit;
@@ -96,11 +97,11 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerDropItem(PlayerDropItemEvent e) {
-	    
 	    if(plugin.getPlayerManager().getState(e.getPlayer().getUniqueId().toString()).equals(GameState.IN_GAME)) {
 	        if(plugin.getConfigManager().activeWorld.equals(e.getPlayer().getLocation().getWorld().getName())) {
 	            if(e.getItemDrop().getItemStack().getType().equals(Material.TNT)) {
 	                e.getItemDrop().setMetadata("tnt-explosion", new FixedMetadataValue(Hunted.getInstance(), true));
+	                new DelayedTntExplosion(plugin, e.getItemDrop(), 1.3f, false);
 	            } 
 	        }
 	    }
