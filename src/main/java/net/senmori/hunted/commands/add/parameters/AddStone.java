@@ -15,23 +15,19 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-public class AddStone extends Subcommand
-{
-	public AddStone()
-	{
+public class AddStone extends Subcommand {
+	public AddStone() {
 		this.name = "stone";
 		this.needsPlayer = true;
 		this.permission = Permissions.COMMAND_ADD;
 	}
 	
 	@Override
-    protected void perform()
-    {
+    protected void perform() {
 		Block targetBlock = getPlayer().getTargetBlock((Set<Material>)null, 5);
 		String stoneName = args.length == 2 ? args[1] : "";
 		int count = 0;
-		for(String i : args)
-		{
+		for(String i : args) {
 			getPlayer().sendMessage("Arg " + count++ +  ": " + i);
 		}
 		// player isn't looking at a valid block
@@ -57,10 +53,8 @@ public class AddStone extends Subcommand
 		}
     }
 	
-	private void createNewStone(StoneType type, Location loc, String name)
-	{
-		switch(type)
-		{
+	private void createNewStone(StoneType type, Location loc, String name) {
+		switch(type) {
 			case GUARDIAN:
 				new GuardianStone(new SerializedLocation(loc,args[1]));
 				break;

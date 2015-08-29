@@ -33,10 +33,7 @@ public class KitManager {
 	 * Generate a random set of armor for a player
 	 */
 	public void generateArmor(Player player) {
-		ItemStack helmet;
-		ItemStack chest;
-		ItemStack leggings;
-		ItemStack boots;
+		plugin.getArmorManager().generateArmor(player);
 	}
 	
 	/*
@@ -44,9 +41,7 @@ public class KitManager {
 	 */
 	public void generateWeapons(Player player) {
 		ItemStack weapon = plugin.getWeaponManager().generateWeapon();
-		
-		if(weapon.getType().equals(Material.BOW))
-		{
+		if(weapon.getType().equals(Material.BOW)) {
 			player.getInventory().addItem(new ItemStack(Material.ARROW, (int) (Math.random() * (plugin.getConfigManager().maxArrowsPerReward -1) +1)));
 		}
 		player.getInventory().addItem(new ItemStack(weapon));

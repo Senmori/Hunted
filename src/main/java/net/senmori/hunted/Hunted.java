@@ -22,6 +22,7 @@ import net.senmori.hunted.managers.game.PlayerManager;
 import net.senmori.hunted.managers.game.RewardManager;
 import net.senmori.hunted.managers.game.SpawnManager;
 import net.senmori.hunted.managers.game.StoneManager;
+import net.senmori.hunted.managers.kit.ArmorManager;
 import net.senmori.hunted.managers.kit.KitManager;
 import net.senmori.hunted.managers.kit.PotionManager;
 import net.senmori.hunted.managers.kit.WeaponManager;
@@ -64,6 +65,7 @@ public class Hunted extends JavaPlugin {
 	private KitManager kitManager;
 	private WeaponManager weaponManager;
 	private PotionManager potionManager;
+	private ArmorManager armorManager;
 	// misc. managers
 	private ConfigManager configManager;
 	private CommandManager commandManager;
@@ -114,6 +116,7 @@ public class Hunted extends JavaPlugin {
 		potionManager = new PotionManager(getInstance());
 	    stoneManager = new StoneManager();
 	    spawnManager = new SpawnManager(getInstance());
+	    armorManager = new ArmorManager(getInstance());
 		
 
 		// setup commands
@@ -175,6 +178,10 @@ public class Hunted extends JavaPlugin {
 	
 	public KitManager getKitManager() {
 		return kitManager;
+	}
+	
+	public ArmorManager getArmorManager() {
+	    return armorManager;
 	}
 	
 	public WeaponManager getWeaponManager() {

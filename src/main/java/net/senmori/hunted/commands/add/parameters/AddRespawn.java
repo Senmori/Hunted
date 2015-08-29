@@ -21,12 +21,7 @@ public class AddRespawn extends Subcommand
 	@Override
 	protected void perform() {
 	    int count = Hunted.getInstance().getSpawnManager().getLobbyLocations().size() +1;
-	    String locName = "RLoc-";
-		if(args.length >= 1) {
-		    locName = args[0];
-		} else {
-		    locName += count;
-		}
+	    String locName = args.length >= 1 ? args[0] :  "RLoc-" + count;
 		Hunted.getInstance().getSpawnManager().addLobbyLocation(new SerializedLocation(getPlayer().getLocation(), locName));
 		getPlayer().sendMessage(ChatColor.GREEN + "Successfully added a new lobby location (" + locName + ")");
 	}

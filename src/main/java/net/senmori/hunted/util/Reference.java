@@ -11,6 +11,7 @@ public class Reference {
 			public static final String COMMAND_ADD_RESPAWN = "hunted.commands.add.respawn";
 			public static final String COMMAND_ADD_SPAWN = "hunted.commands.add.spawn";
 			public static final String COMMAND_ADD_STONE = "hunted.commands.add.stone";
+			public static final String COMMAND_ADD_STORE = "hunted.commands.add.store";
 			
 			public static final String COMMAND_DELETE = "hunted.commands.delete";
 			
