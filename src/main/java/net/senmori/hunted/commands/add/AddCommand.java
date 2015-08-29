@@ -53,25 +53,4 @@ public class AddCommand extends Subcommand {
 		}
 		return;
 	}
-	
-	
-	@Override
-	public String getUsageTemplate(boolean displayHelp) {
-		StringBuilder ret = new StringBuilder();
-		
-		ret.append(name + " ");
-		
-		for(String s : requiredArgs) {
-			ret.append(String.format("<%s> ", s));
-		}
-		
-		for(String s : optionalArgs) {
-			ret.append(String.format("[%s] ", s));
-		}
-		
-		if(displayHelp) {
-			ret.append(" - " + description);
-		}
-		return ret.toString();
-	}
 }

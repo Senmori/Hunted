@@ -18,7 +18,7 @@ public class StuckCommand extends Subcommand {
 		this.needsPlayer = true;
 		this.description = "Command used if a player is stuck.";
 		this.permission = Permissions.COMMAND_STUCK;
-		this.optionalArgs = Arrays.asList("[player]");
+		this.optionalArgs = Arrays.asList("player");
 	}
 
 	@Override
@@ -31,6 +31,7 @@ public class StuckCommand extends Subcommand {
                 }
             } else {
                 getPlayer().sendMessage(ChatColor.RED + ErrorMessage.NO_COMMAND_PERMISSION);
+                return;
             }
 		}
 		getPlayer().teleport(Hunted.getInstance().getSpawnManager().getRandomHuntedLocation().getLocation());

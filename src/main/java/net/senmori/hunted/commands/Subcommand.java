@@ -6,8 +6,7 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public abstract class Subcommand 
-{
+public abstract class Subcommand {
 	protected CommandSender sender;
 	protected Player player;
 	protected String args[];
@@ -25,41 +24,34 @@ public abstract class Subcommand
 	
 	protected abstract void perform();
 	
-	public void execute(CommandSender sender, String[] args)
-	{
+	public void execute(CommandSender sender, String[] args) {
 		this.sender = sender;
 		this.args = args;
 		
 		if(sender instanceof Player)
 			this.player = (Player) sender;
 		
-		if(needsPlayer && !isPlayer())
-		{
+		if(needsPlayer && !isPlayer()) {
 			return;
 		}
 		
-		if(args.length < requiredArgs.size())
-		{
+		if(args.length < requiredArgs.size()) {
 			return;
 		}
 		
-		if(!hasPermission())
-		{
+		if(!hasPermission()) {
 			return;
 		}
 		
-		try
-		{
+		try {
 			perform();
 		}
-		catch(Throwable e)
-		{
+		catch(Throwable e) {
 			
 		}
 	}
 	
-	public String getUsageTemplate(boolean displayHelp)
-	{
+	public String getUsageTemplate(boolean displayHelp) {
 		StringBuilder ret = new StringBuilder();
 
 		ret.append(name + " ");
@@ -76,58 +68,47 @@ public abstract class Subcommand
 		return ret.toString();
 	}
 	
-	public CommandSender getSender() 
-	{
+	public CommandSender getSender() {
 		return sender;
 	}
 
-	public Player getPlayer() 
-	{
+	public Player getPlayer() {
 		return player;
 	}
 
-	public String[] getArgs() 
-	{
+	public String[] getArgs() {
 		return args;
 	}
 
-	public String getName() 
-	{
+	public String getName() {
 		return name;
 	}
 
-	public String getDescription() 
-	{
+	public String getDescription() {
 		return description;
 	}
 
-	public String getPermission() 
-	{
+	public String getPermission() {
 		return permission;
 	}
 
-	public List<String> getRequiredArgs() 
-	{
+	public List<String> getRequiredArgs() {
 		return requiredArgs;
 	}
 
-	public List<String> getOptionalArgs() 
-	{
+	public List<String> getOptionalArgs() {
 		return optionalArgs;
 	}
 
-	public List<String> getAliases() 
-	{
+	public List<String> getAliases() {
 		return aliases;
 	}
 	
-	public boolean hasPermission()
-	{
+	public boolean hasPermission() {
 		return sender.hasPermission(permission);
 	}
 	
-	public boolean isPlayer()
-	{
+	public boolean isPlayer() {
 		return player != null;
 	}
 }

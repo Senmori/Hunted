@@ -21,6 +21,13 @@ public class Reference {
 			public static final String COMMAND_EDIT_STONE = "hunted.commands.edit.stone";
 			
 			public static final String COMMAND_LIST = "hunted.commands.list";
+			// list parameter permissions
+			public static final String COMMAND_LIST_GUARDIAN = "hunted.commands.list.guardian";
+			public static final String COMMAND_LIST_TELEPORT = "hunted.commands.list.teleport";
+			public static final String COMMAND_LIST_ARENA = "hunted.commands.list.arena";
+			public static final String COMMAND_LIST_LOBBY = "hunted.commands.list.lobby";
+			public static final String COMMAND_LIST_STORE = "hunted.commands.list.store";
+			
 			public static final String COMMAND_EXEMPT = "hunted.commands.exempt";
 			
 			
