@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.senmori.hunted.commands.Subcommand;
-import net.senmori.hunted.commands.add.parameters.AddRespawn;
-import net.senmori.hunted.commands.add.parameters.AddSpawn;
+import net.senmori.hunted.commands.add.parameters.AddLobbyLocation;
+import net.senmori.hunted.commands.add.parameters.AddArenaLocation;
 import net.senmori.hunted.commands.add.parameters.AddStone;
-import net.senmori.hunted.commands.add.parameters.AddStore;
+import net.senmori.hunted.commands.add.parameters.AddStoreLocation;
 import net.senmori.hunted.util.Reference.Permissions;
 
 public class AddCommand extends Subcommand {
@@ -25,10 +25,10 @@ public class AddCommand extends Subcommand {
 		
 		parameters = new ArrayList<Subcommand>();
 		// add arguments
-		parameters.add(new AddRespawn());
-		parameters.add(new AddSpawn());
+		parameters.add(new AddLobbyLocation());
+		parameters.add(new AddArenaLocation());
 		parameters.add(new AddStone());
-		parameters.add(new AddStore());
+		parameters.add(new AddStoreLocation());
 	}
 	
 

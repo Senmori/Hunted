@@ -65,8 +65,7 @@ public class WeaponManager {
 		int maxLevel = isAscented ? plugin.getConfigManager().maxEnchantLevel*2 : plugin.getConfigManager().maxEnchantLevel;
 		int minLevel = isAscented ? plugin.getConfigManager().maxEnchantLevel : 1;
 		weapon.addEnchantment(getRandomEnchantments(type, rand.nextInt(4), maxLevel, minLevel));
-		if(weapon.getEnchantments().keySet().size() < 1)
-		{
+		if(weapon.getEnchantments().keySet().size() < 1) {
 			weapon.setDisplayName(null);
 		}
 		rand = null;
@@ -92,17 +91,17 @@ public class WeaponManager {
 			prefix = ChatColor.GOLD + "" + ChatColor.WHITE;
 		}
 		if(type.isBow()) {
-			name += prefix + bowNames.get((int)(Math.random()*(bowNames.size() + 1))).getName();
+			name += prefix + bowNames.get((int)(Math.random()*(bowNames.size() - 1) + 1)).getName();
 				if(useTitle) {
 					name += ", ";
-					name += bowTitles.get((int)(Math.random()*(bowTitles.size() + 1))).getName();
+					name += bowTitles.get((int)(Math.random()*(bowTitles.size() - 1) + 1)).getName();
 				}
 			return name;
 		}
-		name += prefix + swordNames.get((int)(Math.random()*(swordNames.size() + 1))).getName();
+		name += prefix + swordNames.get((int)(Math.random()*(swordNames.size() - 1) + 1)).getName();
 			if(useTitle) {
 				name += ", ";
-				name += swordTitles.get((int)(Math.random()*(swordTitles.size() + 1))).getName();
+				name += swordTitles.get((int)(Math.random()*(swordTitles.size() - 1) + 1)).getName();
 			}
 		return name;
 	}
@@ -110,8 +109,7 @@ public class WeaponManager {
 	/*
 	 * Used by non-ascented weapons, has a max enchantment level of 2
 	 */
-	private Map<Enchantment, Integer> getRandomEnchantments(WeaponType type, int maxEnchants, int maxLevel, int minLevel)
-	{
+	private Map<Enchantment, Integer> getRandomEnchantments(WeaponType type, int maxEnchants, int maxLevel, int minLevel) {
 		// return empty map in case you cannot add null enchantments to itemstacks
 		if(maxEnchants < 1) new HashMap<Enchantment, Integer>();
 		Map<Enchantment, Integer> possible = new HashMap<>();
@@ -138,7 +136,6 @@ public class WeaponManager {
 			enchants.put(current, possible.get(current));
 		}
 		return enchants;
-		
 	}
 	
 	private int getRandomDurability(WeaponType type) {

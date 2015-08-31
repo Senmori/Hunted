@@ -1,4 +1,4 @@
-package net.senmori.hunted.commands.edit;
+package net.senmori.hunted.commands.edit.parameters;
 
 import net.senmori.hunted.commands.Subcommand;
 

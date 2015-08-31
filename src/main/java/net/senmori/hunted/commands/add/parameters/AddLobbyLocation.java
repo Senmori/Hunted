@@ -7,10 +7,10 @@ import net.senmori.hunted.lib.SerializedLocation;
 import net.senmori.hunted.managers.game.SpawnManager;
 import net.senmori.hunted.util.Reference.Permissions;
 
-public class AddRespawn extends Subcommand
+public class AddLobbyLocation extends Subcommand
 {
 
-	public AddRespawn()
+	public AddLobbyLocation()
 	{
 		this.name = "lobby";
 		this.needsPlayer = true;

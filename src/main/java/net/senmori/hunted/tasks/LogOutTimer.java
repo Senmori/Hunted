@@ -3,6 +3,7 @@ package net.senmori.hunted.tasks;
 import java.util.UUID;
 
 import net.senmori.hunted.Hunted;
+import net.senmori.hunted.util.LogHandler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -25,15 +26,18 @@ public class LogOutTimer extends BukkitRunnable {
        if(Bukkit.getPlayer(UUID.fromString(uuid)) != null) {
            Player player = Bukkit.getPlayer(UUID.fromString(uuid));
            if(player.isOnline()) {
+               LogHandler.info(player.getDisplayName() + " logged on, thus disrupting the LogOutTimer!");
                this.cancel();
            }
        }
        if(count <= 0) {
            if(Bukkit.getPlayer(UUID.fromString(uuid)) != null) {
               if(Bukkit.getPlayer(UUID.fromString(uuid)).isOnline()) {
-                   this.cancel();
+                  LogHandler.info(Bukkit.getPlayer(UUID.fromString(uuid)).getDisplayName() + " logged on, thus disrupting the LogOutTimer!");
+                  this.cancel();
               } else {
                   plugin.getPlayerManager().untrackPlayer(uuid);
+                  LogHandler.info("Removed " + uuid + " from plugin tracking.");
                   this.cancel();
               }
            }

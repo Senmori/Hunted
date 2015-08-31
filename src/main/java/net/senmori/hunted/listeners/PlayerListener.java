@@ -205,7 +205,6 @@ public class PlayerListener implements Listener {
 	        if(plugin.getPlayerManager().getState(player.getUniqueId().toString()).equals(GameState.IN_STORE) || plugin.getPlayerManager().getState(player.getUniqueId().toString()).equals(GameState.LOBBY)) {
 	            e.setCancelled(true);
 	            e.setDamage(0.0);
-
 	        }
 	    }
 	}

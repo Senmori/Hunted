@@ -7,9 +7,9 @@ import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.lib.SerializedLocation;
 import net.senmori.hunted.util.Reference.Permissions;
 
-public class AddSpawn extends Subcommand {
+public class AddArenaLocation extends Subcommand {
 
-	public AddSpawn() {
+	public AddArenaLocation() {
 		this.name = "spawn";
 		this.needsPlayer = true;
 		this.description = "Adds a spawn location in the Hunted arena.";

@@ -21,7 +21,7 @@ public class DelayedTntExplosion extends BukkitRunnable {
     
     @Override
     public void run() {
-        item.getWorld().createExplosion(item.getLocation(), power, destroyBlocks);
+        item.getWorld().createExplosion(item.getLocation().getX(), item.getLocation().getY(), item.getLocation().getZ(), power, false, destroyBlocks);
         this.cancel();
     }
 

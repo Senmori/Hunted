@@ -7,12 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class RewardManager 
-{
+public class RewardManager {
 	private List<Reward> rewards;
 	
-	public RewardManager()
-	{
+	public RewardManager() {
 		rewards = new ArrayList<Reward>();
 	}
 	
@@ -21,29 +19,23 @@ public class RewardManager
 	 * - generate loot
 	 * - give bonus xp as applicable
 	 */
-	public void generateReward(Player player)
-	{
+	public void generateReward(Player player) {
 		// generate loot
 		Random rand = new Random();
 		getRewards().get(rand.nextInt(getRewards().size()+1)).generateLoot(player);
 	}
 
-	public List<Reward> getRewards()
-	{
+	public List<Reward> getRewards() {
 		return rewards;
 	}
 	
-	public void addReward(Reward r)
-	{
+	public void addReward(Reward r) {
 		rewards.add(r);
 	}
 	
-	public Reward getReward(String name)
-	{
-		for(Reward r : getRewards())
-		{
-			if(r.getName().equalsIgnoreCase(name))
-			{
+	public Reward getReward(String name) {
+		for(Reward r : getRewards()) {
+			if(r.getName().equalsIgnoreCase(name)) {
 				return r;
 			}
 		}

@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import net.senmori.hunted.Hunted;
+
 import org.bukkit.entity.Player;
 
 public class Profile {
@@ -63,11 +65,15 @@ public class Profile {
         this.stonesActivated = 0;
         this.ascentedRewardsReceived = 0;
         this.currentKillstreak = 0;
-        setState(GameState.LOBBY);
+        if(player.getWorld().getName().equals(Hunted.getInstance().getConfigManager().activeWorld) || Hunted.getInstance().getPlayerManager().isPlaying(uuid)) {
+            setState(GameState.LOBBY);
+        } else {
+            setState(GameState.NOT_PLAYING);
+        }
     }
     
     public GameState getState() {
-        return gameState;
+        return gameState != null ? gameState : GameState.OFFLINE;
     }
     
     public void setState(GameState state) {

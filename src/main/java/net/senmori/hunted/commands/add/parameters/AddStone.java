@@ -3,6 +3,7 @@ package net.senmori.hunted.commands.add.parameters;
 import java.util.Set;
 
 import net.md_5.bungee.api.ChatColor;
+import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.lib.SerializedLocation;
 import net.senmori.hunted.stones.GuardianStone;
@@ -25,26 +26,22 @@ public class AddStone extends Subcommand {
 	@Override
     protected void perform() {
 		Block targetBlock = getPlayer().getTargetBlock((Set<Material>)null, 5);
-		String stoneName = args.length == 2 ? args[1] : "";
-		int count = 0;
-		for(String i : args) {
-			getPlayer().sendMessage("Arg " + count++ +  ": " + i);
-		}
+		String stoneName = args.length == 2 ? args[1] : "Stone-";
 		// player isn't looking at a valid block
-		if(targetBlock == null)
-		{
+		if(targetBlock == null) {
 			getPlayer().sendMessage(ChatColor.YELLOW + ErrorMessage.STONE_CREATION_ERROR);
 			return;
 			
 		}
-		switch(this.args[0])
-		{
+		switch(this.args[0]) {
 			case "guardian":
 			case "-g":
+			    stoneName = "GStone-" + Hunted.getInstance().getStoneManager().getGuardianStones().size();
 				createNewStone(StoneType.GUARDIAN, targetBlock.getLocation(), stoneName);
 				break;
 			case "teleport":
 			case "-t":
+			    stoneName = "TStone-" + Hunted.getInstance().getStoneManager().getTeleportStones().size();
 				createNewStone(StoneType.TELEPORT, targetBlock.getLocation(), stoneName);
 				break;
 			default:

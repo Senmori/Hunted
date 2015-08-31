@@ -6,9 +6,9 @@ import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.lib.SerializedLocation;
 import net.senmori.hunted.util.Reference.Permissions;
 
-public class AddStore extends Subcommand{
+public class AddStoreLocation extends Subcommand{
 
-    public AddStore() {
+    public AddStoreLocation() {
         this.name = "store";
         this.needsPlayer = true;
         this.permission = Permissions.COMMAND_ADD_STORE;

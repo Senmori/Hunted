@@ -98,14 +98,14 @@ public class Hunted extends JavaPlugin {
         
         
 		// Connection Pool
-		hikari = new HikariDataSource();
-		hikari.setMaximumPoolSize(10);
-		hikari.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
-		hikari.addDataSourceProperty("serverName", getConfigManager().dbHost);
-		hikari.addDataSourceProperty("port", getConfigManager().dbPort);
-		hikari.addDataSourceProperty("databaseName", getConfigManager().dbName);
-		hikari.addDataSourceProperty("user", getConfigManager().dbUser);
-		hikari.addDataSourceProperty("password", getConfigManager().dbPassword);
+		//hikari = new HikariDataSource();
+		//hikari.setMaximumPoolSize(10);
+		//hikari.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
+		//hikari.addDataSourceProperty("serverName", getConfigManager().dbHost);
+		//hikari.addDataSourceProperty("port", getConfigManager().dbPort);
+		//hikari.addDataSourceProperty("databaseName", getConfigManager().dbName);
+		//hikari.addDataSourceProperty("user", getConfigManager().dbUser);
+		//hikari.addDataSourceProperty("password", getConfigManager().dbPassword);
 		
 		
 		

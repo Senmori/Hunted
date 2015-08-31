@@ -9,10 +9,7 @@ import net.senmori.hunted.Hunted;
 import net.senmori.hunted.kit.potion.PotionTypeEnum;
 import net.senmori.hunted.managers.ConfigManager;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -32,35 +29,32 @@ public class PotionManager {
 		load();
 	}
 	
+	public void getPotion(Player player) {
+	    if(rand.nextInt(11) >= 10) {
+	        // splash potion
+	    }
+	    // non-splash potion(with multiple effects?)
+	}
 
 	/** Generate a random potion using {@link PotionEffectEnum } */
-	public void getPotion(Player player) {
-		// get potion effects
-		List<PotionEffectType> effects = new ArrayList<>();
-		// get between 1 and 3 effects (for non-splash potions)
-		for(int i = 0; i < rand.nextInt(3) + 1; i++) {
-			effects.add(getRandomEffectType());
+	public void generatePotion(Player player) {
+		Potion potion = new Potion(getRandomPotionType());
+		int numEffects = rand.nextInt(3) + 1; // generate between 1 and 3 effects to put onto this potion
+		for(int i = 0; i < numEffects; i++) {
+		    PotionEffect effect = new PotionEffect(getRandomPotionEffectType(), getDuration(), getAmplifier());
+		    if(potion.getEffects().contains(effect)) {
+		        effect = new PotionEffect(getRandomPotionEffectType(), getDuration(), getAmplifier());
+		    }
 		}
-		
-		ItemStack potionStack = new ItemStack(Material.POTION);
-		PotionMeta meta = (PotionMeta)potionStack.getItemMeta();
-		
-		for(PotionEffectType eff : effects) {
-			PotionEffect effect = new PotionEffect(eff, getDuration(), getAmplifier());
-			meta.addCustomEffect(effect, true);
-		}
-		meta.setMainEffect(effects.get(rand.nextInt(effects.size())));
-		potionStack.setItemMeta(meta);
-		player.getInventory().addItem(potionStack);
+		player.getInventory().addItem(potion.toItemStack(1));
 	}
 	
 	/** Generate a random splash potion */
-	public void getSplashPotion(Player player) {
-	    Collections.shuffle(potionTypes);
-	    PotionType mainType = getRandomType();
-	    Potion potion = new Potion(mainType);
+	public void generateSplashPotion(Player player) {
+	    Potion potion = new Potion(getRandomPotionType());
+	    potion.setLevel(rand.nextInt(plugin.getConfigManager().potionTierChance + 1) == plugin.getConfigManager().potionTierChance ? 0 : potion.getType().getMaxLevel());
 	    potion.setSplash(true);
-	    potion.setHasExtendedDuration( (rand.nextInt(plugin.getConfigManager().potionTierChance) % plugin.getConfigManager().potionTierChance == 0) );
+	    potion.setHasExtendedDuration(rand.nextInt(plugin.getConfigManager().potionTierChance + 1) == plugin.getConfigManager().potionTierChance);
 	    player.getInventory().addItem(potion.toItemStack(1));
 	}
 	
@@ -74,12 +68,12 @@ public class PotionManager {
 		return rand.nextInt(plugin.getConfigManager().maxAmplifierLevel);
 	}
 	
-	private PotionEffectType getRandomEffectType() {
+	private PotionEffectType getRandomPotionEffectType() {
 		Collections.shuffle(potionEffectTypes);
 		return potionEffectTypes.get(0);
 	}
 	
-	private PotionType getRandomType() {
+	private PotionType getRandomPotionType() {
 	    Collections.shuffle(potionTypes);
 	    return potionTypes.get(0);
 	}
@@ -87,7 +81,6 @@ public class PotionManager {
 	public List<PotionEffectType> getPotionEffectTypes() {
 		return potionEffectTypes;
 	}
-	
 	
 	private void load() {
 		for(PotionTypeEnum e : PotionTypeEnum.values()) {

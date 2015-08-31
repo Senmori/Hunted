@@ -4,26 +4,26 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.senmori.hunted.Hunted;
+import net.senmori.hunted.kit.armor.Armor;
+import net.senmori.hunted.kit.armor.ArmorEnchantment;
+import net.senmori.hunted.kit.armor.ArmorSlot;
+
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import net.senmori.hunted.Hunted;
-import net.senmori.hunted.kit.armor.Armor;
-import net.senmori.hunted.kit.armor.ArmorEnchantment;
-import net.senmori.hunted.kit.armor.ArmorSlot;
-import net.senmori.hunted.kit.weapon.WeaponType;
-
 public class ArmorManager {
     
     private Hunted plugin;
     
-    private List<Enchantment> possibleEnchantments;
+    private List<ArmorEnchantment> possibleEnchantments;
     
 	public ArmorManager(Hunted plugin) {
 	    this.plugin = plugin;
 	    possibleEnchantments = new ArrayList<>();
+	    load();
 	}
 	
 	/** Main method for generating random armor */
@@ -101,10 +101,16 @@ public class ArmorManager {
    private Enchantment getRandomEnchant(ArmorSlot slot) {
        ArmorEnchantment armorEnchant = null;
        while(!armorEnchant.getSlot().equals(slot)) {
-           armorEnchant = ArmorEnchantment.values()[(int)(Math.random() * (ArmorEnchantment.values().length) + 1)];
+           armorEnchant = possibleEnchantments.get((int)Math.random() * (possibleEnchantments.size() - 1) + 1);
            if(armorEnchant.getSlot().equals(slot)) break;
        }
        return armorEnchant.getEnchant();
+   }
+   
+   private void load() {
+       for(ArmorEnchantment e : ArmorEnchantment.values()) {
+           possibleEnchantments.add(e);
+       }
    }
 
 }
