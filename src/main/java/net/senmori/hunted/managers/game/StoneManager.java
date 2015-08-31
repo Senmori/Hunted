@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.senmori.hunted.Hunted;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.stones.Stone;
 import net.senmori.hunted.stones.TeleportStone;
@@ -30,10 +29,8 @@ public class StoneManager
 	}
 	
 	/** Returns whether or not the provided {@link Material} is a valid activator for a {@link Stone} */
-	public boolean isValidActivator(Material material)
-	{
-		switch(material)
-		{
+	public boolean isValidActivator(Material material) {
+		switch(material) {
 			case STONE_BUTTON:
 			case WOOD_BUTTON:
 			case WALL_SIGN:
@@ -44,17 +41,15 @@ public class StoneManager
 	}
 	
 	/** Adds a new {@link Stone} */
-	public void register(Stone stone)
-	{
+	public void register(Stone stone) {
 		if(stone == null || stone.getType() == null) return;
 		masterStoneList.add(stone);
-		switch(stone.getType())
-		{
+		switch(stone.getType()) {
 			case GUARDIAN:
-					guardianStoneList.add((GuardianStone) stone);
+					getGuardianStones().add((GuardianStone) stone);
 					return;
 			case TELEPORT:
-					teleportStoneList.add((TeleportStone)stone);
+					getTeleportStones().add((TeleportStone)stone);
 					return;
 			default:
 					return;
@@ -62,12 +57,9 @@ public class StoneManager
 	}
 	
 	/** Gets a {@link Stone} no matter the type by location*/
-	public Stone getStone(Location loc)
-	{
-		for(Stone s : masterStoneList)
-		{
-			if(s.getLocation().equals(loc))
-			{
+	public Stone getStone(Location loc) {
+		for(Stone s : getStones()) {
+			if(s.getLocation().equals(loc)) {
 				return s;
 			}
 		}
@@ -75,16 +67,52 @@ public class StoneManager
 	}
 	
 	/** Gets a {@link Stone} by name, no matter the location or type */
-	public Stone getStone(String name)
-	{
-		for(Stone s : masterStoneList)
-		{
-			if(s.getName().equalsIgnoreCase(name))
-			{
+	public Stone getStone(String name) {
+		for(Stone s : getStones()) {
+			if(s.getName().equalsIgnoreCase(name)) {
 				return s;
 			}
 		}
 		return null;
+	}
+	
+	// always double-check
+	public void removeStone(Stone stone) {
+	    for(Stone s : getStones()) {
+	        if(s.getLocation().equals(stone.getLocation())) {
+	            switch(stone.getType()) {
+	                case GUARDIAN:
+	                    getStones().remove(stone);
+	                    getGuardianStones().remove(stone);
+	                    break;
+	                case TELEPORT:
+	                    getStones().remove(stone);
+	                    getTeleportStones().remove(stone);
+	                    break;
+	                default:
+	                    continue;
+	            }
+	        }
+	    }
+	}
+	
+	public void removeStone(Location loc) {
+	    for(Stone s : getStones()) {
+	        if(s.getLocation().equals(loc)) {
+	            switch(s.getType()) {
+	                case GUARDIAN:
+	                    getGuardianStones().remove(s);
+	                    getStones().remove(s);
+	                    break;
+	                case TELEPORT:
+	                    getTeleportStones().remove(s);
+	                    getStones().remove(s);
+	                    break;
+	                default:
+	                    continue;
+	            }
+	        }
+	    }
 	}
 	
 	/** Returns all valid blockfaces for indicator blocks */
@@ -93,20 +121,17 @@ public class StoneManager
 	}
 	
 	/** Returns all registered {@link Stone} */
-	public List<Stone> getStones()
-	{
+	public List<Stone> getStones() {
 		return masterStoneList;
 	}
 	
 	/** Returns all registered {@link GuardianStone} */
-	public List<GuardianStone> getGuardianStones()
-	{
+	public List<GuardianStone> getGuardianStones() {
 		return guardianStoneList;
 	}
 	
 	/** Returns all registered {@link TeleportStone} */
-	public List<TeleportStone> getTeleportStones()
-	{
+	public List<TeleportStone> getTeleportStones() {
 		return teleportStoneList;
 	}
 }

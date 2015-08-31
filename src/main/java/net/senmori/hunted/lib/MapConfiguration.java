@@ -35,26 +35,32 @@ public class MapConfiguration {
                 e.printStackTrace();
             }
         }
+        plugin.getConfigManager().addMapConfiguration(name, this);
     }
     
     public void saveStoneLocation(Stone stone, SerializedLocation loc) {
         saveStone(stone, loc);
+        save();
     }
     
     public void saveStoneLocation(Stone stone, Location loc) {
         saveStone(stone, new SerializedLocation(loc, stone.getName()));
+        save();
     }
-    
+     
     public void saveLobbyLocation(SerializedLocation loc) {
         saveLocation(loc, "lobby-loc");
+        save();
     }
     
     public void saveHuntedLocation(SerializedLocation loc) {
         saveLocation(loc, "hunted-loc");
+        save();
     }
     
     public void saveStoreLocation(SerializedLocation loc) {
         saveLocation(loc, "store-loc");
+        save();
     }
     
     private void saveLocation(SerializedLocation loc, String parent) {
@@ -66,14 +72,14 @@ public class MapConfiguration {
     
     // Save name, location, cooldown(if different than global), and type
     private void saveStone(Stone stone, SerializedLocation loc) {
-        String name = stone.getName() != null ? stone.getName() : loc.getName();
+        String name = stone.getName();
         getConfig().set("stone." + name + ".x", loc.getX());
         getConfig().set("stone." + name + ".y", loc.getY());
         getConfig().set("stone." + name + ".z", loc.getZ());
         getConfig().set("stone." + name + ".type", stone.getType());
         
         if(stone.getType().equals(StoneType.GUARDIAN)) {
-            GuardianStone gStone = ((GuardianStone)stone);
+            GuardianStone gStone = (GuardianStone)stone;
             // store cooldown length if different than global cooldown
             if(gStone.getCooldown() != Hunted.getInstance().getConfigManager().defaultCooldown) {
                getConfig().set("stone." + name + ".cooldown", ((GuardianStone)stone).getCooldown()); 
@@ -83,23 +89,34 @@ public class MapConfiguration {
                 getConfig().set("stone." + name + ".elapsedTime", gStone.getElapsedTime());
             }
         }
+        save();
     }
     
+    private void removeLocation(SerializedLocation loc, String parent) {
+        getConfig().set(parent + loc.getName(), null);
+        save();
+    }
+    
+    public void removeHuntedLocation(SerializedLocation loc) {
+        removeLocation(loc, "hunted-loc");
+        save();
+    }
+    
+    public void removeStoreLocation(SerializedLocation loc) {
+        removeLocation(loc, "store-loc");
+        save();
+    }
+    
+    public void removeLobbyLocation(SerializedLocation loc) {
+        removeLocation(loc, "lobby-loc");
+        save();
+    }
     
     /** Load this configuration from file into appropriate maps */
-    private void loadFromFile() {
+    public void load() {
         
     }
 
-    private void save() {
-        try {
-            config.save(file);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
     public File getFile() {
         if(file == null) {
             file = new File(plugin.getDataFolder() + File.separator + "configurations", name + ".yml");
@@ -116,5 +133,14 @@ public class MapConfiguration {
     
     public String getName() {
         return name;
+    }
+    
+    private void save() {
+        try {
+            config.save(file);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

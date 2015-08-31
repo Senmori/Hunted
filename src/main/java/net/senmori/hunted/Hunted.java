@@ -115,7 +115,7 @@ public class Hunted extends JavaPlugin {
 		weaponManager = new WeaponManager(getInstance());
 		potionManager = new PotionManager(getInstance());
 	    stoneManager = new StoneManager();
-	    spawnManager = new SpawnManager(getInstance());
+	    spawnManager = new SpawnManager();
 	    armorManager = new ArmorManager(getInstance());
 		
 

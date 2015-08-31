@@ -32,6 +32,7 @@ public class ConfigManager  {
 	public int maxArrowsPerReward;
 	public int maxPotsPerReward;
 	public String activeWorld;
+	public String activeMapConfiguration;
 	
 	// database config options
 	public String dbUser;
@@ -71,19 +72,20 @@ public class ConfigManager  {
 		if(Hunted.getInstance().getConfig().getConfigurationSection("settings") == null) return;
 		if(Hunted.getInstance().getConfig().getConfigurationSection("settings").getKeys(false).size() < 1) return;
 		
-		debug = Hunted.getInstance().getConfig().getBoolean("settings.debug", false);
-		defaultCooldown = Hunted.getInstance().getConfig().getInt("settings.cooldown", 5);		
-		maxEffectLength = Hunted.getInstance().getConfig().getInt("settings.max-effect-length", 12);
-		maxEnchantLevel = Hunted.getInstance().getConfig().getInt("settings.max-enchant-level", 2);		
-		enchantChance = Hunted.getInstance().getConfig().getInt("settings.enchant-chance", 10);		
-		potionTierChance = Hunted.getInstance().getConfig().getInt("settings.potion-tier2-chance", 10);	
-		nearbyRadius = Hunted.getInstance().getConfig().getInt("settings.radius", 50);	
-		maxAmplifierLevel = Hunted.getInstance().getConfig().getInt("settings.max-amplifier-level", 2);	
-		smiteTeleportChance = Hunted.getInstance().getConfig().getInt("settings.smite-teleport-chance", 10);	
-		ascentedItemChance = Hunted.getInstance().getConfig().getInt("settings.ascented-chance", 16);	
-		receiveEffectTwice = Hunted.getInstance().getConfig().getInt("settings.receive-effect-twice", 20);	
-		maxArrowsPerReward = Hunted.getInstance().getConfig().getInt("settings.max-arrows", 20);	
-		activeWorld = Hunted.getInstance().getConfig().getString("settings.world");
+		debug = plugin.getConfig().getBoolean("settings.debug", false);
+		defaultCooldown = plugin.getConfig().getInt("settings.cooldown", 5);		
+		maxEffectLength = plugin.getConfig().getInt("settings.max-effect-length", 12);
+		maxEnchantLevel = plugin.getConfig().getInt("settings.max-enchant-level", 2);		
+		enchantChance = plugin.getConfig().getInt("settings.enchant-chance", 10);		
+		potionTierChance = plugin.getConfig().getInt("settings.potion-tier2-chance", 10);	
+		nearbyRadius = plugin.getConfig().getInt("settings.radius", 50);	
+		maxAmplifierLevel = plugin.getConfig().getInt("settings.max-amplifier-level", 2);	
+		smiteTeleportChance = plugin.getConfig().getInt("settings.smite-teleport-chance", 10);	
+		ascentedItemChance = plugin.getConfig().getInt("settings.ascented-chance", 16);	
+		receiveEffectTwice = plugin.getConfig().getInt("settings.receive-effect-twice", 20);	
+		maxArrowsPerReward = plugin.getConfig().getInt("settings.max-arrows", 20);	
+		activeWorld = plugin.getConfig().getString("settings.world");
+		activeMapConfiguration = plugin.getConfig().getString("settings.active-map-configuration");
 		
 		// database
 		dbUser = plugin.getConfig().getString("database.username");
@@ -93,8 +95,7 @@ public class ConfigManager  {
 		dbName = plugin.getConfig().getString("database.name");
 		
 		// if the active world isn't provided or doesn't exist use the first one found.
-		if(Bukkit.getWorld(activeWorld) == null || activeWorld.isEmpty() || activeWorld.length() < 1)
-		{
+		if(Bukkit.getWorld(activeWorld) == null || activeWorld.isEmpty() || activeWorld.length() < 1) {
 			LogHandler.warning(activeWorld + " does not exist!");
 			activeWorld = Bukkit.getWorlds().get(0).getName();
 			LogHandler.warning("World set to : " + activeWorld);
@@ -110,11 +111,22 @@ public class ConfigManager  {
 		}
 	}
 	
+	/* ###########################
+	 *  Map Configuration section
+	 * ###########################
+	 */
+	public MapConfiguration getActiveMapConfiguration() {
+	    return mapConfigurations.get(activeMapConfiguration);
+	}
+	
 	public void addMapConfiguration(String name, MapConfiguration config) {
 	    mapConfigurations.put(name, config);
 	}
 	
 	public MapConfiguration getMapConfiguration(String name) {
+	    if(!mapConfigurations.containsKey(name)) {
+	        return new MapConfiguration(name);
+	    }
 	    return mapConfigurations.get(name);
 	}
 	

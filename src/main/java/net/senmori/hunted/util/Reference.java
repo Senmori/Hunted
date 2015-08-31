@@ -6,19 +6,27 @@ import net.senmori.hunted.stones.Stone;
 public class Reference {	
 		public class Permissions {
 			// Command permissions
+		    
+		    // Add command
 			public static final String COMMAND_ADD  = "hunted.commands.add";
 			// Add command parameter permissions
 			public static final String COMMAND_ADD_RESPAWN = "hunted.commands.add.respawn";
 			public static final String COMMAND_ADD_SPAWN = "hunted.commands.add.spawn";
 			public static final String COMMAND_ADD_STONE = "hunted.commands.add.stone";
 			public static final String COMMAND_ADD_STORE = "hunted.commands.add.store";
+			public static final String COMMAND_ADD_MAP = "hunted.commands.add.map.configuration";
 			
+			// Delete command
 			public static final String COMMAND_DELETE = "hunted.commands.delete";
+			// Delete command parameters
+			public static final String COMMAND_DELETE_STONE = "hunted.commands.delete.stone";
+			public static final String COMMAND_DELETE_LOCATION = "hunted.commands.delete.location";
 			
 			public static final String COMMAND_EDIT = "hunted.commands.edit";
 			// Edit command parameters
 			public static final String COMMAND_EDIT_CONFIG = "hunted.commands.edit.config";
 			public static final String COMMAND_EDIT_STONE = "hunted.commands.edit.stone";
+			public static final String COMMAND_EDIT_MAP = "hunted.commands.edit.map";
 			
 			public static final String COMMAND_LIST = "hunted.commands.list";
 			// list parameter permissions
@@ -28,9 +36,7 @@ public class Reference {
 			public static final String COMMAND_LIST_LOBBY = "hunted.commands.list.lobby";
 			public static final String COMMAND_LIST_STORE = "hunted.commands.list.store";
 			
-			public static final String COMMAND_EXEMPT = "hunted.commands.exempt";
-			
-			
+			// Stuck command
 			public static final String COMMAND_STUCK = "hunted.commands.stuck";
 			public static final String COMMAND_STUCK_OTHER = "hunted.commands.stuck.other";
 			
@@ -44,18 +50,29 @@ public class Reference {
 			public static final String ADMIN_EXEMPT = "hunted.admin.exempt";
 			public static final String ADMIN_DEBUG = "hunted.admin.debug";
 		}
+		
+		public class SuccessMessage {
+		    public static final String MAP_CONFIGURATION_CHANGED = "Successfully changed map configuration to %map";
+		    
+		    public static final String LOCATION_REMOVED = "Removed %loc!";
+		}
 	
 		// All error messages stored here
 		public class ErrorMessage {
 			public static final String IMPORT_ERROR = "Error importing %s. Is it mispelled?";
 
-			public static final String STONE_CREATION_ERROR = "You must be looking at a block in order to create a guardian stone!";
+			public static final String STONE_CREATION_ERROR = "You must be looking at a block in order to create a guardian/teleport stone!";
+			public static final String STONE_DELETE_ERROR = "You must be looking at a block in order to delete a guardian/teleport stone!";
 			
 			public static final String NO_STORE_LOCATION_ERROR = "No store locations have been saved!";
 			public static final String NO_HUNTED_LOCATION_ERROR = "No Hunted locations have been saved!";
 			public static final String NO_LOBBY_LOCATION_ERROR = "No lobby locations have been saved!";
 			
+			public static final String LOCATION_DELETE_ERROR = "Location is not valid. Please try again.";
+			
 			public static final String NO_COMMAND_PERMISSION = "You do not have permission to run this command!";
+			
+			public static final String NO_FILE_FOUND_ERROR = "That file does not exist!";
 		}
 		
 		/**

@@ -26,7 +26,7 @@ public class AddStone extends Subcommand {
 	@Override
     protected void perform() {
 		Block targetBlock = getPlayer().getTargetBlock((Set<Material>)null, 5);
-		String stoneName = args.length == 2 ? args[1] : "Stone-";
+		String stoneName = args.length >= 2 ? args[1] : "Stone-";
 		// player isn't looking at a valid block
 		if(targetBlock == null) {
 			getPlayer().sendMessage(ChatColor.YELLOW + ErrorMessage.STONE_CREATION_ERROR);
