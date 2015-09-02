@@ -1,5 +1,7 @@
 package net.senmori.hunted.commands.add.parameters;
 
+import java.util.Arrays;
+
 import org.bukkit.ChatColor;
 
 import net.senmori.hunted.Hunted;
@@ -14,12 +16,13 @@ public class AddArenaLocation extends Subcommand {
 		this.needsPlayer = true;
 		this.description = "Adds a spawn location in the Hunted arena.";
 		this.permission = Permissions.COMMAND_ADD;
+		this.requiredArgs = Arrays.asList("name");
 	}
 
 	@Override
 	protected void perform() {
 		int count = Hunted.getInstance().getSpawnManager().getHuntedLocations().size() + 1;
-		String name = args.length >= 1? args[0] : "HLoc-" + count;
+		String name = args.length >= 2? args[1] : "HLoc-" + count;
 		SerializedLocation newSpawnLocation = new SerializedLocation(getPlayer().getLocation(), name);
 		Hunted.getInstance().getSpawnManager().addHuntedLocation(newSpawnLocation);
 		getPlayer().sendMessage(ChatColor.GREEN + "Successfully created new spawn location (" + name + ")");

@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.senmori.hunted.commands.Subcommand;
+import net.senmori.hunted.commands.edit.parameters.EditActiveMap;
 import net.senmori.hunted.commands.edit.parameters.EditConfig;
-import net.senmori.hunted.commands.edit.parameters.EditStone;
 import net.senmori.hunted.util.Reference.Permissions;
 
 public class EditCommand extends Subcommand {
@@ -23,7 +23,7 @@ public class EditCommand extends Subcommand {
 		parameters = new ArrayList<>();
 		
 		parameters.add(new EditConfig());
-		parameters.add(new EditStone());
+		parameters.add(new EditActiveMap());
 	}
 
 	@Override

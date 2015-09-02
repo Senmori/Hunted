@@ -7,6 +7,7 @@ import java.util.List;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.commands.add.parameters.AddLobbyLocation;
 import net.senmori.hunted.commands.add.parameters.AddArenaLocation;
+import net.senmori.hunted.commands.add.parameters.AddMapConfiguration;
 import net.senmori.hunted.commands.add.parameters.AddStone;
 import net.senmori.hunted.commands.add.parameters.AddStoreLocation;
 import net.senmori.hunted.util.Reference.Permissions;
@@ -29,6 +30,7 @@ public class AddCommand extends Subcommand {
 		parameters.add(new AddArenaLocation());
 		parameters.add(new AddStone());
 		parameters.add(new AddStoreLocation());
+		parameters.add(new AddMapConfiguration());
 	}
 	
 

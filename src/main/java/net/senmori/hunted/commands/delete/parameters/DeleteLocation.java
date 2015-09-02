@@ -1,5 +1,7 @@
 package net.senmori.hunted.commands.delete.parameters;
 
+import java.util.Arrays;
+
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.util.Reference.ErrorMessage;
@@ -15,10 +17,23 @@ public class DeleteLocation extends Subcommand {
         this.name = "location";
         this.needsPlayer = true;
         this.permission = Permissions.COMMAND_DELETE_LOCATION;
+        this.optionalArgs = Arrays.asList("name");
     }
 
     @Override
     protected void perform() {
+        // they specified a location name 
+        if(args.length >= 2) {
+            String toRemove = args[1];
+            Location remove = Hunted.getInstance().getSpawnManager().getLocationByName(toRemove).getLocation();
+            boolean rm = Hunted.getInstance().getSpawnManager().removeLocation(remove);
+            if(!rm) {
+                getPlayer().sendMessage(ChatColor.RED + ErrorMessage.LOCATION_DELETE_ERROR);
+                return;
+            }
+            getPlayer().sendMessage(ChatColor.GREEN + SuccessMessage.LOCATION_REMOVED.replace("%loc", toRemove));
+            return;
+        }
         Location remove = getPlayer().getLocation();
         String locationName = Hunted.getInstance().getSpawnManager().getLocationNameByLocation(remove);
         boolean removed = Hunted.getInstance().getSpawnManager().removeLocation(remove);

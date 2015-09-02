@@ -25,7 +25,7 @@ public class KitManager {
 	 */
 	public void generateKit(Player player) {
 		generateArmor(player);
-		generateWeapons(player);
+		generateWeapon(player);
 		generatePotions(player);
 	}
 	
@@ -39,18 +39,18 @@ public class KitManager {
 	/*
 	 * Generate a random weapon for a player
 	 */
-	public void generateWeapons(Player player) {
+	public void generateWeapon(Player player) {
 		ItemStack weapon = plugin.getWeaponManager().generateWeapon();
 		if(weapon.getType().equals(Material.BOW)) {
 			player.getInventory().addItem(new ItemStack(Material.ARROW, (int) (Math.random() * (plugin.getConfigManager().maxArrowsPerReward -1) +1)));
 		}
-		player.getInventory().addItem(new ItemStack(weapon));
+		player.getInventory().addItem(weapon);
 	}
 	
 	/*
 	 * Generate potion(s) for a player
 	 */
 	public void generatePotions(Player player) {
-		
+		plugin.getPotionManager().getPotion(player);
 	}
 }

@@ -32,8 +32,11 @@ public class PotionManager {
 	public void getPotion(Player player) {
 	    if(rand.nextInt(11) >= 10) {
 	        // splash potion
+	        generateSplashPotion(player);
+	        return;
 	    }
 	    // non-splash potion(with multiple effects?)
+	    generatePotion(player);
 	}
 
 	/** Generate a random potion using {@link PotionEffectEnum } */

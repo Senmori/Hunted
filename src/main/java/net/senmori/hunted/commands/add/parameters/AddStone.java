@@ -1,5 +1,6 @@
 package net.senmori.hunted.commands.add.parameters;
 
+import java.util.Arrays;
 import java.util.Set;
 
 import net.md_5.bungee.api.ChatColor;
@@ -21,6 +22,7 @@ public class AddStone extends Subcommand {
 		this.name = "stone";
 		this.needsPlayer = true;
 		this.permission = Permissions.COMMAND_ADD;
+		this.requiredArgs = Arrays.asList("name");
 	}
 	
 	@Override

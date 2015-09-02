@@ -122,6 +122,18 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerLoginEvent e) {
 		plugin.getPlayerManager().trackPlayer(e.getPlayer());
+		// if player is not in Hunted world, set GameState to NOT_PLAYING
+		Player player = e.getPlayer();
+		if(player.getWorld().getName().equals(plugin.getConfigManager().activeWorld)) {
+		    plugin.getPlayerManager().setState(player.getUniqueId().toString(), GameState.NOT_PLAYING);
+		    return;
+		}
+		
+		// if player was playing or in the store, change GameState to LOBBY and move them to lobby
+		if(plugin.getPlayerManager().getState(player.getUniqueId().toString()).equals(GameState.IN_GAME) || plugin.getPlayerManager().getState(player.getUniqueId().toString()).equals(GameState.IN_STORE)) {
+		    plugin.getPlayerManager().setState(player.getUniqueId().toString(), GameState.LOBBY);
+		    player.teleport(plugin.getSpawnManager().getRandomLobbyLocation().getLocation());
+		}
 	}
 
 	// handle players logging out

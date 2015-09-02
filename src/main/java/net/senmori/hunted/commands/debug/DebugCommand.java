@@ -1,8 +1,11 @@
 package net.senmori.hunted.commands.debug;
 
+import org.bukkit.ChatColor;
+
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.util.Reference.Permissions;
+import net.senmori.hunted.util.Reference.RewardMessage;
 
 public class DebugCommand extends Subcommand
 {
@@ -17,7 +20,6 @@ public class DebugCommand extends Subcommand
 	@Override
 	protected void perform() {
 	    Hunted.getInstance().getArmorManager().generateArmor(getPlayer());
-	    Hunted.getInstance().getKitManager().generateWeapons(getPlayer());
-		getPlayer().sendMessage("Current GameState: " + Hunted.getInstance().getPlayerManager().getState(getPlayer().getUniqueId().toString()).toString());
+	    getPlayer().sendMessage(ChatColor.GREEN + RewardMessage.IRRITATING_MESSAGE);
 	}
 }

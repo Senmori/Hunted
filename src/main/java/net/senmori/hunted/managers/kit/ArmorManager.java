@@ -38,19 +38,27 @@ public class ArmorManager {
 	    for(int i = 0; i < numArmorPieces; i++) {
 	        switch(possibleArmor.get(i)) {
     	        case HELMET:
-    	            player.getInventory().setHelmet(generateHelmet());
+    	            ItemStack helmet = generateHelmet();
+    	            player.getInventory().setHelmet(helmet);
+    	            player.sendMessage("Helmet: " + helmet.getType());
     	            Collections.shuffle(possibleArmor);
     	            continue;
     	        case CHESTPLATE:
-    	            player.getInventory().setChestplate(generateChestplate());
+    	            ItemStack chest = generateChestplate();
+    	            player.getInventory().setChestplate(chest);
+    	            player.sendMessage("Chestplate: " + chest.getType());
     	            Collections.shuffle(possibleArmor);
     	            continue;
     	        case LEGGINGS:
-    	            player.getInventory().setChestplate(generateLeggings());
+    	            ItemStack legs = generateLeggings();
+    	            player.getInventory().setChestplate(legs);
+    	            player.sendMessage("Leggings: " + legs.getType());
     	            Collections.shuffle(possibleArmor);
     	            continue;
     	        case BOOTS:
-    	            player.getInventory().setBoots(generateBoots());
+    	            ItemStack boots = generateBoots();
+    	            player.getInventory().setBoots(boots);
+    	            player.sendMessage("Boots: " + boots.getType());
     	            Collections.shuffle(possibleArmor);
     	            continue;
 	            default:

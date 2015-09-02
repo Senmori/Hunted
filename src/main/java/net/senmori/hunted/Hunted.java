@@ -73,12 +73,13 @@ public class Hunted extends JavaPlugin {
 	// Connection Pool
 	private HikariDataSource hikari;
 	private Database database; // SQL
-	
-	
+
 	// SQL Objects
 	private StatementHandler statementHandler;
 	private QueryHandler queryHandler;
 
+	
+	
 	public void onEnable() {
 		pdf = getDescription();
 		name = pdf.getName();
@@ -109,19 +110,20 @@ public class Hunted extends JavaPlugin {
 		
 		
 		
-		// managers
-		playerManager = new PlayerManager(getInstance());
-		kitManager = new KitManager(getInstance());
-		weaponManager = new WeaponManager(getInstance());
-		potionManager = new PotionManager(getInstance());
-	    stoneManager = new StoneManager();
-	    spawnManager = new SpawnManager();
-	    armorManager = new ArmorManager(getInstance());
-		
-
-		// setup commands
-		LogHandler.info("Setting up commands...");
+		// game managers
+        playerManager = new PlayerManager(getInstance());
+        stoneManager = new StoneManager();
+        spawnManager = new SpawnManager();
+        rewardManager = new RewardManager();
+        // kit managers
+        kitManager = new KitManager(getInstance());
+        weaponManager = new WeaponManager(getInstance());
+        potionManager = new PotionManager(getInstance());
+        armorManager = new ArmorManager(getInstance());
+        // Misc. managers
 		commandManager = new CommandManager(this);
+		
+		// setup commands		
 		commandManager.setCommandPrefix("ht");
 		commandManager.registerCommand(new AddCommand());
 		commandManager.registerCommand(new DebugCommand());
@@ -132,7 +134,7 @@ public class Hunted extends JavaPlugin {
 		LogHandler.info("Commands loaded!");
 		
 		// setup rewards
-		rewardManager = new RewardManager();
+		
 		rewardManager.addReward(new EffectReward("effect"));
 		rewardManager.addReward(new ItemReward("item"));
 		rewardManager.addReward(new NotifyReward("notify"));
@@ -140,7 +142,7 @@ public class Hunted extends JavaPlugin {
 		rewardManager.addReward(new SmiteReward("smite"));
 		rewardManager.addReward(new TeleportReward("teleport"));
 		rewardManager.addReward(new IrritatingReward("irritating"));
-		LogHandler.info(rewardManager.getRewards().size() + " rewards added!");
+		LogHandler.info("Rewards loaded!");
 		
 
 		

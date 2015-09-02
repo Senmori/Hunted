@@ -53,7 +53,7 @@ public class Reference {
 		
 		public class SuccessMessage {
 		    public static final String MAP_CONFIGURATION_CHANGED = "Successfully changed map configuration to %map";
-		    
+		    public static final String STONE_REMOVED = "Removed %stone";
 		    public static final String LOCATION_REMOVED = "Removed %loc!";
 		}
 	
@@ -61,8 +61,8 @@ public class Reference {
 		public class ErrorMessage {
 			public static final String IMPORT_ERROR = "Error importing %s. Is it mispelled?";
 
-			public static final String STONE_CREATION_ERROR = "You must be looking at a block in order to create a guardian/teleport stone!";
-			public static final String STONE_DELETE_ERROR = "You must be looking at a block in order to delete a guardian/teleport stone!";
+			public static final String STONE_CREATION_ERROR = "Error creating a Stone. Are you looking at the block you want to make a Stone?";
+			public static final String STONE_DELETE_ERROR = "Error deleting a Stone. Are you looking at it?";
 			
 			public static final String NO_STORE_LOCATION_ERROR = "No store locations have been saved!";
 			public static final String NO_HUNTED_LOCATION_ERROR = "No Hunted locations have been saved!";

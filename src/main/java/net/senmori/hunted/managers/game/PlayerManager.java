@@ -215,6 +215,9 @@ public class PlayerManager {
     	    case IN_STORE:
     	    case LOBBY:
     	        return true;
+    	    case NOT_PLAYING:
+    	    case OFFLINE:
+    	        return false;
 	        default:
 	            return false;
 	    }

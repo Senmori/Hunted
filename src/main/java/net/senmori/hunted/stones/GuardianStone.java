@@ -20,7 +20,7 @@ public class GuardianStone extends Stone {
 		super(loc);
 		this.cooldown = TimeUnit.MINUTES.toMillis(Hunted.getInstance().getConfigManager().defaultCooldown);
 		// set stone to active
-		this.lastActivated = System.nanoTime() - TimeUnit.MINUTES.toMillis(cooldown);
+		this.lastActivated = System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(cooldown);
 	}
 	
 	/** Main method, call this to active this {@link GuardianStone} */
@@ -33,7 +33,7 @@ public class GuardianStone extends Stone {
 			return;
 		}
 		Hunted.getInstance().getRewardManager().generateReward(player);
-		this.lastActivated = System.nanoTime();
+		this.lastActivated = System.currentTimeMillis();
 	}
 	
 	/**
@@ -71,7 +71,7 @@ public class GuardianStone extends Stone {
 	 * Returns how long ago this stone was activated(in minutes)
 	 */
 	public int getElapsedTime() {
-		return (int) TimeUnit.MILLISECONDS.toMinutes(System.nanoTime() - lastActivated);
+		return (int) TimeUnit.MILLISECONDS.toMinutes(System.currentTimeMillis() - lastActivated);
 	}
 	
     public int getCooldown() {
