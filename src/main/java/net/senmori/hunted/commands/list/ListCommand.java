@@ -20,7 +20,7 @@ public class ListCommand extends Subcommand {
 		this.needsPlayer = true;
 		this.permission = Permissions.COMMAND_LIST;
 		this.description = "Used to list various things about this plugin.";
-		this.optionalArgs = Arrays.asList("guardian|teleport|arena|lobby|store");
+		this.optionalArgs = Arrays.asList("guardian", "teleport", "arena", "lobby", "store");
 		
 		parameters = new ArrayList<>();
 		parameters.add(new ListGuardianStones());

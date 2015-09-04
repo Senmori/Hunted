@@ -18,7 +18,7 @@ public class DeleteCommand extends Subcommand {
 		this.needsPlayer = true;
 		this.permission = Permissions.COMMAND_DELETE;
 		this.description = "Command to delete guardian/teleport stones and/or locations";
-		this.optionalArgs = Arrays.asList("name");
+		this.optionalArgs = Arrays.asList("stone", "location");
 		
 		parameters = new ArrayList<>();
 		parameters.add(new DeleteStone());

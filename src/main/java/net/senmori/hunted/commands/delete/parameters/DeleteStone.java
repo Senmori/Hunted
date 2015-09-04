@@ -1,5 +1,6 @@
 package net.senmori.hunted.commands.delete.parameters;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -34,7 +35,8 @@ public class DeleteStone extends Subcommand{
                 return;
             }
             Hunted.getInstance().getStoneManager().removeStone(remove);
-            getPlayer().sendMessage(ChatColor.GREEN + SuccessMessage.STONE_REMOVED.replace("%stone", toRemove));
+            //getPlayer().sendMessage(ChatColor.GREEN + SuccessMessage.STONE_REMOVED.replace("%stone", toRemove));
+            getPlayer().sendMessage(ChatColor.GREEN + MessageFormat.format(SuccessMessage.STONE_REMOVED, toRemove));
             return;
         }
         

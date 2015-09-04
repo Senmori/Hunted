@@ -3,12 +3,14 @@ package net.senmori.hunted.managers;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.md_5.bungee.api.ChatColor;
 import net.senmori.hunted.commands.Subcommand;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CommandManager implements CommandExecutor {
@@ -50,9 +52,20 @@ public class CommandManager implements CommandExecutor {
 					return true;
 				}
 			}
-		}
-		else
-		{
+		} else {
+		    // display list of subcommand names, along with their descriptions
+		    StringBuilder sb = new StringBuilder();
+		    sb.append(ChatColor.GREEN + "---------------- " + ChatColor.YELLOW + "Hunted comands" + ChatColor.GREEN + " ----------------");
+		    for(Subcommand sub : commands) {
+		        sb.append("\n");
+		        sb.append(ChatColor.GREEN + sub.getName() + ChatColor.YELLOW +  " - " + ChatColor.YELLOW + sub.getDescription());
+		    }
+		    sb.append(ChatColor.GREEN + "----------------------------------------------");
+		    if(sender instanceof Player) {
+		        Player player = (Player)sender;
+		        player.sendMessage(sb.toString());
+		        return true;
+		    }
 			Bukkit.dispatchCommand(sender, "help " + commandPrefix);
 		}
 

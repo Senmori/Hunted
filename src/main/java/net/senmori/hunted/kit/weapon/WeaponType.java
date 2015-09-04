@@ -2,8 +2,7 @@ package net.senmori.hunted.kit.weapon;
 
 import org.bukkit.Material;
 
-public enum WeaponType
-{
+public enum WeaponType {
 	WOOD_SWORD(Material.WOOD_SWORD, false),
 	STONE_SWORD(Material.STONE_SWORD, false),
 	GOLD_SWORD(Material.GOLD_SWORD, true),
@@ -26,20 +25,16 @@ public enum WeaponType
 		this.canBeAscented = canBeAscented;
 	}
 	
-	public Material getType() 
-	{
+	public Material getType() {
 		return this.material;
 	}
 	
-	public boolean canBeAscented() 
-	{
+	public boolean canBeAscented() {
 		return canBeAscented;
 	}
 	
-	public boolean isSword()
-	{
-		switch(this)
-		{
+	public boolean isSword() {
+		switch(this) {
 			case WOOD_SWORD:
 			case STONE_SWORD:
 			case GOLD_SWORD:
@@ -50,10 +45,8 @@ public enum WeaponType
 		}
 	}
 	
-	public boolean isBow()
-	{
-		switch(this)
-		{
+	public boolean isBow() {
+		switch(this) {
 			case BOW:
 				return true;
 			default:
@@ -62,10 +55,8 @@ public enum WeaponType
 	}
 	
 
-	public boolean isSpade()
-	{
-		switch(this)
-		{
+	public boolean isSpade() {
+		switch(this) {
 			case WOOD_SHOVEL:
 			case STONE_SHOVEL:
 			case GOLD_SHOVEL:
@@ -76,10 +67,8 @@ public enum WeaponType
 		}
 	}
 	
-	public boolean isAxe()
-	{
-		switch(this)
-		{
+	public boolean isAxe() {
+		switch(this) {
 			case STONE_AXE:
 			case GOLD_AXE:
 			case IRON_AXE:

@@ -1,5 +1,6 @@
 package net.senmori.hunted.reward.rewards;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -35,6 +36,7 @@ public class NotifyReward extends Reward {
 		notifyWithin(player);
 	}
 	
+	/* Notify all players IN_GAME of where the player who activated this guardian stone currently is */
 	private void notifyAll(Player player) {
 		
 		for(String uuid : Hunted.getInstance().getPlayerManager().getPlayers().keySet()) {
@@ -53,10 +55,14 @@ public class NotifyReward extends Reward {
 					name = g.getName();
 				}
 			}
-			Bukkit.getPlayer(UUID.fromString(uuid)).sendMessage(ChatColor.AQUA + String.format(RewardMessage.NOTIFY_ALL, player.getName(), name));
+			if(Bukkit.getPlayer(UUID.fromString(uuid)) != null) {
+			   Bukkit.getPlayer(UUID.fromString(uuid)).sendMessage(ChatColor.AQUA + MessageFormat.format(RewardMessage.NOTIFY_ALL, player.getName(), name)); 
+			}
+			//Bukkit.getPlayer(UUID.fromString(uuid)).sendMessage(ChatColor.AQUA + String.format(RewardMessage.NOTIFY_ALL, player.getName(), name));
 		}
 	}
 	
+	/* Notify player who activated Guardian Stone of how many players are nearby */
 	private void notifyWithin(Player player) {
 		List<String> players = new ArrayList<>();
 		
@@ -65,7 +71,8 @@ public class NotifyReward extends Reward {
 				players.add(p.getUniqueId().toString());
 			}
 		}
-		player.sendMessage(ChatColor.AQUA + String.format(RewardMessage.NOTIFY_WITHIN, players.size(), Hunted.getInstance().getConfigManager().nearbyRadius));
+		//player.sendMessage(ChatColor.AQUA + String.format(RewardMessage.NOTIFY_WITHIN, players.size(), Hunted.getInstance().getConfigManager().nearbyRadius));
+		player.sendMessage(ChatColor.AQUA + MessageFormat.format(RewardMessage.NOTIFY_WITHIN, players.size(), Hunted.getInstance().getConfigManager().nearbyRadius));
 		players.clear(); // clear list just in case it gets stuck in memory
 	}
 	

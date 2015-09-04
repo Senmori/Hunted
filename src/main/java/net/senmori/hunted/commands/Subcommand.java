@@ -3,6 +3,7 @@ package net.senmori.hunted.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -28,8 +29,9 @@ public abstract class Subcommand {
 		this.sender = sender;
 		this.args = args;
 		
-		if(sender instanceof Player)
+		if(sender instanceof Player){
 			this.player = (Player) sender;
+		}
 		
 		if(needsPlayer && !isPlayer()) {
 			return;
@@ -46,24 +48,22 @@ public abstract class Subcommand {
 		try {
 			perform();
 		}
-		catch(Throwable e) {
-			
-		}
+		catch(Throwable e) {}
 	}
 	
 	public String getUsageTemplate(boolean displayHelp) {
 		StringBuilder ret = new StringBuilder();
 
-		ret.append(name + " ");
+		ret.append(ChatColor.GREEN + name + " ");
 
 		for (String s : requiredArgs)
-			ret.append(String.format("<%s> ", s));
+			ret.append(ChatColor.GREEN + String.format("<%s> ", s));
 
 		for (String s : optionalArgs)
-			ret.append(String.format("[%s] ", s));
+			ret.append(ChatColor.GREEN + String.format("[%s] ", s));
 
 		if (displayHelp)
-			ret.append(" - " + description);
+			ret.append(ChatColor.YELLOW + " - " + ChatColor.GREEN + description);
 
 		return ret.toString();
 	}

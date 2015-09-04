@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.senmori.hunted.Hunted;
-import net.senmori.hunted.kit.potion.PotionTypeEnum;
 import net.senmori.hunted.managers.ConfigManager;
 
 import org.bukkit.entity.Player;
@@ -86,10 +85,29 @@ public class PotionManager {
 	}
 	
 	private void load() {
-		for(PotionTypeEnum e : PotionTypeEnum.values()) {
-			potionEffectTypes.add(e.getType());
-		}
+	    // potion effect types (for drinkable potions & effects)
+		potionEffectTypes.add(PotionEffectType.SLOW);
+		potionEffectTypes.add(PotionEffectType.INCREASE_DAMAGE);
+		potionEffectTypes.add(PotionEffectType.HEAL);
+		potionEffectTypes.add(PotionEffectType.HARM);
+		potionEffectTypes.add(PotionEffectType.JUMP);
+		potionEffectTypes.add(PotionEffectType.CONFUSION);
+		potionEffectTypes.add(PotionEffectType.REGENERATION);
+		potionEffectTypes.add(PotionEffectType.DAMAGE_RESISTANCE);
+		potionEffectTypes.add(PotionEffectType.FIRE_RESISTANCE);
+		potionEffectTypes.add(PotionEffectType.WATER_BREATHING);
+		potionEffectTypes.add(PotionEffectType.INVISIBILITY);
+		potionEffectTypes.add(PotionEffectType.BLINDNESS);
+		potionEffectTypes.add(PotionEffectType.NIGHT_VISION);
+		potionEffectTypes.add(PotionEffectType.HUNGER);
+		potionEffectTypes.add(PotionEffectType.WEAKNESS);
+		potionEffectTypes.add(PotionEffectType.POISON);
+		potionEffectTypes.add(PotionEffectType.HEALTH_BOOST);
+		potionEffectTypes.add(PotionEffectType.ABSORPTION);
+		potionEffectTypes.add(PotionEffectType.SATURATION);
+		potionEffectTypes.add(PotionEffectType.SPEED);
 		
+		// potion types (for splash potions)
 		potionTypes.add(PotionType.REGEN);
 		potionTypes.add(PotionType.SPEED);
 		potionTypes.add(PotionType.FIRE_RESISTANCE);

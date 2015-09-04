@@ -22,7 +22,7 @@ public class AddCommand extends Subcommand {
 		this.needsPlayer = true;
 		this.description = "Command to add stones or specified locations to Hunted";
 		this.permission = Permissions.COMMAND_ADD;
-		this.optionalArgs = Arrays.asList("stone|lobby|spawn|store");
+		this.optionalArgs = Arrays.asList("stone", "lobby", "spawn", "store");
 		
 		parameters = new ArrayList<Subcommand>();
 		// add arguments

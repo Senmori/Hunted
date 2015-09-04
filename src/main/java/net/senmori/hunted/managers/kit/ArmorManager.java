@@ -8,6 +8,7 @@ import net.senmori.hunted.Hunted;
 import net.senmori.hunted.kit.armor.Armor;
 import net.senmori.hunted.kit.armor.ArmorEnchantment;
 import net.senmori.hunted.kit.armor.ArmorSlot;
+import net.senmori.hunted.util.LogHandler;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -19,10 +20,12 @@ public class ArmorManager {
     private Hunted plugin;
     
     private List<ArmorEnchantment> possibleEnchantments;
+    private List<Armor> possibleArmor;
     
 	public ArmorManager(Hunted plugin) {
 	    this.plugin = plugin;
 	    possibleEnchantments = new ArrayList<>();
+	    possibleArmor = new ArrayList<>();
 	    load();
 	}
 	
@@ -34,35 +37,48 @@ public class ArmorManager {
 	    possibleArmor.add(ArmorSlot.LEGGINGS);
 	    possibleArmor.add(ArmorSlot.BOOTS);
 	    int numArmorPieces = (int) (Math.random() * (3 - 1) + 1);
+	    player.sendMessage("Generating " + numArmorPieces + " pieces of armor");
 	    Collections.shuffle(possibleArmor);
 	    for(int i = 0; i < numArmorPieces; i++) {
 	        switch(possibleArmor.get(i)) {
     	        case HELMET:
     	            ItemStack helmet = generateHelmet();
-    	            player.getInventory().setHelmet(helmet);
+    	            if(player.getInventory().getHelmet() != null || player.getInventory().getHelmet().getType().equals(Material.AIR)) {
+    	                player.getInventory().addItem(helmet);
+    	            } else {
+    	              player.getInventory().setHelmet(helmet);  
+    	            }
     	            player.sendMessage("Helmet: " + helmet.getType());
-    	            Collections.shuffle(possibleArmor);
     	            continue;
     	        case CHESTPLATE:
     	            ItemStack chest = generateChestplate();
-    	            player.getInventory().setChestplate(chest);
+    	            if(player.getInventory().getChestplate() != null || player.getInventory().getHelmet().getType().equals(Material.AIR)) {
+    	                player.getInventory().addItem(chest);
+    	            } else {
+    	              player.getInventory().setChestplate(chest);  
+    	            }
     	            player.sendMessage("Chestplate: " + chest.getType());
-    	            Collections.shuffle(possibleArmor);
     	            continue;
     	        case LEGGINGS:
     	            ItemStack legs = generateLeggings();
-    	            player.getInventory().setChestplate(legs);
+    	            if(player.getInventory().getLeggings() != null || player.getInventory().getHelmet().getType().equals(Material.AIR)) {
+    	                player.getInventory().addItem(legs);
+    	            } else {
+    	                player.getInventory().setLeggings(legs);
+    	            }
     	            player.sendMessage("Leggings: " + legs.getType());
-    	            Collections.shuffle(possibleArmor);
     	            continue;
     	        case BOOTS:
     	            ItemStack boots = generateBoots();
+    	            if(player.getInventory().getBoots() != null || player.getInventory().getBoots().getType().equals(Material.AIR)) {
+    	                player.getInventory().addItem(boots);
+    	            } else {
+    	                player.getInventory().setBoots(boots);
+    	            }
     	            player.getInventory().setBoots(boots);
     	            player.sendMessage("Boots: " + boots.getType());
-    	            Collections.shuffle(possibleArmor);
     	            continue;
 	            default:
-	                Collections.shuffle(possibleArmor);
 	                continue;
 	                
 	        }
@@ -85,14 +101,14 @@ public class ArmorManager {
 	    return generatePiece(ArmorSlot.BOOTS);
 	}
 	
-	private ItemStack generatePiece(ArmorSlot slot) {
-	    Material type = null;
+	public ItemStack generatePiece(ArmorSlot slot) {
 	    Armor armor = null;
-	    while(!armor.getSlot().equals(slot)) {
-	        armor = Armor.values()[(int)(Math.random() * (Armor.values().length) + 1)];
-	        if(armor.getSlot().equals(slot)) break;
-	    }
-	    type = armor.getType();
+	    do{
+	        armor = possibleArmor.get((int)(Math.random() * (possibleArmor.size() - 1) + 1));
+	    } while(!armor.getSlot().equals(slot));
+	    Material type = armor.getType();
+	    LogHandler.info("Armor Slot: " + armor.getSlot().toString());
+	    LogHandler.info("Armor Type: " + type.toString());
 	    ItemStack armorPiece = new ItemStack(type);
 	    armorPiece.setDurability(getRandomDurability(armorPiece));
 	    // 10% chance to have random enchantment on armor upon generation
@@ -118,6 +134,10 @@ public class ArmorManager {
    private void load() {
        for(ArmorEnchantment e : ArmorEnchantment.values()) {
            possibleEnchantments.add(e);
+       }
+       
+       for(Armor arm : Armor.values()) {
+           possibleArmor.add(arm);
        }
    }
 

@@ -1,5 +1,6 @@
 package net.senmori.hunted.commands.delete.parameters;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 
 import net.senmori.hunted.Hunted;
@@ -31,7 +32,8 @@ public class DeleteLocation extends Subcommand {
                 getPlayer().sendMessage(ChatColor.RED + ErrorMessage.LOCATION_DELETE_ERROR);
                 return;
             }
-            getPlayer().sendMessage(ChatColor.GREEN + SuccessMessage.LOCATION_REMOVED.replace("%loc", toRemove));
+            //getPlayer().sendMessage(ChatColor.GREEN + SuccessMessage.LOCATION_REMOVED.replace("%loc", toRemove));
+            getPlayer().sendMessage(ChatColor.GREEN + MessageFormat.format(SuccessMessage.LOCATION_REMOVED, toRemove));
             return;
         }
         Location remove = getPlayer().getLocation();

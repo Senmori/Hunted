@@ -1,6 +1,7 @@
 package net.senmori.hunted.commands.edit.parameters;
 
 import java.io.File;
+import java.text.MessageFormat;
 import java.util.Arrays;
 
 import org.bukkit.ChatColor;
@@ -36,7 +37,7 @@ public class EditActiveMap extends Subcommand {
         Hunted.getInstance().getConfig().set("settings.active-map-configuration", fileName);
         // load new map configuration
         Hunted.getInstance().getConfigManager().getActiveMapConfiguration().load();
-        getPlayer().sendMessage(ChatColor.GREEN + SuccessMessage.MAP_CONFIGURATION_CHANGED.replace("%map", fileName));
+        getPlayer().sendMessage(ChatColor.GREEN + MessageFormat.format(SuccessMessage.MAP_CONFIGURATION_CHANGED, fileName));
     }
 
 }

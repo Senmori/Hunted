@@ -6,8 +6,7 @@ import java.util.List;
 
 import org.bukkit.enchantments.Enchantment;
 
-public enum WeaponEnchant
-{
+public enum WeaponEnchant {
 	ARROW_DAMAGE(Enchantment.ARROW_DAMAGE, new ArrayList<WeaponType>(Arrays.asList(WeaponType.BOW))),
 	ARROW_FIRE(Enchantment.ARROW_FIRE, new ArrayList<WeaponType>(Arrays.asList(WeaponType.BOW))),
 	ARROW_KNOCKBACK(Enchantment.ARROW_KNOCKBACK, new ArrayList<WeaponType>(Arrays.asList(WeaponType.BOW))),

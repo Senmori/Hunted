@@ -1,7 +1,6 @@
 package net.senmori.hunted.kit.weapon;
 
-public class Bow
-{
+public class Bow {
 
 	/*
 	 * Sword names without adverbs

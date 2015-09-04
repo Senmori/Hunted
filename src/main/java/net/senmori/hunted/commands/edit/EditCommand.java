@@ -18,7 +18,7 @@ public class EditCommand extends Subcommand {
 		this.needsPlayer = true;
 		this.permission = Permissions.COMMAND_EDIT;
 		this.description = "Command used to edit a guardian stone, config options, or the active map configuration";
-		this.optionalArgs = Arrays.asList("config|stone|map");
+		this.optionalArgs = Arrays.asList("config", "stone", "map");
 		
 		parameters = new ArrayList<>();
 		

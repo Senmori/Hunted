@@ -1,5 +1,6 @@
 package net.senmori.hunted.stones;
 
+import java.text.MessageFormat;
 import java.util.concurrent.TimeUnit;
 
 import net.md_5.bungee.api.ChatColor;
@@ -29,7 +30,8 @@ public class GuardianStone extends Stone {
 		// stone isn't active, send message
 		if(!isActive()) {
 			int timeUntilActiveMin = (int) TimeUnit.MILLISECONDS.toMinutes(getElapsedTime() - cooldown);
-			player.sendMessage(ChatColor.YELLOW + String.format(RewardMessage.COLD_STONE, timeUntilActiveMin));
+			//player.sendMessage(ChatColor.YELLOW + String.format(RewardMessage.COLD_STONE, timeUntilActiveMin));
+			player.sendMessage(ChatColor.YELLOW + MessageFormat.format(RewardMessage.COLD_STONE, timeUntilActiveMin));
 			return;
 		}
 		Hunted.getInstance().getRewardManager().generateReward(player);

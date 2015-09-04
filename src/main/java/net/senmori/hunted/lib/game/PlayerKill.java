@@ -7,8 +7,8 @@ import org.bukkit.entity.EntityType;
 
 public class PlayerKill {
     
-    private String aggressorUUID;
-    private String targetUUID;
+    private String killerUUID;
+    private String killedUUID;
     private KillMethod killMethod;
     private int killDistance;
     private EntityType aggressorType;
@@ -16,21 +16,21 @@ public class PlayerKill {
     private Timestamp timestamp;
     
     public PlayerKill(Entity killer, Entity killed, KillMethod killMethod, int distance) {
-        this.aggressorUUID = killer.getUniqueId().toString();
-        this.targetUUID = killed.getUniqueId().toString();
+        this.killerUUID = killer.getUniqueId().toString();
+        this.killedUUID = killed.getUniqueId().toString();
         this.killMethod = killMethod;
         this.killDistance = distance;
         this.aggressorType = killer.getType();
         this.targetType = killed.getType();
-        this.timestamp = new Timestamp(System.nanoTime());
+        this.timestamp = new Timestamp(System.currentTimeMillis());
     }
     
     public String getAggressorUUID() {
-        return aggressorUUID;
+        return killerUUID;
     }
     
     public String getTargetUUID() {
-        return targetUUID;
+        return killedUUID;
     }
     
     public KillMethod getKillMethod() {

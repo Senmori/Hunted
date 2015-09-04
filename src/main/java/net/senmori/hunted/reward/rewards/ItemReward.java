@@ -4,25 +4,21 @@ import net.senmori.hunted.reward.Reward;
 
 import org.bukkit.entity.Player;
 
-public class ItemReward extends Reward 
-{
+public class ItemReward extends Reward {
 	
 	private String name;
-	public ItemReward(String name) 
-	{
+	public ItemReward(String name) {
 		this.name = name;			
-	};
+	}
 	
 	@Override
-	public void generateLoot(Player player) 
-	{
+	public void generateLoot(Player player) {
 		
 	}
 
 	
 	@Override
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
 }

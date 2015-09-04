@@ -2,8 +2,7 @@ package net.senmori.hunted.kit.item;
 
 import org.bukkit.Material;
 
-public class Item
-{
+public class Item {
 	/**
 	 * ItemRewards are what a player can receive that are either food, perform a special function or something else entirely <BR>
 	 * {@link #type} - what type of material this item is created from <br>
@@ -11,8 +10,7 @@ public class Item
 	 * {@link #maxReceivable} - how many of this item can be received at one time <br>
 	 *
 	 */
-	public enum ItemReward
-	{
+	public enum ItemReward {
 		APPLE(Material.APPLE, Category.FOOD, Material.APPLE.getMaxStackSize()),
 		BREAD(Material.BREAD, Category.FOOD, Material.BREAD.getMaxStackSize()),
 		CAKE(Material.CAKE, Category.FOOD, Material.CAKE.getMaxStackSize()),
@@ -41,28 +39,24 @@ public class Item
 		private Category category;
 		/** How many of this item can be received at once */
 		private int maxReceivable;
-		ItemReward(Material material, Category category, int maxReceivable)
-		{
+		ItemReward(Material material, Category category, int maxReceivable) {
 			this.type = material;
 			this.category = category;
 			this.maxReceivable = maxReceivable;
 		}
 		
 		/** Get the {@link Material} of  this ItemReward */
-		public Material getType()
-		{
+		public Material getType() {
 			return this.type;
 		}
 		
 		/** Get what {@link Category} this item fits into */
-		public Category getCategory()
-		{
+		public Category getCategory() {
 			return this.category;
 		}
 		
 		/** Get how many of this item can be received at once */
-		public int getMaxAmountReceivable()
-		{
+		public int getMaxAmountReceivable() {
 			return this.maxReceivable;
 		}
 	}
@@ -74,8 +68,7 @@ public class Item
 	 * {@link UTILITY} - performs a function other than what it normally does(compass, etc.) <br>
 	 * {@link OTHER} - does not match criteria for first two categories <br>
 	 */
-	public enum Category
-	{
+	public enum Category {
 		FOOD,
 		UTILITY,
 		OTHER;

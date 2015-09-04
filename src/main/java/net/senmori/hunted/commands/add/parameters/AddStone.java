@@ -1,5 +1,6 @@
 package net.senmori.hunted.commands.add.parameters;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Set;
 
