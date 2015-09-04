@@ -21,7 +21,6 @@ public class DebugCommand extends Subcommand
 	protected void perform() {
 	    getPlayer().sendMessage("Generating armor");
 	    ItemStack piece = Hunted.getInstance().getArmorManager().generatePiece(ArmorSlot.HELMET);
-	    getPlayer().sendMessage(piece.getType().toString());
 	    getPlayer().getInventory().addItem(piece);
 	}
 }

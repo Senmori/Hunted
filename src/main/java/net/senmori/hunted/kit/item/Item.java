@@ -11,27 +11,27 @@ public class Item {
 	 *
 	 */
 	public enum ItemReward {
-		APPLE(Material.APPLE, Category.FOOD, Material.APPLE.getMaxStackSize()),
-		BREAD(Material.BREAD, Category.FOOD, Material.BREAD.getMaxStackSize()),
-		CAKE(Material.CAKE, Category.FOOD, Material.CAKE.getMaxStackSize()),
-		COOKED_CHICKEN(Material.COOKED_CHICKEN, Category.FOOD, Material.COOKED_CHICKEN.getMaxStackSize()),
-		COOKED_FISH(Material.COOKED_FISH, Category.FOOD, Material.COOKED_FISH.getMaxStackSize()),
-		COOKED_MUTTON(Material.COOKED_MUTTON, Category.FOOD, Material.COOKED_MUTTON.getMaxStackSize()),
-		COOKED_PORKCHOP(Material.GRILLED_PORK, Category.FOOD, Material.GRILLED_PORK.getMaxStackSize()),
-		COOKED_RABBIT(Material.COOKED_RABBIT, Category.FOOD, Material.COOKED_RABBIT.getMaxStackSize()),
-		GOLDEN_APPLE(Material.GOLDEN_APPLE, Category.FOOD, Material.GOLDEN_APPLE.getMaxStackSize()),
-		GOLDEN_CARROT(Material.GOLDEN_CARROT, Category.FOOD, Material.GOLDEN_CARROT.getMaxStackSize()),
+		APPLE(Material.APPLE, Category.FOOD, 16),
+		BREAD(Material.BREAD, Category.FOOD, 16),
+		CAKE(Material.CAKE, Category.FOOD, 1),
+		COOKED_CHICKEN(Material.COOKED_CHICKEN, Category.FOOD, 16),
+		COOKED_FISH(Material.COOKED_FISH, Category.FOOD, 16),
+		COOKED_MUTTON(Material.COOKED_MUTTON, Category.FOOD, 16),
+		COOKED_PORKCHOP(Material.GRILLED_PORK, Category.FOOD, 16),
+		COOKED_RABBIT(Material.COOKED_RABBIT, Category.FOOD, 16),
+		GOLDEN_APPLE(Material.GOLDEN_APPLE, Category.FOOD, 16),
+		GOLDEN_CARROT(Material.GOLDEN_CARROT, Category.FOOD, 16),
 		MUSHROOM_STEW(Material.MUSHROOM_SOUP, Category.FOOD, 6),
 		PUMPKIN_PIE(Material.PUMPKIN_PIE, Category.FOOD, 3),
 		RABBIT_STEW(Material.RABBIT_STEW, Category.FOOD, 2),
-		ROTTEN_FLESH(Material.ROTTEN_FLESH, Category.FOOD, Material.ROTTEN_FLESH.getMaxStackSize()),
-		STEAK(Material.COOKED_BEEF, Category.FOOD, Material.COOKED_BEEF.getMaxStackSize()),
-		BAKED_POTATO(Material.BAKED_POTATO, Category.FOOD, Material.BAKED_POTATO.getMaxStackSize()),
+		ROTTEN_FLESH(Material.ROTTEN_FLESH, Category.FOOD, 16),
+		STEAK(Material.COOKED_BEEF, Category.FOOD, 16),
+		BAKED_POTATO(Material.BAKED_POTATO, Category.FOOD, 24),
 		WARP_STAR(Material.NETHER_STAR, Category.UTILITY, 1),
 		MAP(Material.MAP, Category.UTILITY, 1),
 		FIREWORK(Material.FIREWORK, Category.UTILITY, 1),
 		COMPASS(Material.COMPASS, Category.UTILITY, 1),
-		ENDERPEARL(Material.ENDER_PEARL, Category.OTHER, Material.ENDER_PEARL.getMaxStackSize());
+		ENDERPEARL(Material.ENDER_PEARL, Category.OTHER, 8);
 		
 		/** What material this item is made out of */
 		private Material type;

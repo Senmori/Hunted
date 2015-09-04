@@ -101,7 +101,7 @@ public class PlayerListener implements Listener {
 	        if(plugin.getConfigManager().activeWorld.equals(e.getPlayer().getLocation().getWorld().getName())) {
 	            if(e.getItemDrop().getItemStack().getType().equals(Material.TNT)) {
 	                e.getItemDrop().setMetadata("tnt-explosion", new FixedMetadataValue(Hunted.getInstance(), true));
-	                new DelayedTntExplosion(plugin, e.getItemDrop(), 1.3f, false);
+	                new DelayedTntExplosion(e.getItemDrop(), 1.3f, false, false);
 	            } 
 	        }
 	    }

@@ -9,12 +9,12 @@ import java.util.Map;
 import java.util.Random;
 
 import net.senmori.hunted.Hunted;
-import net.senmori.hunted.kit.weapon.Bow.BowName;
-import net.senmori.hunted.kit.weapon.Bow.BowTitle;
 import net.senmori.hunted.kit.weapon.HuntedWeapon;
-import net.senmori.hunted.kit.weapon.Sword.SwordName;
-import net.senmori.hunted.kit.weapon.Sword.SwordTitle;
-import net.senmori.hunted.kit.weapon.WeaponEnchant;
+import net.senmori.hunted.kit.weapon.bow.Bow.BowName;
+import net.senmori.hunted.kit.weapon.bow.Bow.BowTitle;
+import net.senmori.hunted.kit.weapon.enchantment.WeaponEnchant;
+import net.senmori.hunted.kit.weapon.sword.Sword.SwordName;
+import net.senmori.hunted.kit.weapon.sword.Sword.SwordTitle;
 import net.senmori.hunted.kit.weapon.WeaponType;
 
 import org.bukkit.ChatColor;

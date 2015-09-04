@@ -24,8 +24,7 @@ public class IrritatingReward extends Reward {
 		ItemStack[] inventory = player.getInventory().getContents();
 		Random rand = new Random();
 		
-		for(int i = 0; i <= inventory.length; i++)
-		{
+		for(int i = 0; i <= inventory.length; i++) {
 			int oldSlot = i;
 			int newSlot = rand.nextInt(inventory.length+1);
 			

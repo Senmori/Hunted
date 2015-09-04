@@ -1,8 +1,10 @@
-package net.senmori.hunted.kit.weapon;
+package net.senmori.hunted.kit.weapon.enchantment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import net.senmori.hunted.kit.weapon.WeaponType;
 
 import org.bukkit.enchantments.Enchantment;
 

@@ -36,7 +36,7 @@ public class ArmorManager {
 	    possibleArmor.add(ArmorSlot.CHESTPLATE);
 	    possibleArmor.add(ArmorSlot.LEGGINGS);
 	    possibleArmor.add(ArmorSlot.BOOTS);
-	    int numArmorPieces = (int) (Math.random() * (3 - 1) + 1);
+	    int numArmorPieces = (int) (Math.random() * (3 - 1) + 1); // generate up to 3 pieces of armor, minimum of 1
 	    player.sendMessage("Generating " + numArmorPieces + " pieces of armor");
 	    Collections.shuffle(possibleArmor);
 	    for(int i = 0; i < numArmorPieces; i++) {
@@ -102,15 +102,19 @@ public class ArmorManager {
 	}
 	
 	public ItemStack generatePiece(ArmorSlot slot) {
-	    Armor armor = null;
-	    do{
-	        armor = possibleArmor.get((int)(Math.random() * (possibleArmor.size() - 1) + 1));
-	    } while(!armor.getSlot().equals(slot));
+	    Armor armor = possibleArmor.get((int)(Math.random() * (possibleArmor.size() - 1) + 1));
+	    if(!armor.getSlot().equals(slot)) {
+	        while(!armor.getSlot().equals(slot)) {
+	           armor = possibleArmor.get((int)(Math.random() * (possibleArmor.size() - 1) + 1));
+	           if(armor.getSlot().equals(slot)) break;
+	        }
+	    }
 	    Material type = armor.getType();
 	    LogHandler.info("Armor Slot: " + armor.getSlot().toString());
 	    LogHandler.info("Armor Type: " + type.toString());
 	    ItemStack armorPiece = new ItemStack(type);
 	    armorPiece.setDurability(getRandomDurability(armorPiece));
+	    LogHandler.info("Armor Durability: " + armorPiece.getDurability());
 	    // 10% chance to have random enchantment on armor upon generation
 	    if( ((int)(Math.random() * (10 - 1) + 1)) >= 10) {
 	        armorPiece.addEnchantment(getRandomEnchant(armor.getSlot()), (int)(Math.random() * (plugin.getConfigManager().maxEnchantLevel + 1)));
@@ -124,9 +128,10 @@ public class ArmorManager {
    
    private Enchantment getRandomEnchant(ArmorSlot slot) {
        ArmorEnchantment armorEnchant = null;
-       while(!armorEnchant.getSlot().equals(slot)) {
+       // return enchantment if it matches given slot, or it can be applied to any piece of armor
+       while(!armorEnchant.getSlot().equals(slot) || !armorEnchant.getSlot().equals(ArmorSlot.ALL)) {
            armorEnchant = possibleEnchantments.get((int)Math.random() * (possibleEnchantments.size() - 1) + 1);
-           if(armorEnchant.getSlot().equals(slot)) break;
+           if(armorEnchant.getSlot().equals(slot) || armorEnchant.getSlot().equals(ArmorSlot.ALL)) break;
        }
        return armorEnchant.getEnchant();
    }

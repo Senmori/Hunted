@@ -1,4 +1,4 @@
-package net.senmori.hunted.kit.weapon;
+package net.senmori.hunted.kit.weapon.sword;
 
 public class Sword {
 	/*

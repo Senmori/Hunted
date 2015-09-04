@@ -7,25 +7,21 @@ import net.senmori.hunted.reward.Reward;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionType;
 
-public class PotionReward extends Reward 
-{	
+public class PotionReward extends Reward  {	
 	private List<PotionType> potions;
 	private String name;
 	
-	public PotionReward(String name) 
-	{
+	public PotionReward(String name) {
 		this.name = name;
 	}
 	
 	@Override
-	public void generateLoot(Player player) 
-	{
+	public void generateLoot(Player player) {
 
 	}
 	
 	@Override
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
 }
