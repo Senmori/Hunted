@@ -46,12 +46,7 @@ public class Hunted extends JavaPlugin {
 	private static Hunted instance;
 	public static Logger log;
 
-	// File variables
-	public static File pluginConfigFile;
-
-	// config
-	public static FileConfiguration config; // plugin config
-
+	
 	// plugin vars
 	private PluginDescriptionFile pdf;
 	public static String name;

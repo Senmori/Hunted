@@ -21,21 +21,20 @@ public class ArmorManager {
     
     private List<ArmorEnchantment> possibleEnchantments;
     private List<Armor> possibleArmor;
+    private List<ArmorSlot> possibleSlots;
     
 	public ArmorManager(Hunted plugin) {
 	    this.plugin = plugin;
 	    possibleEnchantments = new ArrayList<>();
 	    possibleArmor = new ArrayList<>();
+	    possibleSlots = new ArrayList<>();
 	    load();
 	}
 	
 	/** Main method for generating random armor */
 	public void generateArmor(Player player) {
 	    List<ArmorSlot> possibleArmor = new ArrayList<>();
-	    possibleArmor.add(ArmorSlot.HELMET);
-	    possibleArmor.add(ArmorSlot.CHESTPLATE);
-	    possibleArmor.add(ArmorSlot.LEGGINGS);
-	    possibleArmor.add(ArmorSlot.BOOTS);
+	    possibleArmor.addAll(possibleSlots);
 	    int numArmorPieces = (int) (Math.random() * (3 - 1) + 1); // generate up to 3 pieces of armor, minimum of 1
 	    player.sendMessage("Generating " + numArmorPieces + " pieces of armor");
 	    Collections.shuffle(possibleArmor);
@@ -101,7 +100,7 @@ public class ArmorManager {
 	    return generatePiece(ArmorSlot.BOOTS);
 	}
 	
-	public ItemStack generatePiece(ArmorSlot slot) {
+	private ItemStack generatePiece(ArmorSlot slot) {
 	    Armor armor = possibleArmor.get((int)(Math.random() * (possibleArmor.size() - 1) + 1));
 	    if(!armor.getSlot().equals(slot)) {
 	        while(!armor.getSlot().equals(slot)) {
@@ -119,6 +118,7 @@ public class ArmorManager {
 	    if( ((int)(Math.random() * (10 - 1) + 1)) >= 10) {
 	        armorPiece.addEnchantment(getRandomEnchant(armor.getSlot()), (int)(Math.random() * (plugin.getConfigManager().maxEnchantLevel + 1)));
 	    }
+	    LogHandler.info("Successfully created an ItemStack for ArmorSlot: " + slot.toString());
 	    return armorPiece;
 	}
 	
@@ -143,6 +143,10 @@ public class ArmorManager {
        
        for(Armor arm : Armor.values()) {
            possibleArmor.add(arm);
+       }
+       
+       for(ArmorSlot as : ArmorSlot.values()) {
+           possibleSlots.add(as);
        }
    }
 

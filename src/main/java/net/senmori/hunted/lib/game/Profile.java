@@ -28,24 +28,6 @@ public class Profile {
     private int ascentedRewardsReceived;
     private int currentKillstreak;
     
-    // pets
-    // currently not used
-    private boolean hasPetCreeper;
-    private boolean hasPetSkeleton;
-    private boolean hasPetSpider;
-    private boolean hasPetZombie;
-    private boolean hasPetPigZombie;
-    private boolean hasPetEnderman;
-    private boolean hasPetPig;
-    private boolean hasPetSheep;
-    private boolean hasPetCow;
-    private boolean hasPetChicken;
-    private boolean hasPetMooshroom;
-    private boolean hasPetSquid;
-    private String petName;
-    
-    // kits
-    
     // session kills
     private Set<PlayerKill> sessionKills;
     

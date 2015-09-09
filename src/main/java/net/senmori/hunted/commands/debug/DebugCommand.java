@@ -1,11 +1,7 @@
 package net.senmori.hunted.commands.debug;
 
-import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
-import net.senmori.hunted.kit.armor.ArmorSlot;
 import net.senmori.hunted.util.Reference.Permissions;
-
-import org.bukkit.inventory.ItemStack;
 
 public class DebugCommand extends Subcommand
 {
@@ -19,8 +15,5 @@ public class DebugCommand extends Subcommand
 
 	@Override
 	protected void perform() {
-	    getPlayer().sendMessage("Generating armor");
-	    ItemStack piece = Hunted.getInstance().getArmorManager().generatePiece(ArmorSlot.HELMET);
-	    getPlayer().getInventory().addItem(piece);
 	}
 }

@@ -1,7 +1,6 @@
 package net.senmori.hunted.managers.game;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -36,12 +35,15 @@ public class SpawnManager
 	    switch(type) {
 	        case ARENA:
 	            addHuntedLocation(loc);
+	            Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveHuntedLocation(loc);
 	            return;
 	        case LOBBY:
 	            addLobbyLocation(loc);
+	            Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveLobbyLocation(loc);
 	            return;
 	        case STORE:
 	            addStoreLocation(loc);
+	            Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveStoreLocation(loc);
 	            return;
 	        default:
 	            return;
@@ -50,15 +52,35 @@ public class SpawnManager
 	
 	public boolean removeLocation(Location loc) {
 	    MapConfiguration map = Hunted.getInstance().getConfigManager().getActiveMapConfiguration();
-	    if(removeHuntedLocation(loc)) {
-	        // update map configuration
-	        return true;
-	    } else if(removeLobbyLocation(loc)) {
+	    SerializedLocation current = null;
+	    for(SerializedLocation sLoc : getSerializedLocation(loc).keySet()) {
+	        if(sLoc.getLocation().equals(loc)) {
+	            current = sLoc;
+	            break;
+	        }
+	    }
+	    
+	    if(current != null) {
+	        for(SerializedLocation hunted : getHuntedLocations()) {
+	            if(hunted.getLocation().equals(current.getLocation())) {
+	                map.removeHuntedLocation(current);
+	                return true;
+	            }
+	        }
 	        
-	        return true;
-	    } else if(removeStoreLocation(loc)) {
+	        for(SerializedLocation lobby : getLobbyLocations()) {
+	            if(lobby.getLocation().equals(current.getLocation())) {
+	                map.removeLobbyLocation(current);
+	                return true;
+	            }
+	        }
 	        
-	        return true;
+	        for(SerializedLocation store : getStoreLocations()) {
+	            if(store.getLocation().equals(current.getLocation())) {
+	                map.removeStoreLocation(current);
+	                return true;
+	            }
+	        }
 	    }
 	    return false;
 	}
@@ -72,6 +94,11 @@ public class SpawnManager
 	    return null;
 	}
 	
+	/** Get all possible SerializedLocations for a given location
+	 *  Just in case someone put a location in two lists.
+	 * @param loc
+	 * @return
+	 */
 	public Map<SerializedLocation, LocationType> getSerializedLocation(Location loc) {
 	    LocationType type = LocationType.OTHER;
 	    Map<SerializedLocation, LocationType> location = new HashMap<>();
@@ -196,7 +223,7 @@ public class SpawnManager
 	    return false;
 	}
 	
-	/** Get a location by name, from either {@link #lobbyLocations} or {@link #huntedLocations} */
+	/** Get a location it's name */
 	public SerializedLocation getLocationByName(String name) {
 		for(SerializedLocation loc : getLocations()) {
 			if(loc.getName().equalsIgnoreCase(name)) {

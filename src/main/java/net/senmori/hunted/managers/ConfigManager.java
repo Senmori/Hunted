@@ -10,11 +10,14 @@ import net.senmori.hunted.lib.MapConfiguration;
 import net.senmori.hunted.util.LogHandler;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ConfigManager  {
     private Hunted plugin;
     
+    private File file;
+    private FileConfiguration config;
     
 	// settings
 	public boolean debug;
@@ -56,21 +59,19 @@ public class ConfigManager  {
 			Hunted.getInstance().getDataFolder().mkdirs();
 		}
 		
-		Hunted.pluginConfigFile = new File(Hunted.getInstance().getDataFolder(), "config.yml");
-		if(!Hunted.pluginConfigFile.exists()) {
-		    Hunted.pluginConfigFile.getParentFile().mkdirs();
+		file = new File(Hunted.getInstance().getDataFolder(), "config.yml");
+		if(!file.exists()) {
+		    file.getParentFile().mkdirs();
 		    Hunted.getInstance().saveDefaultConfig();
 		}
-		Hunted.config = YamlConfiguration.loadConfiguration(Hunted.pluginConfigFile);
+		config = YamlConfiguration.loadConfiguration(file);
 		loadConfig();
-		//loadStones();
-		//loadLocations();
 	}
 	
 	private void loadConfig() {
 		// how would these two happen? If so, just delete and reload config .-.
 		if(Hunted.getInstance().getConfig().getConfigurationSection("settings") == null) return;
-		if(Hunted.getInstance().getConfig().getConfigurationSection("settings").getKeys(false).size() < 1) return;
+		if(Hunted.getInstance().getConfig().getConfigurationSection("settings").getKeys(false).size() < 1) return; // something is wrong, reload config?
 		
 		debug = plugin.getConfig().getBoolean("settings.debug", false);
 		defaultCooldown = plugin.getConfig().getInt("settings.cooldown", 5);		
@@ -105,7 +106,7 @@ public class ConfigManager  {
 
 	public void save() {
 		try {
-			Hunted.config.save(Hunted.pluginConfigFile);
+			config.save(file);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -115,8 +116,16 @@ public class ConfigManager  {
 	 *  Map Configuration section
 	 * ###########################
 	 */
-	public MapConfiguration getActiveMapConfiguration() {
-	    return mapConfigurations.get(activeMapConfiguration);
+	public void setActiveMapConfiguration(String name) {
+	    if(mapConfigurations.containsKey(name) && mapConfigurations.get(name) != null) {
+	        // load from hashmap & save old map just in case
+	        activeMapConfiguration = name;
+	        getActiveMapConfiguration().load();
+	        return;
+	    }
+	    activeMapConfiguration = name;
+	    mapConfigurations.put(name, new MapConfiguration(name));
+	    getActiveMapConfiguration().load();
 	}
 	
 	public void addMapConfiguration(String name, MapConfiguration config) {
@@ -130,7 +139,23 @@ public class ConfigManager  {
 	    return mapConfigurations.get(name);
 	}
 	
+   public MapConfiguration getActiveMapConfiguration() {
+        return mapConfigurations.get(activeMapConfiguration);
+    }
+	
 	public Map<String, MapConfiguration> getMapConfigurations() {
 	    return mapConfigurations;
+	}
+	
+	
+	/* 
+	 * File getters
+	 */
+	public File getConfigFile() {
+	    return file;
+	}
+	
+	public FileConfiguration getConfig() {
+	    return config;
 	}
 }

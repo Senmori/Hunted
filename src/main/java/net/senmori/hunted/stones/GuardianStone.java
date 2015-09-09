@@ -14,7 +14,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 public class GuardianStone extends Stone {	
-	private long lastActivated; // System time[in ms] in which stone was last used
+	private long lastActivated; // System time[in ms] in which stone was last activated
 	private long cooldown; // Default cooldown [in minutes]
 	
 	public GuardianStone(SerializedLocation loc) {
