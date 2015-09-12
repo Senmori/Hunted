@@ -53,8 +53,8 @@ public class Reference {
 		
 		public class SuccessMessage {
 		    public static final String MAP_CONFIGURATION_CHANGED = "Successfully changed map configuration to {0}";
-		    public static final String STONE_REMOVED = "Removed {0}";
-		    public static final String LOCATION_REMOVED = "Removed {0}";
+		    public static final String STONE_REMOVED = "Removed {0}!";
+		    public static final String LOCATION_REMOVED = "Removed {0}!";
 		}
 	
 		// All error messages stored here

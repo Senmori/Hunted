@@ -1,6 +1,5 @@
 package net.senmori.hunted.commands.add.parameters;
 
-import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -34,17 +33,17 @@ public class AddStone extends Subcommand {
 		if(targetBlock == null) {
 			getPlayer().sendMessage(ChatColor.YELLOW + ErrorMessage.STONE_CREATION_ERROR);
 			return;
-			
 		}
+		
 		switch(this.args[0]) {
 			case "guardian":
 			case "-g":
-			    stoneName = "GStone-" + Hunted.getInstance().getStoneManager().getGuardianStones().size();
+			    stoneName = "GStone-" + Hunted.getInstance().getStoneManager().getGuardianStones().size() + 1;
 				createNewStone(StoneType.GUARDIAN, targetBlock.getLocation(), stoneName);
 				break;
 			case "teleport":
 			case "-t":
-			    stoneName = "TStone-" + Hunted.getInstance().getStoneManager().getTeleportStones().size();
+			    stoneName = "TStone-" + Hunted.getInstance().getStoneManager().getTeleportStones().size() + 1;
 				createNewStone(StoneType.TELEPORT, targetBlock.getLocation(), stoneName);
 				break;
 			default:
@@ -56,10 +55,10 @@ public class AddStone extends Subcommand {
 	private void createNewStone(StoneType type, Location loc, String name) {
 		switch(type) {
 			case GUARDIAN:
-				new GuardianStone(new SerializedLocation(loc,args[1]));
+				new GuardianStone(new SerializedLocation(loc,name));
 				break;
 			case TELEPORT:
-				new TeleportStone(new SerializedLocation(loc, args[1]));
+				new TeleportStone(new SerializedLocation(loc, name));
 				break;
 			default:
 				break;

@@ -16,10 +16,9 @@ public class EditActiveMap extends Subcommand {
 
     public EditActiveMap() {
         this.name = "map";
-        this.aliases = Arrays.asList("amap", "a-map", "active-map");
         this.needsPlayer = true;
         this.permission = Permissions.COMMAND_EDIT_MAP;
-        this.requiredArgs = Arrays.asList("new map configuration");
+        this.requiredArgs = Arrays.asList("new-map-configuration");
     }
 
     @Override

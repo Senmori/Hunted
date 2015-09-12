@@ -22,9 +22,8 @@ public class AddArenaLocation extends Subcommand {
 	@Override
 	protected void perform() {
 		int count = Hunted.getInstance().getSpawnManager().getHuntedLocations().size() + 1;
-		String name = args.length >= 2? args[1] : "HLoc-" + count;
-		SerializedLocation newSpawnLocation = new SerializedLocation(getPlayer().getLocation(), name);
-		Hunted.getInstance().getSpawnManager().addHuntedLocation(newSpawnLocation);
+		String name = args.length >= 2 ? args[1] : "HLoc-" + count;
+		Hunted.getInstance().getSpawnManager().addHuntedLocation(new SerializedLocation(getPlayer().getLocation(), name));
 		getPlayer().sendMessage(ChatColor.GREEN + "Successfully created new spawn location (" + name + ")");
 	}
 
