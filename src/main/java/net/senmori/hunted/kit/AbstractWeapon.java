@@ -58,7 +58,6 @@ public abstract class AbstractWeapon
 		if(usesLeft > 0) {
 			weapon.setDurability((short)(type.getType().getMaxDurability()-usesLeft));
 		}
-		
 		return weapon;
 	}
 	

@@ -2,7 +2,6 @@ package net.senmori.hunted.managers.game;
 
 
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,27 +19,19 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
 
 public class PlayerManager {
 
 	private Hunted plugin;
     private Map<String, Profile> activePlayers;
     private Map<String, ItemStack[]> playerInventories;
-    private Map<String, Collection<PotionEffect>> playerEffects;
 	private Map<String, SerializedLocation> lastKnownLocation;
-	
-	
-	// Store information for when players are in stores in these lists
-	private Map<String, Collection<PotionEffect>> playerInStoreEffects;
 	
 	public PlayerManager(Hunted plugin) {
 	    this.plugin = plugin;
 		activePlayers = new HashMap<>();
 		playerInventories = new HashMap<>();
 		lastKnownLocation = new HashMap<>();
-		playerEffects = new HashMap<>();
-		playerInStoreEffects = new HashMap<>();
 	}
 	
 	/* ###################
@@ -53,7 +44,6 @@ public class PlayerManager {
 	    activePlayers.put(player.getUniqueId().toString(), new Profile(player));
 	    if(isPlaying(player.getUniqueId().toString())) {
 	        storeInventory(player);
-	        storeEffects(player);
 	        player.getInventory().clear();
 	        player.getActivePotionEffects().clear();
 	    }
@@ -63,9 +53,7 @@ public class PlayerManager {
    public void untrackPlayer(String uuid) {
         activePlayers.remove(uuid);
         playerInventories.remove(uuid);
-        playerEffects.remove(uuid);
         lastKnownLocation.remove(uuid);
-        playerInStoreEffects.remove(uuid);
     }
 	
    /* ######################
@@ -88,6 +76,7 @@ public class PlayerManager {
 	    player.getActivePotionEffects().clear();
 	    player.setGameMode(GameMode.ADVENTURE);
 	    // generate armor & weapon
+	    Hunted.getInstance().getKitManager().generateKit(player);
 	    // teleport to random location in arena
 	    player.teleport(plugin.getSpawnManager().getRandomHuntedLocation().getLocation());
 	    ActionBarAPI.send(player, ChatColor.GREEN + "Good luck!");
@@ -112,7 +101,6 @@ public class PlayerManager {
 	        player.sendMessage(ChatColor.RED + ErrorMessage.NO_STORE_LOCATION_ERROR);
 	        return;
 	    }
-	    playerInStoreEffects.put(player.getUniqueId().toString(), player.getActivePotionEffects());
 	    player.teleport(plugin.getSpawnManager().getRandomStoreLocation().getLocation());
 	    setState(player.getUniqueId().toString(), GameState.IN_STORE);
 	}
@@ -126,10 +114,6 @@ public class PlayerManager {
     	    default:
     	        player.teleport(plugin.getSpawnManager().getRandomLobbyLocation().getLocation());
 	    }
-	    for(PotionEffect pe : playerInStoreEffects.get(player.getUniqueId().toString())) {
-	        player.addPotionEffect(pe);
-	    }
-	    playerInStoreEffects.remove(player.getUniqueId().toString());
 	}
 	
 	
@@ -160,12 +144,6 @@ public class PlayerManager {
 	        // restore inventory
             for(ItemStack is : playerInventories.get(player.getUniqueId().toString())) {
                 player.getInventory().addItem(is);
-            }
-	        // potion effects
-	        if (playerEffects.get(player.getUniqueId().toString()) != null || !(playerEffects.get(player.getUniqueId().toString()).size() < 1)) {
-                for (PotionEffect pe : playerEffects.get(player.getUniqueId().toString())) {
-                    player.addPotionEffect(pe);
-                }
             }
 	        player.teleport(lastKnownLocation.get(player.getUniqueId()).getLocation(), TeleportCause.PLUGIN);
             untrackPlayer(player.getUniqueId().toString());
@@ -242,10 +220,6 @@ public class PlayerManager {
 
 	private void storeInventory(Player player) {
 	    playerInventories.put(player.getUniqueId().toString(), player.getInventory().getContents());
-	}
-	
-	private void storeEffects(Player player) {
-        playerEffects.put(player.getUniqueId().toString(), player.getActivePotionEffects());
 	}
 	
 	/* ####################

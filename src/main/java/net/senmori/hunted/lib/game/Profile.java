@@ -2,11 +2,14 @@ package net.senmori.hunted.lib.game;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import net.senmori.hunted.Hunted;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class Profile {
     
@@ -15,6 +18,7 @@ public class Profile {
     private int currentPlaySession;
     private long startSession;
     private GameState gameState;
+    private ItemStack[] preHuntedInventory;
     
     // current session stats
     private int kills;
@@ -52,6 +56,7 @@ public class Profile {
         } else {
             setState(GameState.NOT_PLAYING);
         }
+        preHuntedInventory = player.getInventory().getContents();
     }
     
     public GameState getState() {
@@ -63,16 +68,37 @@ public class Profile {
     }
     
     public void startSession() {
-        startSession = System.nanoTime();
+        startSession = System.currentTimeMillis();
     }
     
     public void endSession() {
-        currentPlaySession += (int) TimeUnit.MILLISECONDS.toSeconds(System.nanoTime() - startSession);
+        currentPlaySession += (int) TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - startSession);
         // save to mysql async here
     }
     
     public void addKill(PlayerKill kill) {
         sessionKills.add(kill);
+    }
+    
+    public void storePlayerInventory(Player player) {
+        preHuntedInventory = player.getInventory().getContents();
+    }
+    
+    public void loadPlayerInventory(boolean clearInventory) {
+        Player player = Bukkit.getPlayer(UUID.fromString(uuid)) != null ? Bukkit.getPlayer(UUID.fromString(uuid)) : null;
+        if(clearInventory && player != null) {
+            player.getInventory().clear();
+        }
+        
+        if(player != null) {
+            for(ItemStack stack : preHuntedInventory) {
+                player.getInventory().addItem(stack);
+            }
+        }
+    }
+    
+    public ItemStack[] getPlayerInventory() {
+        return preHuntedInventory;
     }
     
     /* ####################

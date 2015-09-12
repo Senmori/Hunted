@@ -3,12 +3,12 @@ package net.senmori.hunted.managers.kit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.kit.armor.Armor;
 import net.senmori.hunted.kit.armor.ArmorEnchantment;
 import net.senmori.hunted.kit.armor.ArmorSlot;
-import net.senmori.hunted.util.LogHandler;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -39,10 +39,11 @@ public class ArmorManager {
 	    player.sendMessage("Generating " + numArmorPieces + " pieces of armor");
 	    Collections.shuffle(possibleArmor);
 	    for(int i = 0; i < numArmorPieces; i++) {
-	        switch(possibleArmor.get(i)) {
+	        ArmorSlot current = possibleArmor.get(i);
+	        switch(current) {
     	        case HELMET:
     	            ItemStack helmet = generateHelmet();
-    	            if(player.getInventory().getHelmet() != null || player.getInventory().getHelmet().getType().equals(Material.AIR)) {
+    	            if(player.getInventory().getHelmet() != null) {
     	                player.getInventory().addItem(helmet);
     	            } else {
     	              player.getInventory().setHelmet(helmet);  
@@ -51,7 +52,7 @@ public class ArmorManager {
     	            continue;
     	        case CHESTPLATE:
     	            ItemStack chest = generateChestplate();
-    	            if(player.getInventory().getChestplate() != null || player.getInventory().getHelmet().getType().equals(Material.AIR)) {
+    	            if(player.getInventory().getChestplate() != null) {
     	                player.getInventory().addItem(chest);
     	            } else {
     	              player.getInventory().setChestplate(chest);  
@@ -60,7 +61,7 @@ public class ArmorManager {
     	            continue;
     	        case LEGGINGS:
     	            ItemStack legs = generateLeggings();
-    	            if(player.getInventory().getLeggings() != null || player.getInventory().getHelmet().getType().equals(Material.AIR)) {
+    	            if(player.getInventory().getLeggings() != null) {
     	                player.getInventory().addItem(legs);
     	            } else {
     	                player.getInventory().setLeggings(legs);
@@ -69,7 +70,7 @@ public class ArmorManager {
     	            continue;
     	        case BOOTS:
     	            ItemStack boots = generateBoots();
-    	            if(player.getInventory().getBoots() != null || player.getInventory().getBoots().getType().equals(Material.AIR)) {
+    	            if(player.getInventory().getBoots() != null) {
     	                player.getInventory().addItem(boots);
     	            } else {
     	                player.getInventory().setBoots(boots);
@@ -101,24 +102,21 @@ public class ArmorManager {
 	}
 	
 	private ItemStack generatePiece(ArmorSlot slot) {
-	    Armor armor = possibleArmor.get((int)(Math.random() * (possibleArmor.size() - 1) + 1));
+	    Random rand = new Random();
+	    Armor armor = possibleArmor.get(rand.nextInt(possibleArmor.size() + 1));
 	    if(!armor.getSlot().equals(slot)) {
 	        while(!armor.getSlot().equals(slot)) {
-	           armor = possibleArmor.get((int)(Math.random() * (possibleArmor.size() - 1) + 1));
+	           armor = possibleArmor.get(rand.nextInt(possibleArmor.size() + 1));
 	           if(armor.getSlot().equals(slot)) break;
 	        }
 	    }
 	    Material type = armor.getType();
-	    LogHandler.info("Armor Slot: " + armor.getSlot().toString());
-	    LogHandler.info("Armor Type: " + type.toString());
 	    ItemStack armorPiece = new ItemStack(type);
 	    armorPiece.setDurability(getRandomDurability(armorPiece));
-	    LogHandler.info("Armor Durability: " + armorPiece.getDurability());
 	    // 10% chance to have random enchantment on armor upon generation
-	    if( ((int)(Math.random() * (10 - 1) + 1)) >= 10) {
-	        armorPiece.addEnchantment(getRandomEnchant(armor.getSlot()), (int)(Math.random() * (plugin.getConfigManager().maxEnchantLevel + 1)));
+	    if((int)((Math.random() * (10 - 1) + 1)) >= 10) {
+	        armorPiece.addEnchantment(getRandomEnchant(armor.getSlot()), rand.nextInt(plugin.getConfigManager().maxEnchantLevel + 1));
 	    }
-	    LogHandler.info("Successfully created an ItemStack for ArmorSlot: " + slot.toString());
 	    return armorPiece;
 	}
 	
@@ -128,9 +126,10 @@ public class ArmorManager {
    
    private Enchantment getRandomEnchant(ArmorSlot slot) {
        ArmorEnchantment armorEnchant = null;
+       Random rand = new Random();
        // return enchantment if it matches given slot, or it can be applied to any piece of armor
        while(!armorEnchant.getSlot().equals(slot) || !armorEnchant.getSlot().equals(ArmorSlot.ALL)) {
-           armorEnchant = possibleEnchantments.get((int)Math.random() * (possibleEnchantments.size() - 1) + 1);
+           armorEnchant = possibleEnchantments.get(rand.nextInt(possibleEnchantments.size() + 1));
            if(armorEnchant.getSlot().equals(slot) || armorEnchant.getSlot().equals(ArmorSlot.ALL)) break;
        }
        return armorEnchant.getEnchant();

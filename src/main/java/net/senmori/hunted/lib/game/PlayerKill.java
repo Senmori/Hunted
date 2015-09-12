@@ -11,8 +11,8 @@ public class PlayerKill {
     private String killedUUID;
     private KillMethod killMethod;
     private int killDistance;
-    private EntityType aggressorType;
-    private EntityType targetType;
+    private EntityType killerType;
+    private EntityType killedType;
     private Timestamp timestamp;
     
     public PlayerKill(Entity killer, Entity killed, KillMethod killMethod, int distance) {
@@ -20,16 +20,16 @@ public class PlayerKill {
         this.killedUUID = killed.getUniqueId().toString();
         this.killMethod = killMethod;
         this.killDistance = distance;
-        this.aggressorType = killer.getType();
-        this.targetType = killed.getType();
+        this.killerType = killer.getType();
+        this.killedType = killed.getType();
         this.timestamp = new Timestamp(System.currentTimeMillis());
     }
     
-    public String getAggressorUUID() {
+    public String getKillerUUID() {
         return killerUUID;
     }
     
-    public String getTargetUUID() {
+    public String getKilledUUID() {
         return killedUUID;
     }
     
@@ -41,12 +41,12 @@ public class PlayerKill {
         return killDistance;
     }
     
-    public EntityType getAggressorType() {
-        return aggressorType;
+    public EntityType getKillerType() {
+        return killerType;
     }
     
-    public EntityType getTargetType() {
-        return targetType;
+    public EntityType getKilledType() {
+        return killedType;
     }
     
     public Timestamp getTimestamp() {

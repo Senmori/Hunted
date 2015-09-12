@@ -31,25 +31,46 @@ public class SpawnManager
 		storeLocations = new HashSet<>();
 	}
 	
-	public void addLocation(SerializedLocation loc, LocationType type) {
-	    switch(type) {
-	        case ARENA:
-	            addHuntedLocation(loc);
-	            Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveHuntedLocation(loc);
-	            return;
-	        case LOBBY:
-	            addLobbyLocation(loc);
-	            Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveLobbyLocation(loc);
-	            return;
-	        case STORE:
-	            addStoreLocation(loc);
-	            Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveStoreLocation(loc);
-	            return;
-	        default:
-	            return;
-	    }
-	}
+	/*
+	 * Add location methods
+	 */
+	/**
+    * Add a  location to {@link #huntedLocations} <br>
+    * @param loc - {@link SerializedLocation}
+    */
+   public void addHuntedLocation(SerializedLocation loc) {
+       huntedLocations.add(loc);
+   }
+   
+   /** Add a  location to {@link #huntedLocations} */
+   public void addHuntedLocation(Location loc, String locName) {
+       huntedLocations.add(new SerializedLocation(loc, locName));
+   }
+   
+   /** Add a location to {@link #lobbyLocations} */
+   public void addLobbyLocation(SerializedLocation loc) {
+       lobbyLocations.add(loc);
+   }
+   
+   /** Add a location to {@link #lobbyLocations} */
+   public void addLobbyLocation(Location loc, String locName) {
+       lobbyLocations.add(new SerializedLocation(loc, locName));
+   }
+   
+   /** Add a location to {@link #storeLocations} */
+   public void addStoreLocation(SerializedLocation loc) {
+       storeLocations.add(loc);
+   }
+   
+   /** Add a location to {@link #storeLocations} */
+   public void addStoreLocation(Location loc, String name) {
+       storeLocations.add(new SerializedLocation(loc, name));
+   }
 	
+   /*
+    * Remove location methods
+    */
+   /** Generic remove a location, it will look through all lists. Don't use this unless absolutely necessary. */
 	public boolean removeLocation(Location loc) {
 	    MapConfiguration map = Hunted.getInstance().getConfigManager().getActiveMapConfiguration();
 	    SerializedLocation current = null;
@@ -67,14 +88,12 @@ public class SpawnManager
 	                return true;
 	            }
 	        }
-	        
 	        for(SerializedLocation lobby : getLobbyLocations()) {
 	            if(lobby.getLocation().equals(current.getLocation())) {
 	                map.removeLobbyLocation(current);
 	                return true;
 	            }
 	        }
-	        
 	        for(SerializedLocation store : getStoreLocations()) {
 	            if(store.getLocation().equals(current.getLocation())) {
 	                map.removeStoreLocation(current);
@@ -85,6 +104,75 @@ public class SpawnManager
 	    return false;
 	}
 	
+	   /** Remove a location from {@link #lobbyLocations} */
+    public boolean removeLobbyLocation(SerializedLocation loc) {
+        // HashMap is empty, can't remove what's not there
+        if(lobbyLocations.isEmpty()) return true;
+        for(SerializedLocation sl : lobbyLocations) {
+            if(sl.getLocation().equals(loc.getLocation())) {
+                return lobbyLocations.remove(sl);
+            }
+        }
+        // that location didn't exist, therefore we can't remove it
+        return false;
+    }
+    
+    public boolean removeLobbyLocation(Location loc) {
+        if(lobbyLocations.isEmpty()) return true;
+        for(SerializedLocation sl : lobbyLocations) {
+            if(sl.getLocation().equals(loc)) {
+                return lobbyLocations.remove(sl);
+            }
+        }
+        return false;
+    }
+    
+    /** Remove a location from {@link #huntedLocations} */
+    public boolean removeHuntedLocation(SerializedLocation loc) {
+        if(huntedLocations.isEmpty()) return true;
+        for(SerializedLocation sl : huntedLocations) {
+            if(sl.getLocation().equals(loc)) {
+                return huntedLocations.remove(sl);
+            }
+        }
+        return false;
+    }
+    
+    public boolean removeHuntedLocation(Location loc) {
+        if(huntedLocations.isEmpty()) return true;
+        for(SerializedLocation sl : huntedLocations) {
+            if(sl.getLocation().equals(loc)) {
+                return huntedLocations.remove(sl);
+            }
+        }
+        return false;
+    }
+    
+    public boolean removeStoreLocation(SerializedLocation loc) {
+        if(storeLocations.isEmpty()) return true;
+        for(SerializedLocation sl : storeLocations) {
+            if(sl.getLocation().equals(loc)) {
+                return storeLocations.remove(sl);
+            }
+        }
+        return false;
+    }
+    
+    public boolean removeStoreLocation(Location loc) {
+        if(storeLocations.isEmpty()) return true;
+        for(SerializedLocation sl : storeLocations) {
+            if(sl.getLocation().equals(loc)) {
+                return storeLocations.remove(sl);
+            }
+        }
+        return false;
+    }
+	
+	
+	
+	/*
+	 * Get location methods
+	 */
 	public String getLocationNameByLocation(Location loc) {
 	    for(SerializedLocation sl : getLocations()) {
 	        if(sl.getLocation().equals(loc)) {
@@ -100,7 +188,6 @@ public class SpawnManager
 	 * @return
 	 */
 	public Map<SerializedLocation, LocationType> getSerializedLocation(Location loc) {
-	    LocationType type = LocationType.OTHER;
 	    Map<SerializedLocation, LocationType> location = new HashMap<>();
 	    // arena locations
 	    for(SerializedLocation sl : getHuntedLocations()) {
@@ -125,104 +212,7 @@ public class SpawnManager
 	    }
 	    return location;
 	}
-	
-	/**
-	 * Add a  location to {@link #huntedLocations} <br>
-	 * @param loc - {@link SerializedLocation}
-	 */
-	public void addHuntedLocation(SerializedLocation loc) {
-		huntedLocations.add(loc);
-	}
-	
-	/** Add a  location to {@link #huntedLocations} */
-	public void addHuntedLocation(Location loc, String locName) {
-		huntedLocations.add(new SerializedLocation(loc, locName));
-	}
-	
-	/** Add a location to {@link #lobbyLocations} */
-	public void addLobbyLocation(SerializedLocation loc) {
-		lobbyLocations.add(loc);
-	}
-	
-	/** Add a location to {@link #lobbyLocations} */
-	public void addLobbyLocation(Location loc, String locName) {
-		lobbyLocations.add(new SerializedLocation(loc, locName));
-	}
-	
-	/** Add a location to {@link #storeLocations} */
-	public void addStoreLocation(SerializedLocation loc) {
-	    storeLocations.add(loc);
-	}
-	
-	/** Add a location to {@link #storeLocations} */
-	public void addStoreLocation(Location loc, String name) {
-	    storeLocations.add(new SerializedLocation(loc, name));
-	}
-	
-	/** Remove a location from {@link #lobbyLocations} */
-	public boolean removeLobbyLocation(SerializedLocation loc) {
-		// HashMap is empty, can't remove what's not there
-		if(lobbyLocations.isEmpty()) return true;
-		for(SerializedLocation sl : lobbyLocations) {
-			if(sl.getLocation().equals(loc.getLocation())) {
-				return lobbyLocations.remove(sl);
-			}
-		}
-		// that location didn't exist, therefore we can't remove it
-		return false;
-	}
-	
-	public boolean removeLobbyLocation(Location loc) {
-	    if(lobbyLocations.isEmpty()) return true;
-	    for(SerializedLocation sl : lobbyLocations) {
-	        if(sl.getLocation().equals(loc)) {
-	            return lobbyLocations.remove(sl);
-	        }
-	    }
-	    return false;
-	}
-	
-	/** Remove a location from {@link #huntedLocations} */
-	public boolean removeHuntedLocation(SerializedLocation loc) {
-		if(huntedLocations.isEmpty()) return true;
-		for(SerializedLocation sl : huntedLocations) {
-			if(sl.getLocation().equals(loc)) {
-				return huntedLocations.remove(sl);
-			}
-		}
-		return false;
-	}
-	
-	public boolean removeHuntedLocation(Location loc) {
-	    if(huntedLocations.isEmpty()) return true;
-	    for(SerializedLocation sl : huntedLocations) {
-	        if(sl.getLocation().equals(loc)) {
-	            return huntedLocations.remove(sl);
-	        }
-	    }
-	    return false;
-	}
-	
-	public boolean removeStoreLocation(SerializedLocation loc) {
-	    if(storeLocations.isEmpty()) return true;
-	    for(SerializedLocation sl : storeLocations) {
-	        if(sl.getLocation().equals(loc)) {
-	            return storeLocations.remove(sl);
-	        }
-	    }
-	    return false;
-	}
-	
-	public boolean removeStoreLocation(Location loc) {
-	    if(storeLocations.isEmpty()) return true;
-	    for(SerializedLocation sl : storeLocations) {
-	        if(sl.getLocation().equals(loc)) {
-	            return storeLocations.remove(sl);
-	        }
-	    }
-	    return false;
-	}
-	
+
 	/** Get a location it's name */
 	public SerializedLocation getLocationByName(String name) {
 		for(SerializedLocation loc : getLocations()) {
@@ -233,6 +223,9 @@ public class SpawnManager
 		return null;
 	}
 	
+	/*
+	 * Get random location methods
+	 */
 	/**
 	 * Return a random serialized location from {@link #huntedLocations}
 	 * @return
@@ -268,7 +261,11 @@ public class SpawnManager
 	    Collections.shuffle(list);
 	    return list.get(0);
 	}
-		
+	
+	
+	/*
+	 * Generic getters
+	 */
 	/** Return all {@link #lobbyLocations} */
 	public Set<SerializedLocation> getLobbyLocations() {
 		return lobbyLocations;

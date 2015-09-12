@@ -1,6 +1,5 @@
 package net.senmori.hunted.listeners;
 
-import net.minecraft.server.v1_8_R3.Material;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.game.GameState;
 import net.senmori.hunted.stones.GuardianStone;
@@ -9,9 +8,8 @@ import net.senmori.hunted.stones.Stone.StoneType;
 import net.senmori.hunted.tasks.DelayedTntExplosion;
 import net.senmori.hunted.tasks.LogOutTimer;
 
-import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
@@ -32,8 +30,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.material.Attachable;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValueAdapter;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerListener implements Listener {
 	private Hunted plugin;
@@ -74,7 +70,9 @@ public class PlayerListener implements Listener {
 	                    // on/off
 	                    ((GuardianStone) s).toggleIndicators(block);
 	                }
-	                s.activate(e.getPlayer());
+	                if(s != null) {
+	                   s.activate(e.getPlayer()); 
+	                }
 	                return;
 	            }
 	            // cancel everything but interaction with specific items/blocks we want
@@ -86,7 +84,7 @@ public class PlayerListener implements Listener {
 	    }
 	    
 	    if(plugin.getPlayerManager().getState(e.getPlayer().getUniqueId().toString()).equals(GameState.IN_STORE)) {
-	        
+	        return;
 	    }
 	    
 	    if(plugin.getPlayerManager().getState(e.getPlayer().getUniqueId().toString()).equals(GameState.LOBBY)) {
