@@ -1,5 +1,6 @@
 package net.senmori.hunted.commands.debug;
 
+import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.util.Reference.Permissions;
 
@@ -15,5 +16,6 @@ public class DebugCommand extends Subcommand
 
 	@Override
 	protected void perform() {
+	    Hunted.getInstance().getArmorManager().generateArmor(getPlayer());
 	}
 }

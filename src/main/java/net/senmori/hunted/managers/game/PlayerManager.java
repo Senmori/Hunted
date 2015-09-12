@@ -107,13 +107,8 @@ public class PlayerManager {
 	
 	/** Teleport player out of hunted store to location depending on {@link GameState} */
 	public void leaveHuntedStore(Player player) {
-	    switch(getState(player.getUniqueId().toString())) {
-    	    case IN_GAME:
-    	        player.teleport(plugin.getSpawnManager().getRandomHuntedLocation().getLocation());
-    	        return;
-    	    default:
-    	        player.teleport(plugin.getSpawnManager().getRandomLobbyLocation().getLocation());
-	    }
+	    // TODO: eventually have a GUI that opens and the player can choose to go to the lobby or back to the arena
+	    player.teleport(plugin.getSpawnManager().getRandomHuntedLocation().getLocation());
 	}
 	
 	

@@ -83,8 +83,7 @@ public class WeaponManager {
 		return type;
 	}
 	
-	private String getRandomName(WeaponType type, boolean useTitle, boolean isAscented)
-	{
+	private String getRandomName(WeaponType type, boolean useTitle, boolean isAscented) {
 		String prefix = ChatColor.WHITE + "";
 		String name = "";
 		if(isAscented) {

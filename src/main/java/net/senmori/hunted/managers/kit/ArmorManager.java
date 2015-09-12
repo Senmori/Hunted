@@ -35,11 +35,13 @@ public class ArmorManager {
 	public void generateArmor(Player player) {
 	    List<ArmorSlot> possibleArmor = new ArrayList<>();
 	    possibleArmor.addAll(possibleSlots);
-	    int numArmorPieces = (int) (Math.random() * (3 - 1) + 1); // generate up to 3 pieces of armor, minimum of 1
+	    int numArmorPieces = (int)(Math.random() * (3 - 1) + 1); // generate up to 3 pieces of armor, minimum of 1
+	    // TODO: temporary message
 	    player.sendMessage("Generating " + numArmorPieces + " pieces of armor");
 	    Collections.shuffle(possibleArmor);
 	    for(int i = 0; i < numArmorPieces; i++) {
 	        ArmorSlot current = possibleArmor.get(i);
+	        // add armor piece to inventory if player already has the same type of armor equipped
 	        switch(current) {
     	        case HELMET:
     	            ItemStack helmet = generateHelmet();
