@@ -51,6 +51,7 @@ public class KitManager {
 	 * Generate potion(s) for a player
 	 */
 	public void generatePotions(Player player) {
-		plugin.getPotionManager().getPotion(player);
+		ItemStack potion = plugin.getPotionManager().getPotion();
+		player.getInventory().addItem(potion);
 	}
 }

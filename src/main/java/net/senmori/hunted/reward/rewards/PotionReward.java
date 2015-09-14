@@ -1,23 +1,26 @@
 package net.senmori.hunted.reward.rewards;
 
-import java.util.List;
+import java.text.MessageFormat;
 
+import net.md_5.bungee.api.ChatColor;
+import net.senmori.hunted.Hunted;
 import net.senmori.hunted.reward.Reward;
+import net.senmori.hunted.util.Reference.RewardMessage;
 
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionType;
+import org.bukkit.inventory.ItemStack;
 
 public class PotionReward extends Reward  {	
-	private List<PotionType> potions;
+
 	private String name;
-	
 	public PotionReward(String name) {
 		this.name = name;
 	}
 	
 	@Override
 	public void generateLoot(Player player) {
-
+	    ItemStack potion = Hunted.getInstance().getPotionManager().getPotion();
+	    player.sendMessage(ChatColor.GREEN + MessageFormat.format(RewardMessage.STONE_REWARD, potion.getItemMeta().getDisplayName()));
 	}
 	
 	@Override

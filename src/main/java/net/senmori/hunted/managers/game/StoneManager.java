@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.senmori.hunted.Hunted;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.stones.Stone;
 import net.senmori.hunted.stones.TeleportStone;
@@ -44,6 +45,7 @@ public class StoneManager
 	public void register(Stone stone) {
 		if(stone == null || stone.getType() == null) return;
 		masterStoneList.add(stone);
+		Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveStoneLocation(stone, stone.getLocation());
 		switch(stone.getType()) {
 			case GUARDIAN:
 					getGuardianStones().add((GuardianStone) stone);
@@ -80,6 +82,7 @@ public class StoneManager
 	public void removeStone(Stone stone) {
 	    for(Stone s : getStones()) {
 	        if(s.getLocation().equals(stone.getLocation())) {
+	            Hunted.getInstance().getConfigManager().getActiveMapConfiguration().removeStone(s);
 	            switch(stone.getType()) {
 	                case GUARDIAN:
 	                    getStones().remove(stone);
@@ -99,6 +102,7 @@ public class StoneManager
 	public void removeStone(Location loc) {
 	    for(Stone s : getStones()) {
 	        if(s.getLocation().equals(loc)) {
+	            Hunted.getInstance().getConfigManager().getActiveMapConfiguration().removeStone(s);
 	            switch(s.getType()) {
 	                case GUARDIAN:
 	                    getGuardianStones().remove(s);

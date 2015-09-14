@@ -20,9 +20,8 @@ public class RewardManager {
 	 * - give bonus xp as applicable
 	 */
 	public void generateReward(Player player) {
-		// generate loot
 		Random rand = new Random();
-		getRewards().get(rand.nextInt(getRewards().size()+1)).generateLoot(player);
+		getRewards().get(rand.nextInt(getRewards().size())).generateLoot(player);
 	}
 
 	public List<Reward> getRewards() {

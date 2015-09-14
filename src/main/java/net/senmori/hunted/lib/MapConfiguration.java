@@ -2,13 +2,18 @@ package net.senmori.hunted.lib;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.stones.Stone;
+import net.senmori.hunted.stones.TeleportStone;
 import net.senmori.hunted.stones.Stone.StoneType;
+import net.senmori.hunted.util.LogHandler;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -72,7 +77,7 @@ public class MapConfiguration {
     
     // Save name, location, cooldown(if different than global), and type
     private void saveStone(Stone stone, SerializedLocation loc) {
-        String name = stone.getName();
+        String name = loc.getName();
         getConfig().set("stone." + name + ".x", loc.getX());
         getConfig().set("stone." + name + ".y", loc.getY());
         getConfig().set("stone." + name + ".z", loc.getZ());
@@ -92,6 +97,9 @@ public class MapConfiguration {
         save();
     }
     
+    /*
+     * Remove Location methods
+     */
     private void removeLocation(SerializedLocation loc, String parent) {
         getConfig().set(parent + loc.getName(), null);
         save();
@@ -112,11 +120,109 @@ public class MapConfiguration {
         save();
     }
     
+    public void removeStone(Stone stone) {
+        removeLocation(new SerializedLocation(stone.getLocation(), stone.getName()), "stone");
+        save();
+    }
+    
     /** Load this configuration from file into appropriate maps */
     public void load() {
+        LogHandler.info("Loading new map configuration (" + name + ")");
+        int totalLocations = 0;
+        int huntedLocations = 0;
+        int storeLocations = 0;
+        int lobbyLocations = 0;
+        int totalStones = 0;
+        int guardianStones = 0;
+        int teleportStones = 0;
+        // clear locations in current maps
+        plugin.getSpawnManager().getHuntedLocations().clear();
+        plugin.getSpawnManager().getLobbyLocations().clear();
+        plugin.getSpawnManager().getStoreLocations().clear();
+        plugin.getStoneManager().getStones().clear();
+        LogHandler.info("Cleared old map configuration!");
+        World world = Bukkit.getWorld(plugin.getConfigManager().activeWorld);
+        // load hunted locations
+        for(String name : config.getConfigurationSection("hunted-loc").getKeys(false)) {
+            int x = config.getInt("hunted-loc." + name + ".x");
+            int y = config.getInt("hunted-loc." + name + ".y");
+            int z = config.getInt("hunted-loc." + name + ".z");
+            
+            Location loc = new Location(world, x, y, z);
+            plugin.getSpawnManager().addHuntedLocation(new SerializedLocation(loc, name));
+            huntedLocations++;
+        }
+        totalLocations += huntedLocations;
+        // load lobby locations
+        for(String name : config.getConfigurationSection("lobby-loc").getKeys(false)) {
+            int x = config.getInt("lobby-loc." + name + ".x");
+            int y = config.getInt("lobby-loc." + name + ".y");
+            int z = config.getInt("lobby-loc." + name + ".z");
+            
+            Location loc = new Location(world,x,y,z);
+            plugin.getSpawnManager().addLobbyLocation(new SerializedLocation(loc, name));
+            lobbyLocations++;
+            
+        }
+        totalLocations += lobbyLocations;
+        // load store locations
+        for(String name : config.getConfigurationSection("store-loc").getKeys(false)) {
+            int x = config.getInt("store-loc." + name + ".x");
+            int y = config.getInt("store-loc." + name + ".y");
+            int z = config.getInt("store-loc." + name + ".z");
+            
+            Location loc = new Location(world,x,y,z);
+            plugin.getSpawnManager().addStoreLocation(new SerializedLocation(loc, name));
+            storeLocations++;
+        }
+        totalLocations += storeLocations;
+        LogHandler.info("Loaded " + totalLocations + " locations!");
         
+        // load stone locations
+        for(String name : config.getConfigurationSection("stone").getKeys(false)) {
+            int x = config.getInt("stone." + name + ".x");
+            int y = config.getInt("stone." + name + ".y");
+            int z = config.getInt("stone." + name + ".z");
+            String type = config.getString("stone." + name + ".type");
+            int cooldown = 0;
+            int lastActivated = 0;
+            
+            Location loc = new Location(world, x, y, z);
+            
+            // if it's a guardian stone
+            if (type.equalsIgnoreCase("guardian")) {
+                if (!(config.getInt("stone." + name + ".cooldown", 0) <= 0)) {
+                    // stone has a custom cooldown
+                    cooldown = config.getInt("stone." + name + ".cooldown");
+                }
+                if (!(config.getInt("stone." + name + ".elapsedTime", 0) <= 0)) {
+                    // set the stone's elapsed time
+                    lastActivated = config.getInt("stone." + name + ".elapsedTime");
+                }
+                
+                GuardianStone gs = new GuardianStone(new SerializedLocation(loc, name));
+                if(cooldown > 0) {
+                    gs.setCooldown(cooldown);
+                }
+                if(lastActivated > 0) {
+                    // lastActivated will be how long ago this stone was activated
+                    gs.setLastActivated(gs.getCooldown() - TimeUnit.MINUTES.toMillis(lastActivated));
+                }
+                guardianStones++;
+                continue;
+            }
+            new TeleportStone(new SerializedLocation(loc, name));
+            teleportStones++;
+        }
+        totalStones += (guardianStones + teleportStones);
+        LogHandler.info("Loaded " + totalStones + " stones!");
+        save();
     }
-
+    
+    
+    /*
+     * Getters
+     */
     public File getFile() {
         if(file == null) {
             file = new File(plugin.getDataFolder() + File.separator + "configurations", name + ".yml");

@@ -40,31 +40,37 @@ public class SpawnManager
     */
    public void addHuntedLocation(SerializedLocation loc) {
        huntedLocations.add(loc);
+       Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveHuntedLocation(loc);
    }
    
    /** Add a  location to {@link #huntedLocations} */
    public void addHuntedLocation(Location loc, String locName) {
        huntedLocations.add(new SerializedLocation(loc, locName));
+       Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveHuntedLocation(new SerializedLocation(loc, locName));
    }
    
    /** Add a location to {@link #lobbyLocations} */
    public void addLobbyLocation(SerializedLocation loc) {
        lobbyLocations.add(loc);
+       Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveLobbyLocation(loc);
    }
    
    /** Add a location to {@link #lobbyLocations} */
    public void addLobbyLocation(Location loc, String locName) {
        lobbyLocations.add(new SerializedLocation(loc, locName));
+       Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveLobbyLocation(new SerializedLocation(loc, locName));
    }
    
    /** Add a location to {@link #storeLocations} */
    public void addStoreLocation(SerializedLocation loc) {
        storeLocations.add(loc);
+       Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveStoreLocation(loc);
    }
    
    /** Add a location to {@link #storeLocations} */
    public void addStoreLocation(Location loc, String name) {
        storeLocations.add(new SerializedLocation(loc, name));
+       Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveStoreLocation(new SerializedLocation(loc, name));
    }
 	
    /*

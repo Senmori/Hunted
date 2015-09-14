@@ -66,9 +66,8 @@ public class PlayerListener implements Listener {
 	                    return;
 	                }
 	                if (s != null && s.getType().equals(StoneType.GUARDIAN)) {
-	                    // if this is a guardian stone, light up nearby redstone_lamps
-	                    // on/off
-	                    ((GuardianStone) s).toggleIndicators(block);
+	                    // if this is a guardian stone, toggle indicator blocks
+	                    ((GuardianStone) s).toggleIndicators();
 	                }
 	                if(s != null) {
 	                   s.activate(e.getPlayer()); 
@@ -90,7 +89,6 @@ public class PlayerListener implements Listener {
 	    if(plugin.getPlayerManager().getState(e.getPlayer().getUniqueId().toString()).equals(GameState.LOBBY)) {
 	        
 	    }
-		
 	}
 	
 	@EventHandler
@@ -122,7 +120,7 @@ public class PlayerListener implements Listener {
 		plugin.getPlayerManager().trackPlayer(e.getPlayer());
 		// if player is not in Hunted world, set GameState to NOT_PLAYING
 		Player player = e.getPlayer();
-		if(player.getWorld().getName().equals(plugin.getConfigManager().activeWorld)) {
+		if(!player.getWorld().getName().equals(plugin.getConfigManager().activeWorld)) {
 		    plugin.getPlayerManager().setState(player.getUniqueId().toString(), GameState.NOT_PLAYING);
 		    return;
 		}
@@ -193,7 +191,6 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler
 	public void onEntityDeathEvent(EntityDeathEvent e) {
-	    
 	}
 	
 	@EventHandler

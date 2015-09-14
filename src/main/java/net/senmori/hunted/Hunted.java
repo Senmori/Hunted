@@ -1,7 +1,5 @@
 package net.senmori.hunted;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import net.senmori.hunted.commands.add.AddCommand;
@@ -36,7 +34,6 @@ import net.senmori.hunted.reward.rewards.SmiteReward;
 import net.senmori.hunted.reward.rewards.TeleportReward;
 import net.senmori.hunted.util.LogHandler;
 
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 

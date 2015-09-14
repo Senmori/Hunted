@@ -14,13 +14,13 @@ public class TeleportReward extends Reward {
 	
 	@Override
 	public void generateLoot(Player player) {
-	    boolean close = true;
+	    boolean near = true;
 		Location toLoc = Hunted.getInstance().getSpawnManager().getRandomHuntedLocation().getLocation();
 		if(toLoc.distanceSquared(player.getLocation()) <= 50) {
-		    while(close) {
+		    while(near) {
 		        toLoc = Hunted.getInstance().getSpawnManager().getRandomHuntedLocation().getLocation();
-		        close = toLoc.distanceSquared(player.getLocation()) <= 50;
-		        if(!close) break;
+		        near = toLoc.distanceSquared(player.getLocation()) <= 50;
+		        if(!near) break;
 		    }
 		}
 		player.teleport(toLoc);

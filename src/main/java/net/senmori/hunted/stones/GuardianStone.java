@@ -44,7 +44,8 @@ public class GuardianStone extends Stone {
 	 * - !isActive() = lamps OFF <br>
 	 * @param block - The indicator block {@link Material#REDSTONE_LAMP_OFF} or {@link Material#REDSTONE_LAMP_ON} <br>
 	 */
-	public void toggleIndicators(Block block) {
+	public void toggleIndicators() {
+	    Block block = getLocation().getBlock();
 		if(!block.getType().equals(Material.REDSTONE_LAMP_OFF) || !block.getType().equals(Material.REDSTONE_LAMP_ON)) return;
 		for(BlockFace face : Hunted.getInstance().getStoneManager().getValidFaces()) {
 		    if(block.getRelative(face).getType().equals(Material.REDSTONE_LAMP_OFF) || block.getRelative(face).getType().equals(Material.REDSTONE_LAMP_ON)) {
@@ -78,6 +79,10 @@ public class GuardianStone extends Stone {
 	
     public int getCooldown() {
         return (int) TimeUnit.MILLISECONDS.toMinutes(cooldown);
+    }
+    
+    public void setLastActivated(long activated) {
+        lastActivated = activated;
     }
 	
 	@Override

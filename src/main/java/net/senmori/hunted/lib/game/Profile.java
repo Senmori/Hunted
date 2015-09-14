@@ -53,6 +53,7 @@ public class Profile {
         this.currentKillstreak = 0;
         if(player.getWorld().getName().equals(Hunted.getInstance().getConfigManager().activeWorld) || Hunted.getInstance().getPlayerManager().isPlaying(uuid)) {
             setState(GameState.LOBBY);
+            //player.teleport(Hunted.getInstance().getSpawnManager().getRandomLobbyLocation().getLocation());
         } else {
             setState(GameState.NOT_PLAYING);
         }
@@ -188,7 +189,7 @@ public class Profile {
     
     
     /* ######################
-     *  Variable Getters
+     *  Generic Getters
      * ######################
      */
 

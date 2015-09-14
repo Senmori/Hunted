@@ -2,7 +2,7 @@ package net.senmori.hunted.kit.item;
 
 import org.bukkit.Material;
 
-public class Item {
+public enum KitItem {
 	/**
 	 * ItemRewards are what a player can receive that are either food, perform a special function or something else entirely <BR>
 	 * {@link #type} - what type of material this item is created from <br>
@@ -10,7 +10,6 @@ public class Item {
 	 * {@link #maxReceivable} - how many of this item can be received at one time <br>
 	 *
 	 */
-	public enum ItemReward {
 		APPLE(Material.APPLE, Category.FOOD, 16),
 		BREAD(Material.BREAD, Category.FOOD, 16),
 		CAKE(Material.CAKE, Category.FOOD, 1),
@@ -19,9 +18,9 @@ public class Item {
 		COOKED_MUTTON(Material.COOKED_MUTTON, Category.FOOD, 16),
 		COOKED_PORKCHOP(Material.GRILLED_PORK, Category.FOOD, 16),
 		COOKED_RABBIT(Material.COOKED_RABBIT, Category.FOOD, 16),
-		GOLDEN_APPLE(Material.GOLDEN_APPLE, Category.FOOD, 16),
-		GOLDEN_CARROT(Material.GOLDEN_CARROT, Category.FOOD, 16),
-		MUSHROOM_STEW(Material.MUSHROOM_SOUP, Category.FOOD, 6),
+		GOLDEN_APPLE(Material.GOLDEN_APPLE, Category.FOOD, 2),
+		GOLDEN_CARROT(Material.GOLDEN_CARROT, Category.FOOD, 24),
+		MUSHROOM_STEW(Material.MUSHROOM_SOUP, Category.FOOD, 4),
 		PUMPKIN_PIE(Material.PUMPKIN_PIE, Category.FOOD, 3),
 		RABBIT_STEW(Material.RABBIT_STEW, Category.FOOD, 2),
 		ROTTEN_FLESH(Material.ROTTEN_FLESH, Category.FOOD, 16),
@@ -31,7 +30,7 @@ public class Item {
 		MAP(Material.MAP, Category.UTILITY, 1),
 		FIREWORK(Material.FIREWORK, Category.UTILITY, 1),
 		COMPASS(Material.COMPASS, Category.UTILITY, 1),
-		ENDERPEARL(Material.ENDER_PEARL, Category.OTHER, 8);
+		ENDERPEARL(Material.ENDER_PEARL, Category.OTHER, 6);
 		
 		/** What material this item is made out of */
 		private Material type;
@@ -39,7 +38,8 @@ public class Item {
 		private Category category;
 		/** How many of this item can be received at once */
 		private int maxReceivable;
-		ItemReward(Material material, Category category, int maxReceivable) {
+		
+		KitItem(Material material, Category category, int maxReceivable) {
 			this.type = material;
 			this.category = category;
 			this.maxReceivable = maxReceivable;
@@ -59,7 +59,6 @@ public class Item {
 		public int getMaxAmountReceivable() {
 			return this.maxReceivable;
 		}
-	}
 	
 	
 	/**

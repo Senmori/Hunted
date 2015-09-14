@@ -8,8 +8,6 @@ import java.util.UUID;
 import net.md_5.bungee.api.ChatColor;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.game.GameState;
-import net.senmori.hunted.managers.ConfigManager;
-import net.senmori.hunted.managers.game.StoneManager;
 import net.senmori.hunted.reward.Reward;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.util.Reference.RewardMessage;
@@ -25,11 +23,8 @@ public class NotifyReward extends Reward {
 	
 	@Override
 	public void generateLoot(Player player) {
-		// generate random number between 1 and 5
-		int rNum = (int) (Math.random() * (5-1) + 1);
-		
 		// if number is 5[20% chance], notify all players of rewardee's location
-		if(rNum % 5 == 0) {
+		if((int) (Math.random() *(5-1) + 1)>= 5) {
 			notifyAll(player);
 			return;
 		}

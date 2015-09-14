@@ -11,7 +11,6 @@ public abstract class Menu implements InventoryHolder {
     private int size;
     private Inventory inventory;
     public Menu(String title, int size) {
-        if(size > 54) this.size = 54;
         this.size = size;
         inventory = Bukkit.createInventory(null, this.size, title);
     }

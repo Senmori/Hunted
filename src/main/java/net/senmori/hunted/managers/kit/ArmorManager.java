@@ -105,10 +105,10 @@ public class ArmorManager {
 	
 	private ItemStack generatePiece(ArmorSlot slot) {
 	    Random rand = new Random();
-	    Armor armor = possibleArmor.get(rand.nextInt(possibleArmor.size() + 1));
+	    Armor armor = possibleArmor.get(rand.nextInt(possibleArmor.size()));
 	    if(!armor.getSlot().equals(slot)) {
 	        while(!armor.getSlot().equals(slot)) {
-	           armor = possibleArmor.get(rand.nextInt(possibleArmor.size() + 1));
+	           armor = possibleArmor.get(rand.nextInt(possibleArmor.size()));
 	           if(armor.getSlot().equals(slot)) break;
 	        }
 	    }
@@ -135,6 +135,21 @@ public class ArmorManager {
            if(armorEnchant.getSlot().equals(slot) || armorEnchant.getSlot().equals(ArmorSlot.ALL)) break;
        }
        return armorEnchant.getEnchant();
+   }
+   
+   /*
+    * Generic getters
+    */
+   public List<ArmorEnchantment> getPossibleEnchantments() {
+       return possibleEnchantments;
+   }
+   
+   public List<Armor> getPossibleArmor() {
+       return possibleArmor;
+   }
+   
+   public List<ArmorSlot> getPossibleSlots() {
+       return possibleSlots;
    }
    
    private void load() {
