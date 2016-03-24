@@ -6,6 +6,9 @@ import net.senmori.hunted.loottable.condition.LootCondition;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 /**
  * Smelts the item as it would be in a furnace. Used in combination with {@link EntityPropertiesCondition} to cook food from animals on death</br>
  * @author Senmori
@@ -21,16 +24,16 @@ public class FurnaceSmeltFunction extends LootFunction {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public JSONObject toJSONObject() {
-		JSONObject function = new JSONObject();
-		function.put("function", getType().getName());
+	public JsonObject toJsonObject() {
+		JsonObject function = new JsonObject();
+		function.addProperty("function", getType().getName());
 		// add conditions
 		if(conditions.size() > 0) {
-			JSONArray conditionsArray = new JSONArray();
+			JsonArray conditionsArray = new JsonArray();
 			for(LootCondition lc : conditions) {
-				conditionsArray.add(lc.toJSONObject());
+				conditionsArray.add(lc.toJsonObject());
 			}
-			function.put("conditions", conditionsArray);
+			function.add("conditions", conditionsArray);
 		}
 		return function;
 	}

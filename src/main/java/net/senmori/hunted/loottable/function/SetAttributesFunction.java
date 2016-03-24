@@ -3,10 +3,11 @@ package net.senmori.hunted.loottable.function;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import net.senmori.hunted.loottable.attribute.LootAttribute;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 /**
  * Add attribute modifiers to an item</br>
@@ -31,14 +32,14 @@ public class SetAttributesFunction extends LootFunction {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public JSONObject toJSONObject() {
-		JSONObject function = new JSONObject();
-		function.put("function", getType().getName());
-		JSONArray modArray = new JSONArray();
+	public JsonObject toJsonObject() {
+		JsonObject function = new JsonObject();
+		function.addProperty("function", getType().getName());
+		JsonArray modArray = new JsonArray();
 		for(LootAttribute la : modifiers) {
-			modArray.add(la.toJSONObject());
+			modArray.add(la.toJsonObject());
 		}
-		function.put("modifiers", modArray);
+		function.add("modifiers", modArray);
 		return function;
 	}
 

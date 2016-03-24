@@ -6,17 +6,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import net.senmori.hunted.loottable.condition.LootCondition;
 import net.senmori.hunted.loottable.entry.Entry;
 import net.senmori.hunted.loottable.entry.EntryType;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 
 public class Pool {
 	
-	private JSONObject pool;
+	private JsonObject pool;
 	/** 
 	 * Contains all the entries for this pool </br>
 	 * - String is required for easy retrieval of an Entry
@@ -28,7 +28,7 @@ public class Pool {
 	private boolean useBonusRolls, useBonusExact, useRollsAbs;
 	
 	public Pool() {
-		pool = new JSONObject();
+		pool = new JsonObject();
 		entries = new ArrayList<>(); // ensure it remains in the same order we add stuff
 		conditions = new ArrayList<>();
 		rollsAbs = 1;
@@ -76,48 +76,48 @@ public class Pool {
 		useBonusRolls = true;
 	}
 	
-	@SuppressWarnings("unchecked")
-    public JSONObject toJSONObject() {
+	
+    public JsonObject toJsonObject() {
 		// insert rolls
 		if(!useRollsAbs) {
-			JSONObject rollsList = new JSONObject();
-			rollsList.put("min", rollsMin);
-			rollsList.put("max", rollsMax);
-			pool.put("rolls", rollsList);
+			JsonObject rollsList = new JsonObject();
+			rollsList.addProperty("min", rollsMin);
+			rollsList.addProperty("max", rollsMax);
+			pool.add("rolls", rollsList);
 		} else {
-			pool.put("rolls", rollsAbs);
+			pool.addProperty("rolls", rollsAbs);
 		}
 		
 		// bonus rolls
 		if(useBonusRolls) {
 			if(useBonusExact) {
-				pool.put("bonus_rolls", bonusRollsAbs);
+				pool.addProperty("bonus_rolls", bonusRollsAbs);
 			} else {
-				JSONObject bonusRolls = new JSONObject();
-				bonusRolls.put("min", bonusRollsMin);
-				bonusRolls.put("max", bonusRollsMax);
-				pool.put("bonus_rolls", bonusRolls);
+				JsonObject bonusRolls = new JsonObject();
+				bonusRolls.addProperty("min", bonusRollsMin);
+				bonusRolls.addProperty("max", bonusRollsMax);
+				pool.add("bonus_rolls", bonusRolls);
 			}
 		}
 		
 		// add entries
 		if(entries.size() > 0) {
 			// add entries
-			JSONArray entriesArray = new JSONArray();
+			JsonArray entriesArray = new JsonArray();
 			for(Entry e : entries) {
-				entriesArray.add(e.toJSONOBject());
+				entriesArray.add(e.toJsonObject());
 			}
-			pool.put("entries", entriesArray);
+			pool.add("entries", entriesArray);
 		}
 		
 		
 		//add conditions, if present
 		if(conditions.size() > 0) {
-			JSONArray cArray = new JSONArray();
+			JsonArray cArray = new JsonArray();
 			for(LootCondition c : conditions) {
-				cArray.add(c.toJSONObject());
+				cArray.add(c.toJsonObject());
 			}
-			pool.put("conditions", cArray);
+			pool.add("conditions", cArray);
 		}
 		return pool;
 	}

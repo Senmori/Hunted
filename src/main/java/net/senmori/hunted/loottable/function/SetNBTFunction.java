@@ -1,7 +1,8 @@
 package net.senmori.hunted.loottable.function;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import net.senmori.hunted.loottable.condition.LootCondition;
 
@@ -29,16 +30,16 @@ public class SetNBTFunction extends LootFunction {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public JSONObject toJSONObject() {
-		JSONObject function = new JSONObject();
-		function.put("function", getType().getName());
-		function.put("tag", tag);
+	public JsonObject toJsonObject() {
+		JsonObject function = new JsonObject();
+		function.addProperty("function", getType().getName());
+		function.addProperty("tag", tag);
 		if(conditions.size() > 0) {
-			JSONArray conditionsArray = new JSONArray();
+			JsonArray conditionsArray = new JsonArray();
 			for(LootCondition lc : conditions) {
-				conditionsArray.add(lc.toJSONObject());
+				conditionsArray.add(lc.toJsonObject());
 			}
-			function.put("conditions", conditionsArray);
+			function.add("conditions", conditionsArray);
 		}
 		return function;
 	}

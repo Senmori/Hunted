@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.senmori.hunted.loottable.condition.LootCondition;
 
-import org.json.simple.JSONObject;
+import com.google.gson.JsonObject;
 
 public abstract class LootFunction {
 	
@@ -16,7 +16,7 @@ public abstract class LootFunction {
 		conditions = new ArrayList<>();
 	}
 
-	public abstract JSONObject toJSONObject();
+	public abstract JsonObject toJsonObject();
 	
 	public void addCondition(LootCondition lc) {
 		conditions.add(lc);

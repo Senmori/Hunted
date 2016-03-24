@@ -1,6 +1,8 @@
 package net.senmori.hunted.loottable.condition;
 
-import org.json.simple.JSONObject;
+import com.google.gson.JsonObject;
+
+
 
 public abstract class LootCondition {
 	
@@ -10,7 +12,7 @@ public abstract class LootCondition {
 	}
 	
 	
-	public abstract JSONObject toJSONObject();
+	public abstract JsonObject toJsonObject();
 	
 	public LootConditionType getType() {
 		return type;

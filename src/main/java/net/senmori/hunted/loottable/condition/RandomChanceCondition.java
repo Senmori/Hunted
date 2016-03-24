@@ -1,6 +1,8 @@
 package net.senmori.hunted.loottable.condition;
 
-import org.json.simple.JSONObject;
+import com.google.gson.JsonObject;
+
+
 
 /**
  * Condition that test a random number 0.0-1.0 is less than {@link #chance}. </br>
@@ -28,10 +30,10 @@ public class RandomChanceCondition extends LootCondition  {
 	}
 	
 	@Override
-    public JSONObject toJSONObject() {
-		JSONObject condition = new JSONObject();
-		condition.put("condition", getType().getName());
-		condition.put("chance", chance);
+    public JsonObject toJsonObject() {
+		JsonObject condition = new JsonObject();
+		condition.addProperty("condition", getType().getName());
+		condition.addProperty("chance", chance);
 	    return condition;
     }
 

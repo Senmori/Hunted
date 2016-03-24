@@ -1,7 +1,8 @@
 package net.senmori.hunted.loottable.function;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import net.senmori.hunted.loottable.condition.LootCondition;
 
@@ -48,26 +49,25 @@ public class SetDamageFunction extends LootFunction {
 		return this;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public JSONObject toJSONObject() {
-		JSONObject function = new JSONObject();
-		function.put("function", getType().getName());
+	public JsonObject toJsonObject() {
+		JsonObject function = new JsonObject();
+		function.addProperty("function", getType().getName());
 		
 		if(useDamage) {
-			JSONObject damages = new JSONObject();
-			damages.put("min", min);
-			damages.put("max", max);
-			function.put("damage", damages);
+			JsonObject damages = new JsonObject();
+			damages.addProperty("min", min);
+			damages.addProperty("max", max);
+			function.add("damage", damages);
 		} else {
-			function.put("damage", damage);
+			function.addProperty("damage", damage);
 		}
 		if(conditions.size() > 0) {
-			JSONArray conditionsArray = new JSONArray();
+			JsonArray conditionsArray = new JsonArray();
 			for(LootCondition lc : conditions) {
-				conditionsArray.add(lc.toJSONObject());
+				conditionsArray.add(lc.toJsonObject());
 			}
-			function.put("conditions", conditionsArray);
+			function.add("conditions", conditionsArray);
 		}
 		return function;
 	}

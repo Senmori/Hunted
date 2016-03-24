@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.attribute.AttributeModifier.Operation;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+
+import com.google.gson.JsonObject;
 
 public class LootAttribute {
 	
@@ -54,25 +54,24 @@ public class LootAttribute {
 		return this;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public JSONObject toJSONObject() {
-		JSONObject attribute = new JSONObject();
-		attribute.put("name", modifier.getName());
-		attribute.put("attribute", modifier.getName());
+	public JsonObject toJsonObject() {
+		JsonObject attribute = new JsonObject();
+		attribute.addProperty("name", modifier.getName());
+		attribute.addProperty("attribute", modifier.getName());
 		int operation = modifier.getOperation().equals(Operation.ADD_NUMBER)? 0 : modifier.getOperation().equals(Operation.ADD_SCALAR) ? 1 : 2;
-		attribute.put("operation", operation);
+		attribute.addProperty("operation", operation);
 		
 		// add random amounts if applicable
 		if(useRandAmounts) {
-			JSONObject amounts = new JSONObject();
-			amounts.put("min", min);
-			amounts.put("max", max);
-			attribute.put("amount", amounts);
+			JsonObject amounts = new JsonObject();
+			amounts.addProperty("min", min);
+			amounts.addProperty("max", max);
+			attribute.add("amount", amounts);
 		} else {
-			attribute.put("amount", modifier.getAmount());
+			attribute.addProperty("amount", modifier.getAmount());
 		}
-		attribute.put("id", modifier.getUniqueId());
-		attribute.put("slot", mainSlot.toString().toLowerCase());
+		attribute.addProperty("id", modifier.getUniqueId().toString());
+		attribute.addProperty("slot", mainSlot.toString().toLowerCase());
 		return attribute;
 	}
 }

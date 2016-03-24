@@ -9,6 +9,9 @@ import net.senmori.hunted.loottable.function.LootFunction;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 public class Entry {
 	
 	private List<LootCondition> conditions;
@@ -84,32 +87,31 @@ public class Entry {
 		return functions;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public JSONObject toJSONOBject() {
-		JSONObject entry = new JSONObject();
-		entry.put("type", type.getType());
+	public JsonObject toJsonObject() {
+		JsonObject entry = new JsonObject();
+		entry.addProperty("type", type.getType());
 		if(!type.equals(EntryType.EMPTY)) {
-			entry.put("name", name);
+			entry.addProperty("name", name);
 		}
-		entry.put("weight", weight);
+		entry.addProperty("weight", weight);
 		if(useQuality) {
-			entry.put("quality", quality);
+			entry.addProperty("quality", quality);
 		}
 		
 		if(conditions != null && conditions.size() > 0) {
-			JSONArray conditionsArray = new JSONArray();
+			JsonArray conditionsArray = new JsonArray();
 			for(LootCondition c : conditions) {
-				conditionsArray.add(c.toJSONObject());
+				conditionsArray.add(c.toJsonObject());
 			}
-			entry.put("conditions", conditionsArray);
+			entry.add("conditions", conditionsArray);
 		}
 		
 		if(functions != null && functions.size() > 0) {
-			JSONArray functionsArray = new JSONArray();
+			JsonArray functionsArray = new JsonArray();
 			for(LootFunction f : functions) {
-				functionsArray.add(f.toJSONObject());
+				functionsArray.add(f.toJsonObject());
 			}
-			entry.put("functions", functionsArray);
+			entry.add("functions", functionsArray);
 		}
 		return entry;
 	}

@@ -1,10 +1,10 @@
 package net.senmori.hunted.loottable.function;
 
 
-import net.senmori.hunted.loottable.condition.LootCondition;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import net.senmori.hunted.loottable.condition.LootCondition;
 
 /**
  * Enchants the associated item with the specified enchantment level, as if from an enchantment table</br>
@@ -60,24 +60,24 @@ public class EnchantWithLevelsFunction extends LootFunction {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public JSONObject toJSONObject() {
-		JSONObject function = new JSONObject();
-		function.put("function", getType().getName());
-		function.put("treasure", treasure);
-		function.put("levels", levels);
+	public JsonObject toJsonObject() {
+		JsonObject function = new JsonObject();
+		function.addProperty("function", getType().getName());
+		function.addProperty("treasure", treasure);
+		function.addProperty("levels", levels);
 		if(useLevels) {
-			JSONObject levelObject = new JSONObject();
-			levelObject.put("min", minLevel);
-			levelObject.put("max", maxLevel);
-			function.put("levels", levelObject);
+			JsonObject levelObject = new JsonObject();
+			levelObject.addProperty("min", minLevel);
+			levelObject.addProperty("max", maxLevel);
+			function.add("levels", levelObject);
 		}
 		// add conditions
 		if(conditions.size() > 0) {
-			JSONArray conditionsArray = new JSONArray();
+			JsonArray conditionsArray = new JsonArray();
 			for(LootCondition lc : conditions) {
-				conditionsArray.add(lc.toJSONObject());
+				conditionsArray.add(lc.toJsonObject());
 			}
-			function.put("conditions", conditionsArray);
+			function.add("conditions", conditionsArray);
 		}
 		return function;
 	}

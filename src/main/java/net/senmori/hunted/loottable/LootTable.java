@@ -14,11 +14,13 @@ import org.json.simple.JSONObject;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 public class LootTable {
 	
 	private File lootTableFile;
-	private JSONObject root;
+	private JsonObject root;
 	private List<Pool> pools;
 	
 	public LootTable(String worldName, String namespace, String file) {
@@ -39,7 +41,7 @@ public class LootTable {
 	            e.printStackTrace();
             }
 		}
-		root = new JSONObject();
+		root = new JsonObject();
 		pools = new ArrayList<>();
 	}
 	
@@ -67,13 +69,13 @@ public class LootTable {
     	return pools;
     }
 
-    public String toJson() {
-    	JSONArray rootArray = new JSONArray();
+    public JsonObject toJson() {
+    	JsonArray rootArray = new JsonArray();
     	for(Pool p : pools) {
-    		rootArray.add(p.toJSONObject());
+    		rootArray.add(p.toJsonObject());
     	}
-    	root.put("pools", rootArray);
-    	return root.toString();
+    	root.add("pools", rootArray);
+    	return root;
     }
     
     public File getFile() {

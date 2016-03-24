@@ -6,8 +6,10 @@ import java.util.List;
 import net.senmori.hunted.loottable.condition.LootCondition;
 
 import org.bukkit.enchantments.Enchantment;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 /**
  * Enchants the item associated with this function with a random enchantment from {@link #enchantments}, at a random level</br>
@@ -48,23 +50,23 @@ public class EnchantRandomFunction extends LootFunction {
 		return this;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
-	public JSONObject toJSONObject() {
-		JSONObject function = new JSONObject();
-		function.put("function", getType().getName());
-		JSONArray enchants = new JSONArray();
+	public JsonObject toJsonObject() {
+		JsonObject function = new JsonObject();
+		function.addProperty("function", getType().getName());
+		JsonArray enchants = new JsonArray();
 		for(String s : enchantments) {
-			enchants.add(s);
+			enchants.add(new JsonPrimitive(s));
 		}
-		function.put("enchantments", enchants);
+		function.add("enchantments", enchants);
 		// add conditions if present
 		if(conditions.size() > 0) {
-			JSONArray conditionsArray = new JSONArray();
+			JsonArray conditionsArray = new JsonArray();
 			for(LootCondition lc : conditions) {
-				conditionsArray.add(lc.toJSONObject());
+				conditionsArray.add(lc.toJsonObject());
 			}
-			function.put("conditions", conditionsArray);
+			function.add("conditions", conditionsArray);
 		}
 		return function;
 	}

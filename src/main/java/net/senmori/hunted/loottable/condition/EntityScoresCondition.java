@@ -9,6 +9,8 @@ import net.senmori.hunted.loottable.score.LootScore;
 
 import org.json.simple.JSONObject;
 
+import com.google.gson.JsonObject;
+
 /**
  * Condition that checks if an entity has a certain scoreboard value</br>
  * <i>WARNING</i>: You can use both setScoreExact(...) and setScore(...), although improper values could cause problems.</br>
@@ -42,24 +44,23 @@ public class EntityScoresCondition extends LootCondition {
 	}
 	
 	
-	@SuppressWarnings("unchecked")
 	@Override
-    public JSONObject toJSONObject() {
-		JSONObject condition = new JSONObject();
-		condition.put("condition", getType().getName());
-		JSONObject rootScore = new JSONObject();
+    public JsonObject toJsonObject() {
+		JsonObject condition = new JsonObject();
+		condition.addProperty("condition", getType().getName());
+		JsonObject rootScore = new JsonObject();
 		for(LootScore sc : scores) {
 			// if it's using an exact score, only input what's needed
 			if(sc.useExactOnly()) {
-				rootScore.put(sc.getScoreName(), sc.getExactScore());
+				rootScore.addProperty(sc.getScoreName(), sc.getExactScore());
 			} else {
-				JSONObject rand = new JSONObject();
-				rand.put("min", sc.getScoreMin());
-				rand.put("max", sc.getScoreMax());
-				rootScore.put(sc.getScoreName(), rand);
+				JsonObject rand = new JsonObject();
+				rand.addProperty("min", sc.getScoreMin());
+				rand.addProperty("max", sc.getScoreMax());
+				rootScore.add(sc.getScoreName(), rand);
 			}
 		}
-		condition.put("scores", rootScore);
+		condition.add("scores", rootScore);
 	    return condition;
     }
 

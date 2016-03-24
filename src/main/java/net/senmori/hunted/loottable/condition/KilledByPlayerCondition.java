@@ -1,6 +1,8 @@
 package net.senmori.hunted.loottable.condition;
 
-import org.json.simple.JSONObject;
+import com.google.gson.JsonObject;
+
+
 
 /**
  * Condition that checks if the entity who triggered this condition is a player
@@ -27,10 +29,10 @@ public class KilledByPlayerCondition extends LootCondition  {
 	}
 
 	@Override
-    public JSONObject toJSONObject() {
-		JSONObject condition = new JSONObject();
-		condition.put("condition", getType().getName());
-		condition.put("inverse", inverse);
+    public JsonObject toJsonObject() {
+		JsonObject condition = new JsonObject();
+		condition.addProperty("condition", getType().getName());
+		condition.addProperty("inverse", inverse);
 	    return condition;
     }
 

@@ -33,8 +33,8 @@ public class DebugCommand extends Subcommand {
 		Entry cobbleStone = new Entry(EntryType.ITEM, "cobblestone", 1);
 		Entry diamondSword = new Entry(EntryType.ITEM, "diamond_sword", 1);
 		Entry crackedBrick = new Entry(EntryType.ITEM, "stonebrick", 40);
-		FurnaceSmeltFunction fs = new FurnaceSmeltFunction();
-		crackedBrick.addFunction(fs);
+		//FurnaceSmeltFunction fs = new FurnaceSmeltFunction();
+		crackedBrick.addFunction(new FurnaceSmeltFunction());
 		
 		SetAttributesFunction attribFunc = new SetAttributesFunction();
 		LootAttribute lootAttrib = LootAttribute.genericLuckAttribute.setAmount(10.0);
@@ -46,9 +46,7 @@ public class DebugCommand extends Subcommand {
 		pool.addEntry(crackedBrick);
 		testTable.addPool(pool);
 		
-		getPlayer().sendMessage("JSON: " + testTable.toJson());
+		getPlayer().sendMessage("JSON: " + testTable.toJson().toString());
 		testTable.write();
-		
-		
 	}
 }

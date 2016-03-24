@@ -1,7 +1,8 @@
 package net.senmori.hunted.loottable.condition;
 
 import org.bukkit.enchantments.Enchantment;
-import org.json.simple.JSONObject;
+
+import com.google.gson.JsonObject;
 
 /**
  * Condition that tests a number between 0.0 - 1.0 is less than the specified {@link #chance}. </br>
@@ -33,11 +34,11 @@ public class RandomLootChanceCondition extends LootCondition  {
 	}
 
 	@Override
-    public JSONObject toJSONObject() {
-		JSONObject condition = new JSONObject();
-		condition.put("condition", getType().getName());
-		condition.put("chance", chance);
-		condition.put("looting_multiplier", lootMultiplier);
+    public JsonObject toJsonObject() {
+		JsonObject condition = new JsonObject();
+		condition.addProperty("condition", getType().getName());
+		condition.addProperty("chance", chance);
+		condition.addProperty("looting_multiplier", lootMultiplier);
 	    return condition;
     }
 

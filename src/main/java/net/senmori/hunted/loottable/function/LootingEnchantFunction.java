@@ -4,7 +4,9 @@ import net.senmori.hunted.loottable.condition.LootCondition;
 
 import org.bukkit.enchantments.Enchantment;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 /**
  * Sets how many items extra you will receive per level of {@link Enchantment#LOOT_BONUS_MOBS}.</br>
@@ -37,26 +39,26 @@ public class LootingEnchantFunction extends LootFunction {
 		return this;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
-	public JSONObject toJSONObject() {
-		JSONObject function = new JSONObject();
-		function.put("function", getType().getName());
+	public JsonObject toJsonObject() {
+		JsonObject function = new JsonObject();
+		function.addProperty("function", getType().getName());
 		if(useCount) {
-			JSONObject counts = new JSONObject();
-			counts.put("min", min);
-			counts.put("max", max);
-			function.put("count", counts);
+			JsonObject counts = new JsonObject();
+			counts.addProperty("min", min);
+			counts.addProperty("max", max);
+			function.add("count", counts);
 		} else {
-			function.put("count", count);
+			function.addProperty("count", count);
 		}
 		// add conditions
 		if(conditions.size() > 0) {
-			JSONArray conditionsArray = new JSONArray();
+			JsonArray conditionsArray = new JsonArray();
 			for(LootCondition lc : conditions) {
-				conditionsArray.add(lc.toJSONObject());
+				conditionsArray.add(lc.toJsonObject());
 			}
-			function.put("conditions", conditionsArray);
+			function.add("conditions", conditionsArray);
 		}
 		return function;
 	}
