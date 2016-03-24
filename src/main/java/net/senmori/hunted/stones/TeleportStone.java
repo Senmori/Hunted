@@ -6,20 +6,20 @@ import net.senmori.hunted.lib.SerializedLocation;
 import org.bukkit.entity.Player;
 
 public class TeleportStone extends Stone {
-	
+
 	public TeleportStone(SerializedLocation loc) {
 		super(loc);
 	}
-	
+
 	/** Main method, call this to active this {@link TeleportStone} */
 	@Override
 	public void activate(Player player) {
 		player.teleport(Hunted.getInstance().getSpawnManager().getRandomHuntedLocation().getLocation());
 	}
-	
+
 	@Override
 	public StoneType getType() {
 		return StoneType.TELEPORT;
 	}
-	
+
 }

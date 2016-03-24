@@ -38,12 +38,3 @@ settings:
   # Debug - don't touch this unless you like spam
   # Also, you need a certain permission to see debug messages, just in case
   debug: false
-
-# MYSQL Database information
-# Please triple-check this information!
-database:
-  host: 'localhost'
-  port: 3306
-  name: 'Hunted'
-  username: 'root'
-  password: ''

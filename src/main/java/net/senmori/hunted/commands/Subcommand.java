@@ -14,60 +14,57 @@ public abstract class Subcommand {
 
 	protected String name;
 	protected String description;
-	
+
 	protected String permission;
-	
+
 	protected boolean needsPlayer;
-	
+
 	protected List<String> requiredArgs = new ArrayList<String>();
 	protected List<String> optionalArgs = new ArrayList<String>();
 	protected List<String> aliases = new ArrayList<String>();
-	
+
 	protected abstract void perform();
-	
+
 	public void execute(CommandSender sender, String[] args) {
 		this.sender = sender;
 		this.args = args;
-		
-		if(sender instanceof Player){
+
+		if (sender instanceof Player) {
 			this.player = (Player) sender;
 		}
-		
-		if(needsPlayer && !isPlayer()) {
-			return;
-		}
-		
-		if(args.length < requiredArgs.size()) {
-			return;
-		}
-		
-		if(!hasPermission()) {
-			return;
-		}
-		
+
+		if (needsPlayer && !isPlayer()) return;
+
+		if (args.length < requiredArgs.size()) return;
+
+		if (!hasPermission()) return;
+
 		try {
 			perform();
+		} catch (Throwable e) {
 		}
-		catch(Throwable e) {}
 	}
-	
+
 	public String getUsageTemplate(boolean displayHelp) {
 		StringBuilder ret = new StringBuilder();
 
 		ret.append(ChatColor.GREEN + name + " ");
 
-		for (String s : requiredArgs)
+		for (String s : requiredArgs) {
 			ret.append(ChatColor.GREEN + String.format("<%s> ", s));
+		}
 
-		for (String s : optionalArgs)
+		for (String s : optionalArgs) {
 			ret.append(ChatColor.GREEN + String.format("[%s] ", s));
+		}
 
-		if (displayHelp)
+		if (displayHelp) {
 			ret.append(ChatColor.YELLOW + " - " + ChatColor.GREEN + description);
+		}
 
 		return ret.toString();
 	}
-	
+
 	public CommandSender getSender() {
 		return sender;
 	}
@@ -103,11 +100,11 @@ public abstract class Subcommand {
 	public List<String> getAliases() {
 		return aliases;
 	}
-	
+
 	public boolean hasPermission() {
 		return sender.hasPermission(permission);
 	}
-	
+
 	public boolean isPlayer() {
 		return player != null;
 	}

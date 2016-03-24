@@ -24,34 +24,37 @@ public class StuckCommand extends Subcommand {
 
 	@Override
 	protected void perform() {
-		if(args.length > 0) {
+		if (args.length > 0) {
 			if (getPlayer().hasPermission(Permissions.COMMAND_STUCK_OTHER)) {
-                if (Bukkit.getPlayer(args[0]) != null) {
-                    Player player = Bukkit.getPlayer(args[0]);
-                    teleport(player, Hunted.getInstance().getPlayerManager().getState(player.getUniqueId().toString()));
-                    return;
-                }
-            } else { // no permission
-                getPlayer().sendMessage(ChatColor.RED + ErrorMessage.NO_COMMAND_PERMISSION);
-                return;
-            }
+				if (Bukkit.getPlayer(args[0]) != null) {
+					Player player = Bukkit.getPlayer(args[0]);
+					teleport(player, Hunted.getInstance().getPlayerManager().getState(player.getUniqueId()));
+					return;
+				}
+			} else { // no permission
+				getPlayer().sendMessage(ChatColor.RED + ErrorMessage.NO_COMMAND_PERMISSION);
+				return;
+			}
 		}
-		teleport(getPlayer(), Hunted.getInstance().getPlayerManager().getState(getPlayer().getUniqueId().toString()));
+		teleport(getPlayer(), Hunted.getInstance().getPlayerManager().getState(getPlayer().getUniqueId()));
 	}
-	
-	
+
 	private void teleport(Player player, GameState state) {
-	   switch(state) {
-           case IN_GAME:
-               player.teleport(Hunted.getInstance().getSpawnManager().getRandomHuntedLocation().getLocation());
-               return;
-           case IN_STORE:
-               player.teleport(Hunted.getInstance().getSpawnManager().getRandomStoreLocation().getLocation());
-               return;
-           default:
-               player.teleport(Hunted.getInstance().getSpawnManager().getRandomLobbyLocation().getLocation());
-           
-       }
+		if(!player.getWorld().getName().equalsIgnoreCase(Hunted.getInstance().getConfigManager().activeWorld)) {
+			player.sendMessage(ChatColor.RED + ErrorMessage.WRONG_WORLD_ERROR);
+			return;
+		}
+		switch (state) {
+			case IN_GAME:
+				player.teleport(Hunted.getInstance().getSpawnManager().getRandomHuntedLocation().getLocation());
+				return;
+			case IN_STORE:
+				player.teleport(Hunted.getInstance().getSpawnManager().getRandomStoreLocation().getLocation());
+				return;
+			default:
+				player.teleport(Hunted.getInstance().getSpawnManager().getRandomLobbyLocation().getLocation());
+
+		}
 	}
 
 }

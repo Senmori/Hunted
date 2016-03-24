@@ -4,8 +4,8 @@ import org.bukkit.entity.Player;
 
 public abstract class Reward {
 	public abstract void generateLoot(Player player);
-	
-	public String getName(){
+
+	public String getName() {
 		return null;
 	}
 }

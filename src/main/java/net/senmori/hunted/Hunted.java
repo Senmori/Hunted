@@ -6,12 +6,10 @@ import net.senmori.hunted.commands.add.AddCommand;
 import net.senmori.hunted.commands.debug.DebugCommand;
 import net.senmori.hunted.commands.delete.DeleteCommand;
 import net.senmori.hunted.commands.edit.EditCommand;
+import net.senmori.hunted.commands.give.HuntedGiveCommand;
 import net.senmori.hunted.commands.list.ListCommand;
 import net.senmori.hunted.commands.stuck.StuckCommand;
 import net.senmori.hunted.lib.MapConfiguration;
-import net.senmori.hunted.lib.sql.Database;
-import net.senmori.hunted.lib.sql.QueryHandler;
-import net.senmori.hunted.lib.sql.StatementHandler;
 import net.senmori.hunted.listeners.BlockListener;
 import net.senmori.hunted.listeners.PlayerListener;
 import net.senmori.hunted.managers.CommandManager;
@@ -32,19 +30,17 @@ import net.senmori.hunted.reward.rewards.NotifyReward;
 import net.senmori.hunted.reward.rewards.PotionReward;
 import net.senmori.hunted.reward.rewards.SmiteReward;
 import net.senmori.hunted.reward.rewards.TeleportReward;
+import net.senmori.hunted.sql.Database;
 import net.senmori.hunted.util.LogHandler;
 
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import com.zaxxer.hikari.HikariDataSource;
 
 public class Hunted extends JavaPlugin {
 	// static variables
 	private static Hunted instance;
 	public static Logger log;
 
-	
 	// plugin vars
 	private PluginDescriptionFile pdf;
 	public static String name;
@@ -52,7 +48,7 @@ public class Hunted extends JavaPlugin {
 	// game managers
 	private RewardManager rewardManager;
 	private StoneManager stoneManager;
-	private SpawnManager spawnManager;	
+	private SpawnManager spawnManager;
 	private PlayerManager playerManager;
 	private MenuManager menuManager;
 	// kit managers
@@ -63,62 +59,41 @@ public class Hunted extends JavaPlugin {
 	// misc. managers
 	private ConfigManager configManager;
 	private CommandManager commandManager;
-	
+
 	// Connection Pool
-	private HikariDataSource hikari;
 	private Database database; // SQL
 
-	// SQL Objects
-	private StatementHandler statementHandler;
-	private QueryHandler queryHandler;
-
-	
-	
+	@Override
 	public void onEnable() {
 		pdf = getDescription();
 		name = pdf.getName();
-		
+
 		log = getLogger();
 		instance = this;
-		
+
 		// Config
-        configManager = new ConfigManager(getInstance());
-        configManager.init();
-        configManager.addMapConfiguration("test", new MapConfiguration("test"));
-        
+		configManager = new ConfigManager(getInstance());
+		configManager.init();
+		configManager.addMapConfiguration("test", new MapConfiguration("test"));
+
 		// SQL
-        database = new Database(getConfigManager().dbUser, getConfigManager().dbPassword, getConfigManager().dbName, getConfigManager().dbHost, Integer.toString(getConfigManager().dbPort), getInstance());
-        statementHandler = new StatementHandler(getSQLDatabase());
-        queryHandler = new QueryHandler(getSQLDatabase());
-        
-        
-		// Connection Pool
-		//hikari = new HikariDataSource();
-		//hikari.setMaximumPoolSize(10);
-		//hikari.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
-		//hikari.addDataSourceProperty("serverName", getConfigManager().dbHost);
-		//hikari.addDataSourceProperty("port", getConfigManager().dbPort);
-		//hikari.addDataSourceProperty("databaseName", getConfigManager().dbName);
-		//hikari.addDataSourceProperty("user", getConfigManager().dbUser);
-		//hikari.addDataSourceProperty("password", getConfigManager().dbPassword);
-		
-		
-		
+		database = new Database("HuntedDB.db", "Hunted", getInstance());
+
 		// game managers
-        playerManager = new PlayerManager(getInstance());
-        stoneManager = new StoneManager();
-        spawnManager = new SpawnManager();
-        rewardManager = new RewardManager();
-        menuManager = new MenuManager(getInstance());
-        // kit managers
-        kitManager = new KitManager(getInstance());
-        weaponManager = new WeaponManager(getInstance());
-        potionManager = new PotionManager(getInstance());
-        armorManager = new ArmorManager(getInstance());
-        // Misc. managers
+		playerManager = new PlayerManager(getInstance());
+		stoneManager = new StoneManager();
+		spawnManager = new SpawnManager();
+		rewardManager = new RewardManager();
+		menuManager = new MenuManager(getInstance());
+		// kit managers
+		kitManager = new KitManager(getInstance());
+		weaponManager = new WeaponManager(getInstance());
+		potionManager = new PotionManager(getInstance());
+		armorManager = new ArmorManager(getInstance());
+		// Misc. managers
 		commandManager = new CommandManager(this);
-		
-		// setup commands		
+
+		// setup commands
 		commandManager.setCommandPrefix("ht");
 		commandManager.registerCommand(new AddCommand());
 		commandManager.registerCommand(new DebugCommand());
@@ -126,10 +101,11 @@ public class Hunted extends JavaPlugin {
 		commandManager.registerCommand(new EditCommand());
 		commandManager.registerCommand(new ListCommand());
 		commandManager.registerCommand(new StuckCommand());
+		commandManager.registerCommand(new HuntedGiveCommand());
 		LogHandler.info("Commands loaded!");
-		
+
 		// setup rewards
-		
+
 		rewardManager.addReward(new EffectReward("effect"));
 		rewardManager.addReward(new ItemReward("item"));
 		rewardManager.addReward(new NotifyReward("notify"));
@@ -138,31 +114,27 @@ public class Hunted extends JavaPlugin {
 		rewardManager.addReward(new TeleportReward("teleport"));
 		rewardManager.addReward(new IrritatingReward("irritating"));
 		LogHandler.info("Rewards loaded!");
-		
 
-		
-		//Listeners
+		// Listeners
 		getServer().getPluginManager().registerEvents(new BlockListener(getInstance()), this);
 		getServer().getPluginManager().registerEvents(new PlayerListener(getInstance()), this);
 		LogHandler.info("Listeners enabled!");
-		
+
 		instance = this;
 	}
 
+	@Override
 	public void onDisable() {
-	    getConfigManager().save();
-	    
-	    if(hikari != null) {
-	        hikari.close();
-	    }
+		getConfigManager().save();
+
 	}
 
 	public static Hunted getInstance() {
 		return instance;
 	}
-	
+
 	public ConfigManager getConfigManager() {
-	    return configManager;
+		return configManager;
 	}
 
 	public RewardManager getRewardManager() {
@@ -172,48 +144,36 @@ public class Hunted extends JavaPlugin {
 	public PlayerManager getPlayerManager() {
 		return playerManager;
 	}
-	
+
 	public MenuManager getMenuManager() {
-	    return menuManager;
+		return menuManager;
 	}
-	
+
 	public KitManager getKitManager() {
 		return kitManager;
 	}
-	
+
 	public ArmorManager getArmorManager() {
-	    return armorManager;
+		return armorManager;
 	}
-	
+
 	public WeaponManager getWeaponManager() {
 		return weaponManager;
 	}
-	
+
 	public PotionManager getPotionManager() {
 		return potionManager;
 	}
-	
+
 	public StoneManager getStoneManager() {
-	    return stoneManager;
+		return stoneManager;
 	}
-	
+
 	public SpawnManager getSpawnManager() {
-	    return spawnManager;
+		return spawnManager;
 	}
-	
+
 	public Database getSQLDatabase() {
-	    return database;
-	}
-	
-	public StatementHandler getStatementHandler() {
-	    return statementHandler;
-	}
-	
-	public QueryHandler getQueryHandler() {
-	    return queryHandler;
-	}
-	
-	public HikariDataSource getHikari() {
-	    return hikari;
+		return database;
 	}
 }

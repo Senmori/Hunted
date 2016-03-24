@@ -4,8 +4,8 @@
   <groupId>net.senmori</groupId>
   <artifactId>hunted</artifactId>
   <name>Hunted</name>
-  <version>0.5-SNAPSHOT</version>
-  <description>Hunted mini-game for the Broken Buttons server</description>
+  <version>0.6-SNAPSHOT</version>
+  <description>Hunted minigame for the Broken Buttons server</description>
   <build>
     <resources>
       <resource>
@@ -25,22 +25,22 @@
       </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>2.3</version>
+        <version>2.4.3</version>
         <executions>
           <execution>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
+            <configuration>
+              <artifactSet>
+                <excludes>
+                  <exclude>org.spigotmc:*</exclude>
+                </excludes>
+              </artifactSet>
+            </configuration>
           </execution>
         </executions>
-        <configuration>
-          <artifactSet>
-            <includes>
-              <include>com.zaxxer:HikariCP:*</include>
-            </includes>
-          </artifactSet>
-        </configuration>
       </plugin>
     </plugins>
   </build>
@@ -48,8 +48,8 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot</artifactId>
-      <version>1.8.7-R0.1-SNAPSHOT</version>
-      <scope>provided</scope>
+      <version>1.9-R0.1-SNAPSHOT</version>
+      <scope>compile</scope>
     </dependency>
   </dependencies>
   <properties>

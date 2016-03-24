@@ -1,9 +1,5 @@
 package net.senmori.hunted.kit.armor;
 
 public enum ArmorSlot {
-    HELMET,
-    CHESTPLATE,
-    LEGGINGS,
-    BOOTS,
-    ALL;
+	HELMET, CHESTPLATE, LEGGINGS, BOOTS, ALL;
 }

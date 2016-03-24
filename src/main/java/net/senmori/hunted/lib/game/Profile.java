@@ -1,256 +1,83 @@
 package net.senmori.hunted.lib.game;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
-import net.senmori.hunted.Hunted;
+import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
 
 public class Profile {
-    
-    private String displayName;
-    private String uuid;
-    private int currentPlaySession;
-    private long startSession;
-    private GameState gameState;
-    private ItemStack[] preHuntedInventory;
-    
-    // current session stats
-    private int kills;
-    private int deaths;
-    private int bowKills;
-    private int chestsLooted;
-    private int mobsKilled;
-    private int damageDealt;
-    private int damageTaken;
-    private int stonesActivated;
-    private int ascentedRewardsReceived;
-    private int currentKillstreak;
-    
-    // session kills
-    private Set<PlayerKill> sessionKills;
-    
-    public Profile(Player player) {
-        sessionKills = new HashSet<>();
-        this.displayName = player.getDisplayName();
-        this.uuid = player.getUniqueId().toString();
-        this.currentPlaySession = 0;
-        
-        this.kills = 0;
-        this.deaths = 0;
-        this.bowKills = 0;
-        this.chestsLooted = 0;
-        this.mobsKilled = 0;
-        this.damageDealt = 0;
-        this.damageTaken = 0;
-        this.stonesActivated = 0;
-        this.ascentedRewardsReceived = 0;
-        this.currentKillstreak = 0;
-        if(player.getWorld().getName().equals(Hunted.getInstance().getConfigManager().activeWorld) || Hunted.getInstance().getPlayerManager().isPlaying(uuid)) {
-            setState(GameState.LOBBY);
-            //player.teleport(Hunted.getInstance().getSpawnManager().getRandomLobbyLocation().getLocation());
-        } else {
-            setState(GameState.NOT_PLAYING);
-        }
-        preHuntedInventory = player.getInventory().getContents();
-    }
-    
-    public GameState getState() {
-        return gameState != null ? gameState : GameState.OFFLINE;
-    }
-    
-    public void setState(GameState state) {
-        this.gameState = state;
-    }
-    
-    public void startSession() {
-        startSession = System.currentTimeMillis();
-    }
-    
-    public void endSession() {
-        currentPlaySession += (int) TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - startSession);
-        // save to mysql async here
-    }
-    
-    public void addKill(PlayerKill kill) {
-        sessionKills.add(kill);
-    }
-    
-    public void storePlayerInventory(Player player) {
-        preHuntedInventory = player.getInventory().getContents();
-    }
-    
-    public void loadPlayerInventory(boolean clearInventory) {
-        Player player = Bukkit.getPlayer(UUID.fromString(uuid)) != null ? Bukkit.getPlayer(UUID.fromString(uuid)) : null;
-        if(clearInventory && player != null) {
-            player.getInventory().clear();
-        }
-        
-        if(player != null) {
-            for(ItemStack stack : preHuntedInventory) {
-                player.getInventory().addItem(stack);
-            }
-        }
-    }
-    
-    public ItemStack[] getPlayerInventory() {
-        return preHuntedInventory;
-    }
-    
-    /* ####################
-     *  Statistic methods
-     * ####################
-     */
-    public void incrementSession() {
-        currentPlaySession++;
-    }
-    
-    public void incrementSession(int seconds) {
-        currentPlaySession += seconds;
-    }
-    
-    public void incrementKills() {
-        kills++;
-    }
-    
-    public void incrementKills(int amount) {
-        kills += amount;
-    }
-    
-    public void incrementDeaths() {
-        deaths++;
-    }
-    
-    public void incrementDeaths(int amount) {
-        deaths += amount;
-    }
-    
-    public void incrementBowKills() {
-        bowKills++;
-    }
-    
-    public void incrementBowKills(int amount) {
-        bowKills += amount;
-    }
-    
-    public void incrementChestsLooted() {
-        chestsLooted++;
-    }
-    
-    public void incrementChestsLooted(int amount) {
-        chestsLooted += amount;
-    }
-    
-    public void incrementMobsKilled() {
-        mobsKilled++;
-    }
-    
-    public void incrementMobsKilled(int amount) {
-        mobsKilled += amount;
-    }
-    
-    public void incrementDamageDealt(int amount) {
-        damageDealt += amount;
-    }
-    
-    public void incrementDamageTaken(int amount) {
-        damageTaken += amount;
-    }
-    
-    public void incrementStonesActivated() {
-        stonesActivated++;
-    }
-    
-    public void incrementStonesActivated(int amount) {
-        stonesActivated += amount;
-    }
-    
-    public void incrementAscentedRewardsReceived() {
-        ascentedRewardsReceived++;
-    }
-    
-    public void incrementAscentedRewardsReceived(int amount) {
-        ascentedRewardsReceived += amount;
-    }
-    
-    public void incrementKillstreak() {
-        currentKillstreak++;
-    }
-    
-    public void incrementKillstreak(int amount) {
-        currentKillstreak += amount;
-    }
-    
-    
-    
-    /* ######################
-     *  Generic Getters
-     * ######################
-     */
 
-    public String getDisplayName() {
-        return displayName;
-    }
+	private UUID uuid;
+	private GameState gameState;
+	protected Map<String, Integer> stats;
+	
+	//Scoreboard
+	private Scoreboard board;
+	private Objective obj;
+	private Score kills;
+	private Score gamemode;
 
-    public String getUuid() {
-        return uuid;
-    }
+	public Profile(Player player) {
+		this.uuid = player.getUniqueId();
+		stats = new HashMap<>();
+		stats.put("kills", 0);
+		stats.put("deaths", 0);
+		stats.put("bowKills", 0);
+		stats.put("chestsLooted", 0);
+		stats.put("mobsKilled", 0);
+		stats.put("damageDealt", 0);
+		stats.put("damageTaken", 0);
+		stats.put("stonesActivated", 0);
+		stats.put("ascentedRewardsReceived", 0);
+		stats.put("currentKillstreak", 0);
+	}
+	
+	/*
+	 * States
+	 */
+	public GameState getState() {
+		return gameState != null ? gameState : GameState.OFFLINE;
+	}
 
-    public int getCurrentPlaySession() {
-        return currentPlaySession;
-    }
+	public void setState(GameState state) {
+		this.gameState = state;
+	}
 
-    public GameState getGameState() {
-        return gameState;
-    }
+	/*
+	 * #################### Statistic methods ####################
+	 */
+	
+	public void updateStat(String statName, int amount) {
+		if(stats.get(statName) != null) {
+			int curr = stats.get(statName);
+			stats.put(statName, curr += amount);
+			return;
+		}
+		stats.put(statName, amount);
+	}
 
-    public int getKills() {
-        return kills;
-    }
+	/*
+	 * ###################### Generic Getters ######################
+	 */
 
-    public int getDeaths() {
-        return deaths;
-    }
+	public UUID getUuid() {
+		return uuid;
+	}
+	
+	public Player getPlayer() {
+		return Bukkit.getPlayer(getUuid());
+	}
+	
+	public Map<String, Integer> getStats() {
+		return stats;
+	}
 
-    public int getBowKills() {
-        return bowKills;
-    }
-
-    public int getChestsLooted() {
-        return chestsLooted;
-    }
-
-    public int getMobsKilled() {
-        return mobsKilled;
-    }
-
-    public int getDamageDealt() {
-        return damageDealt;
-    }
-
-    public int getDamageTaken() {
-        return damageTaken;
-    }
-
-    public int getStonesActivated() {
-        return stonesActivated;
-    }
-
-    public int getAscentedRewardsReceived() {
-        return ascentedRewardsReceived;
-    }
-
-    public int getCurrentKillstreak() {
-        return currentKillstreak;
-    }
-
-    public Set<PlayerKill> getSessionKills() {
-        return sessionKills;
-    }
-                    
 }

@@ -24,38 +24,38 @@ public class AddStone extends Subcommand {
 		this.permission = Permissions.COMMAND_ADD;
 		this.requiredArgs = Arrays.asList("name");
 	}
-	
+
 	@Override
-    protected void perform() {
-		Block targetBlock = getPlayer().getTargetBlock((Set<Material>)null, 5);
+	protected void perform() {
+		Block targetBlock = getPlayer().getTargetBlock((Set<Material>) null, 5);
 		String stoneName = args.length >= 2 ? args[1] : "Stone-";
 		// player isn't looking at a valid block
-		if(targetBlock == null) {
+		if (targetBlock == null) {
 			getPlayer().sendMessage(ChatColor.YELLOW + ErrorMessage.STONE_CREATION_ERROR);
 			return;
 		}
-		
-		switch(this.args[0]) {
+
+		switch (this.args[0]) {
 			case "guardian":
 			case "-g":
-			    stoneName = "GStone-" + Hunted.getInstance().getStoneManager().getGuardianStones().size() + 1;
+				stoneName = "GStone-" + Hunted.getInstance().getStoneManager().getGuardianStones().size() + 1;
 				createNewStone(StoneType.GUARDIAN, targetBlock.getLocation(), stoneName);
 				break;
 			case "teleport":
 			case "-t":
-			    stoneName = "TStone-" + Hunted.getInstance().getStoneManager().getTeleportStones().size() + 1;
+				stoneName = "TStone-" + Hunted.getInstance().getStoneManager().getTeleportStones().size() + 1;
 				createNewStone(StoneType.TELEPORT, targetBlock.getLocation(), stoneName);
 				break;
 			default:
 				break;
-			
+
 		}
-    }
-	
+	}
+
 	private void createNewStone(StoneType type, Location loc, String name) {
-		switch(type) {
+		switch (type) {
 			case GUARDIAN:
-				new GuardianStone(new SerializedLocation(loc,name));
+				new GuardianStone(new SerializedLocation(loc, name));
 				break;
 			case TELEPORT:
 				new TeleportStone(new SerializedLocation(loc, name));

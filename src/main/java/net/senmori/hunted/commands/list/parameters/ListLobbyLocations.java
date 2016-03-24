@@ -5,16 +5,16 @@ import net.senmori.hunted.util.Reference.Permissions;
 
 public class ListLobbyLocations extends Subcommand {
 
-    public ListLobbyLocations() {
-        this.name = "lobby";
-        this.needsPlayer = true;
-        this.description = "Lists all registered lobby locations for this map";
-        this.permission = Permissions.COMMAND_LIST_LOBBY;
-    }
+	public ListLobbyLocations() {
+		this.name = "lobby";
+		this.needsPlayer = true;
+		this.description = "Lists all registered lobby locations for this map";
+		this.permission = Permissions.COMMAND_LIST_LOBBY;
+	}
 
-    @Override
-    protected void perform() {
+	@Override
+	protected void perform() {
 
-    }
+	}
 
 }

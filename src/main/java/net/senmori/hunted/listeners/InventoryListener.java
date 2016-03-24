@@ -13,56 +13,57 @@ import org.bukkit.event.inventory.InventoryPickupItemEvent;
 
 public class InventoryListener implements Listener {
 
-    private Hunted plugin;
-    public InventoryListener(Hunted plugin) {
-        this.plugin = plugin;
-    }
-    
-    @EventHandler
-    public void onInventoryClickEvent(InventoryClickEvent e){
-        Player player = null;
-        if(e.getWhoClicked() instanceof Player) {
-            player = (Player)e.getWhoClicked();
-        }
-        
-        if(player != null) {
-            if(plugin.getPlayerManager().getState(player.getUniqueId().toString()).equals(GameState.LOBBY)) {
-                
-            }
-        }
-    }
-    
-    @EventHandler
-    public void onInventory(InventoryDragEvent e) {
-        Player player = null;
-        if(e.getWhoClicked() instanceof Player) {
-            player = (Player)e.getWhoClicked();
-        }
-        
-        if(player != null) {
-            if(plugin.getPlayerManager().getState(player.getUniqueId().toString()).equals(GameState.LOBBY)) {
-                
-            }
-        }
-    }
-    
-    @EventHandler
-    public void onInventory(InventoryPickupItemEvent e) {
-        
-    }
-    
-    @EventHandler
-    public void onInventoryClose(InventoryCloseEvent e) {
-        Player player = null;
-        if(e.getPlayer() instanceof Player) {
-            player = (Player)e.getPlayer();
-        }
-        
-        if(player != null) {
-            if(plugin.getPlayerManager().getState(player.getUniqueId().toString()).equals(GameState.LOBBY)) {
-                
-            }
-        }
-    }
+	private Hunted plugin;
+
+	public InventoryListener(Hunted plugin) {
+		this.plugin = plugin;
+	}
+
+	@EventHandler
+	public void onInventoryClickEvent(InventoryClickEvent e) {
+		Player player = null;
+		if (e.getWhoClicked() instanceof Player) {
+			player = (Player) e.getWhoClicked();
+		}
+
+		if (player != null) {
+			if (plugin.getPlayerManager().getState(player.getUniqueId()).equals(GameState.LOBBY)) {
+
+			}
+		}
+	}
+
+	@EventHandler
+	public void onInventoryDrag(InventoryDragEvent e) {
+		Player player = null;
+		if (e.getWhoClicked() instanceof Player) {
+			player = (Player) e.getWhoClicked();
+		}
+
+		if (player != null) {
+			if (plugin.getPlayerManager().getState(player.getUniqueId()).equals(GameState.LOBBY)) {
+
+			}
+		}
+	}
+
+	@EventHandler
+	public void onInventoryPickupItem(InventoryPickupItemEvent e) {
+
+	}
+
+	@EventHandler
+	public void onInventoryClose(InventoryCloseEvent e) {
+		Player player = null;
+		if (e.getPlayer() instanceof Player) {
+			player = (Player) e.getPlayer();
+		}
+
+		if (player != null) {
+			if (plugin.getPlayerManager().getState(player.getUniqueId()).equals(GameState.LOBBY)) {
+
+			}
+		}
+	}
 
 }
