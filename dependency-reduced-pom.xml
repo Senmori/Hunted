@@ -36,6 +36,7 @@
               <artifactSet>
                 <excludes>
                   <exclude>org.spigotmc:*</exclude>
+                  <exclude>me.dpohvar.powernbt:*</exclude>
                 </excludes>
               </artifactSet>
             </configuration>
@@ -49,6 +50,12 @@
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot</artifactId>
       <version>1.9-R0.1-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>me.dpohvar.powernbt</groupId>
+      <artifactId>PowerNBT</artifactId>
+      <version>0.8.5.1</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>

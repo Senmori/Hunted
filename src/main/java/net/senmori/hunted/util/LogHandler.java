@@ -6,7 +6,7 @@ import net.senmori.hunted.Hunted;
 
 public class LogHandler {
 	public static void log(Level level, String message) {
-		Hunted.log.log(level, message);
+		Hunted.getInstance().getLogger().log(level, message);
 	}
 
 	public static void all(String message) {

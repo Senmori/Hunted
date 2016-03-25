@@ -1,7 +1,10 @@
 package net.senmori.hunted.listeners;
 
+import me.dpohvar.powernbt.api.NBTCompound;
+import me.dpohvar.powernbt.api.NBTManager;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.game.GameState;
+import net.senmori.hunted.loot.utils.LootUtil;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.stones.Stone;
 import net.senmori.hunted.stones.Stone.StoneType;
@@ -14,10 +17,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -29,6 +36,7 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.material.Attachable;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -40,9 +48,31 @@ public class PlayerListener implements Listener {
 	}
 	
 	@EventHandler
+	public void onPlayerUseSpawnEgg(CreatureSpawnEvent e) {
+		// debug purposes only
+		if(e.getSpawnReason().equals(SpawnReason.SPAWNER_EGG)) {
+			NBTCompound tag = Hunted.getInstance().nbtManager.read(e.getEntity());
+			tag.put("NoAI", 1);
+			Hunted.getInstance().nbtManager.write(e.getEntity(), tag);
+		}
+	}
+	
+	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
-		// player is in the Hunted arena, not the store or lobby
-		if (plugin.getPlayerManager().getState(e.getPlayer().getUniqueId()).equals(GameState.IN_GAME)) {
+		
+		// debug only
+		if(e.getClickedBlock().getType().equals(Material.CHEST) && e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+			if(LootUtil.hasLootTable(e.getClickedBlock())) {
+				if(e.getClickedBlock() instanceof InventoryHolder) {
+					((InventoryHolder)e.getClickedBlock()).getInventory().clear(); // remove items inside for testing
+				}
+				LootUtil.clearLootTable(e.getClickedBlock());
+			}
+			LootUtil.setLootTable(e.getClickedBlock(), "hunted:test");
+		}
+		
+		// player is playing, store or lobby haven't been implemented yet
+		if (plugin.getPlayerManager().isPlaying(e.getPlayer().getUniqueId())) {
 			if (plugin.getConfigManager().activeWorld.equals(e.getPlayer().getWorld().getName())) {
 				if(e.getPlayer().hasPermission(Permissions.ADMIN_EXEMPT)) return;
 				if(e.getPlayer().hasPermission(Permissions.COMMAND_DEV_TOOLS)) return; // ignore dev testing
@@ -84,13 +114,6 @@ public class PlayerListener implements Listener {
 				e.setUseItemInHand(Result.DENY);
 				return;
 			}
-		}
-
-		if (plugin.getPlayerManager().getState(e.getPlayer().getUniqueId()).equals(GameState.IN_STORE))
-		    return;
-
-		if (plugin.getPlayerManager().getState(e.getPlayer().getUniqueId()).equals(GameState.LOBBY)) {
-			return;
 		}
 	}
 

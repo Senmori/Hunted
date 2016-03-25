@@ -2,6 +2,8 @@ package net.senmori.hunted;
 
 import java.util.logging.Logger;
 
+import me.dpohvar.powernbt.PowerNBT;
+import me.dpohvar.powernbt.api.NBTManager;
 import net.senmori.hunted.commands.add.AddCommand;
 import net.senmori.hunted.commands.debug.DebugCommand;
 import net.senmori.hunted.commands.delete.DeleteCommand;
@@ -12,6 +14,7 @@ import net.senmori.hunted.commands.stuck.StuckCommand;
 import net.senmori.hunted.lib.MapConfiguration;
 import net.senmori.hunted.listeners.BlockListener;
 import net.senmori.hunted.listeners.PlayerListener;
+import net.senmori.hunted.loot.LootManager;
 import net.senmori.hunted.managers.CommandManager;
 import net.senmori.hunted.managers.ConfigManager;
 import net.senmori.hunted.managers.game.MenuManager;
@@ -33,6 +36,7 @@ import net.senmori.hunted.reward.rewards.TeleportReward;
 import net.senmori.hunted.sql.Database;
 import net.senmori.hunted.util.LogHandler;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -40,6 +44,7 @@ public class Hunted extends JavaPlugin {
 	// static variables
 	private static Hunted instance;
 	public static Logger log;
+	public NBTManager nbtManager = null;
 
 	// plugin vars
 	private PluginDescriptionFile pdf;
@@ -59,6 +64,8 @@ public class Hunted extends JavaPlugin {
 	// misc. managers
 	private ConfigManager configManager;
 	private CommandManager commandManager;
+	// loot manager
+	private LootManager lootManager;
 
 	// Connection Pool
 	private Database database; // SQL
@@ -92,6 +99,8 @@ public class Hunted extends JavaPlugin {
 		armorManager = new ArmorManager(getInstance());
 		// Misc. managers
 		commandManager = new CommandManager(this);
+		lootManager = new LootManager(getInstance());
+		
 
 		// setup commands
 		commandManager.setCommandPrefix("ht");
@@ -119,6 +128,11 @@ public class Hunted extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new BlockListener(getInstance()), this);
 		getServer().getPluginManager().registerEvents(new PlayerListener(getInstance()), this);
 		LogHandler.info("Listeners enabled!");
+		
+		// Power NBT
+		if(Bukkit.getPluginManager().getPlugin("PowerNBT") != null) {
+			nbtManager = PowerNBT.getApi();
+		}
 
 		instance = this;
 	}
@@ -126,11 +140,14 @@ public class Hunted extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		getConfigManager().save();
-
 	}
 
 	public static Hunted getInstance() {
 		return instance;
+	}
+	
+	public LootManager getLootManager() {
+		return lootManager;
 	}
 
 	public ConfigManager getConfigManager() {

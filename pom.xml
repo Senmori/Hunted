@@ -24,6 +24,11 @@
      	<artifactId>gson</artifactId>
      	<version>2.6.2</version>
 	</dependency>
+	<dependency>
+        <groupId>me.dpohvar.powernbt</groupId>
+        <artifactId>PowerNBT</artifactId>
+        <version>0.8.5.1</version>
+    </dependency>
   </dependencies>
   
   <!-- Maven build parameters -->
@@ -58,6 +63,7 @@
    					<artifactSet>
    						<excludes>
    							<exclude>org.spigotmc:*</exclude>
+   							<exclude>me.dpohvar.powernbt:*</exclude>
    						</excludes>
    					</artifactSet>
       			</configuration>
