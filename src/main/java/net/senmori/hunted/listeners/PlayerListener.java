@@ -60,17 +60,10 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
 		
-		// debug only
-		if(e.getClickedBlock().getType().equals(Material.CHEST) && e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-			if(LootUtil.hasLootTable(e.getClickedBlock())) {
-				if(e.getClickedBlock() instanceof InventoryHolder) {
-					((InventoryHolder)e.getClickedBlock()).getInventory().clear(); // remove items inside for testing
-				}
-				LootUtil.clearLootTable(e.getClickedBlock());
-			}
-			LootUtil.setLootTable(e.getClickedBlock(), "hunted:test");
+		if(LootUtil.isValidBlock(e.getClickedBlock()) && e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+			if(LootUtil.hasLootTable(e.getClickedBlock())) LootUtil.clearLootTable(e.getClickedBlock());
+			LootUtil.setLootTable(e.getClickedBlock(), "hunted:chests/debug");
 		}
-		
 		// player is playing, store or lobby haven't been implemented yet
 		if (plugin.getPlayerManager().isPlaying(e.getPlayer().getUniqueId())) {
 			if (plugin.getConfigManager().activeWorld.equals(e.getPlayer().getWorld().getName())) {
@@ -123,7 +116,7 @@ public class PlayerListener implements Listener {
 			if (plugin.getConfigManager().activeWorld.equals(e.getPlayer().getLocation().getWorld().getName())) {
 				if (e.getItemDrop().getItemStack().getType().equals(Material.TNT)) {
 					e.getItemDrop().setMetadata("tnt-explosion", new FixedMetadataValue(Hunted.getInstance(), true));
-					new TntExplosion(e.getItemDrop(), 1.3f, false, false).runTaskLater(Hunted.getInstance(), 20);
+					new TntExplosion(e.getItemDrop(), 3.0f, false, false).runTaskLater(Hunted.getInstance(), 20 * 4);
 				}
 			}
 		}

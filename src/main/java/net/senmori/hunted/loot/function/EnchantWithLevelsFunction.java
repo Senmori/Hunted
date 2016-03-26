@@ -4,12 +4,12 @@ package net.senmori.hunted.loot.function;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import net.senmori.hunted.loot.condition.LootCondition;
-import net.senmori.hunted.loot.utils.LootUtil;
+
+import org.bukkit.inventory.ItemStack;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 /**
  * Enchants the associated item with the specified enchantment level, as if from an enchantment table</br>
@@ -27,29 +27,28 @@ public class EnchantWithLevelsFunction extends LootFunction {
 		treasure = false;
 	}
 	
-	/**
-	 * Determines if treasure enchantments are possible.
-	 * @param value
-	 * @return
+	/* ############################
+	 * ItemStack methods
+	 * ############################
 	 */
-	public EnchantWithLevelsFunction setTreasurePossible(boolean value) {
-		treasure = value;
-		return this;
-	}
+	@Override
+    public ItemStack applyTo(ItemStack applyTo) {
+	    return applyTo;
+    }
 	
+	/* #########################
+	 * Property methods
+	 * #########################
+	 */
 	/**
 	 * Sets what level to enchant the itemstack with
 	 * @param level
 	 * @return
 	 */
-	public EnchantWithLevelsFunction setExactLevel(int level) {
+	public EnchantWithLevelsFunction setLevels(int level) {
 		levels.clear();
 		levels.put("exact", level);
 		return this;
-	}
-	
-	public boolean useExactOnly() {
-		return levels.containsKey("exact");
 	}
 	
 	/**
@@ -64,7 +63,22 @@ public class EnchantWithLevelsFunction extends LootFunction {
 		levels.put("max", max);
 		return this;
 	}
-
+	
+	/**
+	 * Determines if treasure enchantments are possible.
+	 * @param value
+	 * @return
+	 */
+	public EnchantWithLevelsFunction setTreasurePossible(boolean value) {
+		treasure = value;
+		return this;
+	}
+	
+	/* ##############################
+	 * Load/Save methods
+	 * ##############################
+	 */
+	
 	@Override
 	public JsonObject toJsonObject() {
 		JsonObject function = new JsonObject();
@@ -90,23 +104,24 @@ public class EnchantWithLevelsFunction extends LootFunction {
 	}
 
 	@Override
-    public LootFunctionType getType() {
-	    return LootFunctionType.ENCHANT_WITH_LEVELS;
-    }
-
-	@Override
-    public LootFunction fromJsonObject(JsonElement element) {
-		JsonObject function = element.getAsJsonObject();
+    public LootFunction fromJsonObject(JsonObject element) {
 	    // check for conditions
-	    if(function.get("conditions").isJsonArray()) { // we have conditions!
-	    	JsonArray conditions = function.get("conditions").getAsJsonArray();
-	    	while(conditions.iterator().hasNext()) {
-	    		JsonObject next = conditions.iterator().next().getAsJsonObject();
-	    		addCondition(LootUtil.getCondition(next.get("type").getAsString())); // get the correct instance of LootFunction
-	    		if(!conditions.iterator().hasNext()) break;
-	    	}
+	    if(element.get("conditions").isJsonArray()) { // we have conditions!
+	    	loadConditions(element.get("conditions").getAsJsonArray());
 	    }
 	    return this;
     }
-
+	
+	/* #######################
+	 * Getters
+	 * #######################
+	 */
+	public boolean useExactOnly() {
+		return levels.containsKey("exact");
+	}
+	
+	@Override
+    public LootFunctionType getType() {
+	    return LootFunctionType.ENCHANT_WITH_LEVELS;
+    }
 }

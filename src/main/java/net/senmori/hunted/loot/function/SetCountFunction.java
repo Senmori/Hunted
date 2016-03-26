@@ -3,12 +3,12 @@ package net.senmori.hunted.loot.function;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import net.senmori.hunted.loot.condition.LootCondition;
-import net.senmori.hunted.loot.utils.LootUtil;
+
+import org.bukkit.inventory.ItemStack;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 /**
  * Sets the stack size of the associated item</br>
@@ -24,6 +24,21 @@ public class SetCountFunction extends LootFunction {
 	    counts = new HashMap<>();
     }
 	
+	/* ###########################
+	 * ItemStack methods
+	 * # ##########################
+	 */
+	
+	@Override
+    public ItemStack applyTo(ItemStack applyTo) {
+	    return applyTo;
+    }
+	
+	
+	/* ##########################
+	 * Property methods
+	 * ##########################
+	 */
 	/** Sets stack size exactly */
 	public SetCountFunction setCount(int exact) {
 		counts.clear();
@@ -39,10 +54,10 @@ public class SetCountFunction extends LootFunction {
 		return this;
 	}
 	
-	public boolean useExactOnly() {
-		return counts.containsKey("exact");
-	}
-	
+	/* ###################
+	 * Load/Save methods
+	 * ###################
+	 */
 	@Override
     public JsonObject toJsonObject() {
 		JsonObject function = new JsonObject();
@@ -67,29 +82,32 @@ public class SetCountFunction extends LootFunction {
     }
 
 	@Override
-    public LootFunctionType getType() {
-	    return LootFunctionType.SET_COUNT;
-    }
-
-	@Override
-    public LootFunction fromJsonObject(JsonElement element) {
-		JsonObject function = element.getAsJsonObject();
-		if(function.get("count").isJsonObject()) {
-			setCount(function.get("count").getAsInt(), function.get("count").getAsInt());
-		} else if(function.get("count").getAsJsonPrimitive().isNumber()) {
-			setCount(function.get("count").getAsInt());
+    public LootFunction fromJsonObject(JsonObject element) {
+		if(element.get("count").isJsonObject()) {
+			setCount(element.get("count").getAsInt(), element.get("count").getAsInt());
+		} else if(element.get("count").getAsJsonPrimitive().isNumber()) {
+			setCount(element.get("count").getAsInt());
 		}
 		
 	    // check for conditions
-	    if(function.get("conditions").isJsonArray()) { // we have conditions!
-	    	JsonArray conditions = function.get("conditions").getAsJsonArray();
-	    	while(conditions.iterator().hasNext()) {
-	    		JsonObject next = conditions.iterator().next().getAsJsonObject();
-	    		addCondition(LootUtil.getCondition(next.get("type").getAsString())); // get the correct instance of LootFunction
-	    		if(!conditions.iterator().hasNext()) break;
-	    	}
+	    if(element.get("conditions").isJsonArray()) { // we have conditions!
+	    	loadConditions(element.get("conditions").getAsJsonArray());
 	    }
 	    return this;
+    }
+	
+	
+	/* ##################
+	 * Getters
+	 * ###################
+	 */
+	public boolean useExactOnly() {
+		return counts.containsKey("exact");
+	}
+	
+	@Override
+    public LootFunctionType getType() {
+	    return LootFunctionType.SET_ATTRIBUTES;
     }
 
 }

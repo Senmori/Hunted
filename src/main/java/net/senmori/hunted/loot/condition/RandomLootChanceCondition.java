@@ -1,6 +1,7 @@
 package net.senmori.hunted.loot.condition;
 
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
 
 import com.google.gson.JsonObject;
 
@@ -21,6 +22,19 @@ public class RandomLootChanceCondition extends LootCondition  {
 	public RandomLootChanceCondition() {
     }
 	
+	/* ###################
+	 * ItemStack methods
+	 * ###################
+	 */
+	@Override
+    public ItemStack applyTo(ItemStack applyTo) {
+	    return applyTo;
+    }
+	
+	/* #####################
+	 * Property Methods
+	 * #####################
+	 */
 	/**
 	 * Sets the random chance, valid values are from 0.0 - 1.0
 	 * @param chance - Base success rate
@@ -31,7 +45,13 @@ public class RandomLootChanceCondition extends LootCondition  {
 		this.lootMultiplier = lootingMultiplier;
 		return this;
 	}
-
+	
+	
+	
+	/* ###########################
+	 * Load/Save methods
+	 * ###########################
+	 */
 	@Override
     public JsonObject toJsonObject() {
 		JsonObject condition = new JsonObject();
@@ -42,15 +62,19 @@ public class RandomLootChanceCondition extends LootCondition  {
     }
 
 	@Override
-    public LootConditionType getType() {
-	    return LootConditionType.RANDOM_CHANCE_WITH_LOOTING;
-    }
-
-	@Override
     public LootCondition fromJsonObject(JsonObject condition) {
 		chance = condition.get("chance").getAsDouble();
 		lootMultiplier = condition.get("looting_multiplier").getAsDouble();
 	    return null;
     }
-
+	
+	/* ###################
+	 * Getters
+	 * ###################
+	 */
+	
+	@Override
+    public LootConditionType getType() {
+	    return LootConditionType.RANDOM_CHANCE_WITH_LOOTING;
+    }
 }

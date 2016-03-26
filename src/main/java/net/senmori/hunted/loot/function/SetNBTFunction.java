@@ -1,12 +1,12 @@
 package net.senmori.hunted.loot.function;
 
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import net.senmori.hunted.loot.condition.LootCondition;
-import net.senmori.hunted.loot.utils.LootUtil;
+
+import org.bukkit.inventory.ItemStack;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 /**
  * Adds NBT data to an item</br>
@@ -29,9 +29,29 @@ public class SetNBTFunction extends LootFunction {
 		return this;
 	}
 	
+	/* #####################
+	 * ItemStack methods
+	 * ######################
+	 */
+	@Override
+    public ItemStack applyTo(ItemStack applyTo) {
+	    return applyTo;
+    }
+	
+	
+	
+	/* ###########################
+	 * Property methods
+	 * ###########################
+	 */
 	public String getTag(){
 		return tag;
 	}
+	
+	/* #########################
+	 * Load/Save methods
+	 * #########################
+	 */
 
 	@Override
 	public JsonObject toJsonObject() {
@@ -49,24 +69,21 @@ public class SetNBTFunction extends LootFunction {
 	}
 
 	@Override
-    public LootFunctionType getType() {
-	    return LootFunctionType.SET_NBT;
-    }
-
-	@Override
-    public LootFunction fromJsonObject(JsonElement element) {
-		JsonObject function = element.getAsJsonObject();
-		tag = function.get("tag").getAsString();
+    public LootFunction fromJsonObject(JsonObject element) {
+		tag = element.get("tag").getAsString();
 	    // check for conditions
-	    if(function.get("conditions").isJsonArray()) { // we have conditions!
-	    	JsonArray conditions = function.get("conditions").getAsJsonArray();
-	    	while(conditions.iterator().hasNext()) {
-	    		JsonObject next = conditions.iterator().next().getAsJsonObject();
-	    		addCondition(LootUtil.getCondition(next.get("type").getAsString())); // get the correct instance of LootFunction
-	    		if(!conditions.iterator().hasNext()) break;
-	    	}
+	    if(element.get("conditions").isJsonArray()) { // we have conditions!
+	    	loadConditions(element.get("conditions").getAsJsonArray());
 	    }
 	    return this;
     }
-
+	
+	/* ###############################
+	 * Getters
+	 * ###############################
+	 */
+	@Override
+    public LootFunctionType getType() {
+	    return LootFunctionType.SET_NBT;
+    }
 }

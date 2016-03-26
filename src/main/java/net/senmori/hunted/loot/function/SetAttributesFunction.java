@@ -3,12 +3,12 @@ package net.senmori.hunted.loot.function;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import net.senmori.hunted.loot.attribute.LootAttribute;
-import net.senmori.hunted.loot.utils.LootUtil;
+
+import org.bukkit.inventory.ItemStack;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 
 /**
@@ -25,11 +25,35 @@ public class SetAttributesFunction extends LootFunction {
 	    modifiers = new ArrayList<>();
     }
 	
+	/* #########################
+	 * ItemStack methods
+	 * #########################
+	 */
+	@Override
+    public ItemStack applyTo(ItemStack applyTo) {
+	    // TODO Auto-generated method stub
+	    return null;
+    }
+	
+	
+	
+	/* #########################
+	 * Property methods
+	 * #########################
+	 */
+	
 	public SetAttributesFunction addModifier(LootAttribute mod) {
 		modifiers.add(mod);
 		return this;
 	}
 	
+	
+	
+	
+	/* ############################
+	 * Load/Save methods
+	 * ############################
+	 */
 	@Override
 	public JsonObject toJsonObject() {
 		JsonObject function = new JsonObject();
@@ -43,16 +67,10 @@ public class SetAttributesFunction extends LootFunction {
 	}
 
 	@Override
-    public LootFunctionType getType() {
-	    return LootFunctionType.SET_ATTRIBUTES;
-    }
-
-	@Override
-    public LootFunction fromJsonObject(JsonElement element) {
-		JsonObject function = element.getAsJsonObject();
+    public LootFunction fromJsonObject(JsonObject element) {
 		// iterate through modifiers
-		if(function.get("modifiers").isJsonArray()) {
-			JsonArray modifiers = function.get("modifiers").getAsJsonArray();
+		if(element.get("modifiers").isJsonArray()) {
+			JsonArray modifiers = element.get("modifiers").getAsJsonArray();
 			while(modifiers.iterator().hasNext()) {
 				JsonObject curr = modifiers.iterator().next().getAsJsonObject();
 				addModifier(new LootAttribute().fromJsonObject(curr));
@@ -61,15 +79,19 @@ public class SetAttributesFunction extends LootFunction {
 		}
 		
 	    // check for conditions
-	    if(function.get("conditions").isJsonArray()) { // we have conditions!
-	    	JsonArray conditions = function.get("conditions").getAsJsonArray();
-	    	while(conditions.iterator().hasNext()) {
-	    		JsonObject next = conditions.iterator().next().getAsJsonObject();
-	    		addCondition(LootUtil.getCondition(next.get("type").getAsString())); // get the correct instance of LootFunction
-	    		if(!conditions.iterator().hasNext()) break;
-	    	}
+	    if(element.get("conditions").isJsonArray()) { // we have conditions!
+	    	loadConditions(element.get("conditions").getAsJsonArray());
 	    }
 	    return this;
+    }
+	
+	/* #################
+	 * Getters
+	 * #################
+	 */
+	@Override
+    public LootFunctionType getType() {
+	    return LootFunctionType.SET_ATTRIBUTES;
     }
 
 }

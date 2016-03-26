@@ -52,7 +52,7 @@ public class LootTable {
 			if(!domainDir.exists()) {
 				domainDir.mkdirs();
 			}
-		lootTableFile = new File(domainDir + fileName + ".json");
+		lootTableFile = new File(domainDir + File.separator + fileName + ".json");
 		if(!lootTableFile.exists()) {
 			try {
 	            lootTableFile.createNewFile();
@@ -74,7 +74,13 @@ public class LootTable {
     	}
     	
     	// parse file here, recreate all entries/functions/conditions
-    	
+    	if(root.get("pools").isJsonArray()){ 
+    		for(JsonElement ele : root.get("pools").getAsJsonArray()) {
+    			if(!ele.isJsonObject()) continue;
+    			JsonObject pool = ele.getAsJsonObject();
+    			addPool(new Pool().fromJson(pool));
+    		}
+    	}
     	return this;
     }
 	
@@ -173,5 +179,9 @@ public class LootTable {
     */
     public String toString() {
     	return resourceLocation.getResourceDomain() + ":" + resourceLocation.getResourcePath() + File.separator + FilenameUtils.removeExtension(lootTableFile.getName());
+    }
+    
+    public String getName() {
+    	return fileName;
     }
 }

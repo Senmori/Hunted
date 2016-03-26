@@ -1,23 +1,20 @@
 package net.senmori.hunted.loot.entry;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import me.dpohvar.powernbt.api.NBTCompound;
-import me.dpohvar.powernbt.api.NBTManager;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.loot.condition.LootCondition;
 import net.senmori.hunted.loot.function.LootFunction;
 import net.senmori.hunted.loot.function.SetCountFunction;
-import net.senmori.hunted.loot.function.SetDataFunction;
 import net.senmori.hunted.loot.function.SetNBTFunction;
+import net.senmori.hunted.loot.utils.LootUtil;
 
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.FurnaceRecipe;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -29,17 +26,25 @@ public class Entry {
 	private List<LootFunction> functions;
 	private EntryType type;
 	private String name;
-	private int weight;
-	private int quality;
-	private boolean useQuality = false;
+	private Map<String,Integer> modifiers;
 	
+	// used when displaying this entry in an inventory
+	private Material defaultIcon;
+	
+	public Entry() {
+		conditions = new ArrayList<>();
+		functions = new ArrayList<>();
+		modifiers = new HashMap<>();
+	}
 	
 	public Entry(EntryType type, String name, int weight) {
 		conditions = new ArrayList<>();
 		functions = new ArrayList<>();
+		modifiers = new HashMap<>();
 		this.type = type;
 		this.name = name;
-		this.weight = weight;
+		modifiers.put("weight", weight);
+		assignDefaultIcon();
 	}
 	
 	public Entry(ItemStack item, int weight) {
@@ -49,33 +54,68 @@ public class Entry {
 		}
 		NBTCompound tag = Hunted.getInstance().nbtManager.read(item);
 		addFunction(new SetNBTFunction().setTag(tag.toString()));
+		assignDefaultIcon();
 	}
 	
 	public Entry(EntryType type, int weight) {
 		conditions = new ArrayList<>();
 		functions = new ArrayList<>();
 		this.type = type;
-		this.weight = weight;
+		modifiers.put("weight", weight);
+		assignDefaultIcon();
 	}
+	
+	/* ##############################
+	 *  ItemStack methods
+	 * ##############################
+	 */
+	public ItemStack getIcon() {
+		ItemStack icon = new ItemStack(defaultIcon);
+		for(LootCondition  lc : getConditions()) {
+			icon = lc.applyTo(icon);
+		}
+		
+		for(LootFunction f : getFunctions()) {
+			icon = f.applyTo(icon);
+		}
+		return icon;
+	}
+	
+	private void assignDefaultIcon(){
+		if(this.type.equals(EntryType.LOOT_TABLE)) {
+			defaultIcon = Material.MAP;
+			return;
+		}
+		if(this.type.equals(EntryType.EMPTY)) {
+			defaultIcon = Material.STAINED_GLASS_PANE;
+			return;
+		}
+		defaultIcon = Material.valueOf(name.toUpperCase());
+	}
+	/* ############################
+	 *  Property methods
+	 * ############################
+	 */
 	
 	public Entry setType(EntryType type) {
 		this.type = type;
+		assignDefaultIcon();
 		return this;
 	}
 	
 	public Entry setName(String name) {
 		this.name = name;
+		assignDefaultIcon();
 		return this;
 	}
 	
 	public Entry setWeight(int weight) {
-		this.weight = weight;
+		modifiers.put("weight", weight);
 		return this;
 	}
 	
 	public Entry setQuality(int quality) {
-		this.quality = quality;
-		useQuality = true;
+		modifiers.put("quality", quality);
 		return this;
 	}
 	
@@ -87,35 +127,19 @@ public class Entry {
 		functions.add(function);
 	}
 	
-	public EntryType getType() {
-		return type;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public int getWeight() {
-		return weight;
-	}
-	
-	public List<LootCondition> getConditions() {
-		return conditions;
-	}
-	
-	public List<LootFunction> getFunctions() {
-		return functions;
-	}
-	
+	/* ######################
+	 *  To/From Json Methods
+	 * ######################
+	 */
 	public JsonObject toJsonObject() {
 		JsonObject entry = new JsonObject();
 		entry.addProperty("type", type.getType());
 		if(!type.equals(EntryType.EMPTY)) {
 			entry.addProperty("name", name);
 		}
-		entry.addProperty("weight", weight);
-		if(useQuality) {
-			entry.addProperty("quality", quality);
+		entry.addProperty("weight", modifiers.get("weight"));
+		if(useQuality()) {
+			entry.addProperty("quality", modifiers.get("quality"));
 		}
 		
 		if(conditions != null && conditions.size() > 0) {
@@ -136,8 +160,64 @@ public class Entry {
 		return entry;
 	}
 	
-	public Entry fromJson(JsonElement element) {
-		
-		return this;
+	public Entry fromJson(JsonObject element) {
+		type = EntryType.valueOf(element.get("type").getAsString().toUpperCase());
+		name = element.get("name").getAsString();
+		modifiers.put("weight", element.get("weight").getAsInt());
+		if(element.get("quality") != null) {
+			modifiers.put("quality", element.get("quality").getAsInt());
+		}
+		assignDefaultIcon();
+			// check functions
+		if(element.get("functions").isJsonArray()) {
+			// we have functions!
+			for(JsonElement funcElement : element.get("functions").getAsJsonArray()) {
+				if(!funcElement.isJsonObject()) continue;
+				JsonObject function = funcElement.getAsJsonObject();
+				addFunction(LootUtil.getFunction(function.get("function").getAsString()).fromJsonObject(function));
+			}
+		}
+		// check for conditions at Entry level
+		if(element.get("conditions").isJsonArray()) {
+			 // we have conditions!
+			for(JsonElement conditionElement : element.get("conditions").getAsJsonArray()) {
+				if(!conditionElement.isJsonObject()) continue;
+				JsonObject cond = conditionElement.getAsJsonObject();
+				addCondition(LootUtil.getCondition(cond.get("condition").getAsString()).fromJsonObject(cond));
+			}
+		}
+	return this;
+	}
+	
+	/* ####################
+	 * Getters
+	 * ####################
+	 */
+	public EntryType getType() {
+		return type;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public int getWeight() {
+		return modifiers.get("weight");
+	}
+	
+	public boolean useQuality() {
+		return modifiers.containsKey("quality");
+	}
+	
+	public int getQuality() {
+		return modifiers.get("quality");
+	}
+	
+	public List<LootCondition> getConditions() {
+		return conditions;
+	}
+	
+	public List<LootFunction> getFunctions() {
+		return functions;
 	}
 }

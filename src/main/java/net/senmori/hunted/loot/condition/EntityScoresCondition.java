@@ -6,9 +6,9 @@ import java.util.Map;
 
 import net.senmori.hunted.loot.condition.properties.EntitySelector;
 import net.senmori.hunted.loot.score.LootScore;
-import net.senmori.hunted.loot.utils.LootUtil;
 
-import com.google.gson.JsonArray;
+import org.bukkit.inventory.ItemStack;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -27,13 +27,28 @@ public class EntityScoresCondition extends LootCondition {
 	
 	/**
 	 * Condition that checks if an entity has a certain scoreboard value</br>
-	 * <i>WARNING</i>: You can use both setScoreExact(...) and setScore(...), although improper values could cause problems.</br>
 	 */
 	public EntityScoresCondition(EntitySelector entity) {
 		scores = new ArrayList<>();
 		this.entity = entity.getName();
     }
 	
+	/* ##################
+	 * ItemStack methods
+	 * ##################
+	 */
+	@Override
+    public ItemStack applyTo(ItemStack applyTo) {
+	    return applyTo;
+    }
+
+
+	
+	
+	/* #################
+	 * Property Methods
+	 * #################
+	 */
 	/**
 	 * Add a {@link LootScore} to this condition
 	 * All scores submitted must pass for this condition to pass.
@@ -45,6 +60,11 @@ public class EntityScoresCondition extends LootCondition {
 		return this;
 	}
 	
+	
+	/* ############################
+	 * Load/Save Methods
+	 * ############################
+	 */
 	@Override
     public JsonObject toJsonObject() {
 		JsonObject condition = new JsonObject();
@@ -67,11 +87,6 @@ public class EntityScoresCondition extends LootCondition {
     }
 
 	@Override
-    public LootConditionType getType() {
-	    return LootConditionType.ENTITY_SCORES;
-    }
-
-	@Override
     public LootCondition fromJsonObject(JsonObject condition) {
 		entity = condition.get("entity").getAsString();
 		for(Map.Entry<String, JsonElement> entry : condition.get("scores").getAsJsonObject().entrySet()) {
@@ -83,7 +98,10 @@ public class EntityScoresCondition extends LootCondition {
 			}
 		}
 		return this;
-	    
     }
 
+	@Override
+    public LootConditionType getType() {
+	    return LootConditionType.ENTITY_SCORES;
+    }
 }

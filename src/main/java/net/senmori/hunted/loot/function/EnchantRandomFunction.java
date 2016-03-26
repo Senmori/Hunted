@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.senmori.hunted.loot.condition.LootCondition;
-import net.senmori.hunted.loot.utils.LootUtil;
 
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
@@ -34,6 +33,19 @@ public class EnchantRandomFunction extends LootFunction {
 		enchantments = new ArrayList<>();
 	}
 	
+	/* ########################
+	 * ItemStack methods
+	 * ########################
+	 */
+	@Override
+    public ItemStack applyTo(ItemStack applyTo) {
+	    return applyTo;
+    }
+	
+	/* #####################
+	 * Property methods
+	 * #####################
+	 */
 	public EnchantRandomFunction addEnchantment(String enchantName) {
 		enchantments.add(enchantName);
 		return this;
@@ -51,7 +63,10 @@ public class EnchantRandomFunction extends LootFunction {
 		return this;
 	}
 	
-	
+	/* ######################
+	 * Load/Save methods
+	 * ######################
+	 */
 	@Override
 	public JsonObject toJsonObject() {
 		JsonObject function = new JsonObject();
@@ -73,27 +88,26 @@ public class EnchantRandomFunction extends LootFunction {
 	}
 
 	@Override
-    public LootFunctionType getType() {
-	    return LootFunctionType.ENCHANT_RANDOM;
-    }
-
-	@Override
-    public LootFunction fromJsonObject(JsonElement element) {
-		JsonObject function = element.getAsJsonObject();
-	    JsonArray enchantments = function.getAsJsonArray("enchantments");
+    public LootFunction fromJsonObject(JsonObject element) {
+	    JsonArray enchantments = element.getAsJsonArray("enchantments");
 	    while(enchantments.iterator().hasNext()) {
 	    	addEnchantment(enchantments.iterator().next().getAsString());
 	    	if(!enchantments.iterator().hasNext()) break;
 	    }
 	    // check for conditions
-	    if(function.get("conditions").isJsonArray()) { // we have conditions!
-	    	JsonArray conditions = function.get("conditions").getAsJsonArray();
-	    	while(conditions.iterator().hasNext()) {
-	    		JsonObject next = conditions.iterator().next().getAsJsonObject();
-	    		addCondition(LootUtil.getCondition(next.get("type").getAsString())); // get the correct instance of LootFunction
-	    		if(!conditions.iterator().hasNext()) break;
-	    	}
+	    if(element.get("conditions").isJsonArray()) { // we have conditions!
+	    	loadConditions(element.get("conditions").getAsJsonArray());
 	    }
 		return this;
+    }
+	
+	/* #####################
+	 * Getters
+	 * #####################
+	 */
+	
+	@Override
+    public LootFunctionType getType() {
+	    return LootFunctionType.ENCHANT_RANDOM;
     }
 }

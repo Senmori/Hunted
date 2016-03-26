@@ -4,12 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.senmori.hunted.loot.condition.LootCondition;
-import net.senmori.hunted.loot.utils.LootUtil;
 
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 /**
@@ -28,6 +27,19 @@ public class LootingEnchantFunction extends LootFunction {
 		counts = new HashMap<>();
 	}
 	
+	/* #######################
+	 * ItemStack methods
+	 * #######################
+	 */
+	@Override
+    public ItemStack applyTo(ItemStack applyTo) {
+	    return applyTo;
+    }
+	
+	/* #####################
+	 * Property methods
+	 * #####################
+	 */
 	public LootingEnchantFunction setCount(int count) {
 		counts.clear();
 		counts.put("exact", count);
@@ -41,10 +53,13 @@ public class LootingEnchantFunction extends LootFunction {
 		return this;
 	}
 	
-	public boolean useExactOnly() {
-		return counts.containsKey("exact");
-	}
+
 	
+	
+	/* ########################
+	 * Load/Save methods
+	 * ########################
+	 */
 	@Override
 	public JsonObject toJsonObject() {
 		JsonObject function = new JsonObject();
@@ -69,30 +84,34 @@ public class LootingEnchantFunction extends LootFunction {
 	}
 
 	@Override
+    public LootFunction fromJsonObject(JsonObject element) {
+		if(element.get("count").isJsonObject()) {
+			JsonObject counts = element.get("count").getAsJsonObject();
+			setCount(counts.get("min").getAsInt(), counts.get("max").getAsInt());
+		} else if(element.get("count").getAsJsonPrimitive().isNumber()) {
+			setCount(element.get("count").getAsInt());
+		}
+		
+	    // check for conditions
+	    if(element.get("conditions").isJsonArray()) { // we have conditions!
+	    	loadConditions(element.get("conditions").getAsJsonArray());
+	    }
+	    return this;
+    }
+	
+	/* ####################
+	 * Getters
+	 * ####################
+	 */
+	
+	public boolean useExactOnly() {
+		return counts.containsKey("exact");
+	}
+	
+	@Override
     public LootFunctionType getType() {
 	    return LootFunctionType.LOOTING_ENCHANT;
     }
 
-	@Override
-    public LootFunction fromJsonObject(JsonElement element) {
-		JsonObject function = element.getAsJsonObject();
-		if(function.get("count").isJsonObject()) {
-			JsonObject counts = function.get("count").getAsJsonObject();
-			setCount(counts.get("min").getAsInt(), counts.get("max").getAsInt());
-		} else if(function.get("count").getAsJsonPrimitive().isNumber()) {
-			setCount(function.get("count").getAsInt());
-		}
-		
-	    // check for conditions
-	    if(function.get("conditions").isJsonArray()) { // we have conditions!
-	    	JsonArray conditions = function.get("conditions").getAsJsonArray();
-	    	while(conditions.iterator().hasNext()) {
-	    		JsonObject next = conditions.iterator().next().getAsJsonObject();
-	    		addCondition(LootUtil.getCondition(next.get("type").getAsString())); // get the correct instance of LootFunction
-	    		if(!conditions.iterator().hasNext()) break;
-	    	}
-	    }
-	    return this;
-    }
 
 }

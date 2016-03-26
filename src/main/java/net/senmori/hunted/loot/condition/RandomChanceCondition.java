@@ -1,5 +1,7 @@
 package net.senmori.hunted.loot.condition;
 
+import org.bukkit.inventory.ItemStack;
+
 import com.google.gson.JsonObject;
 
 
@@ -15,9 +17,23 @@ public class RandomChanceCondition extends LootCondition  {
 	/**
 	 * Condition that test a random number 0.0-1.0 is less than {@link #chance}. </br>
 	 */
-	public RandomChanceCondition() {
+	public RandomChanceCondition() {}
+	
+	/* ###################
+	 * ItemStack methods
+	 * ###################
+	 */
+	@Override
+    public ItemStack applyTo(ItemStack applyTo) {
+	    return applyTo;
     }
 	
+	
+
+	/* ####################
+	 * Property methods
+	 * ####################
+	 */
 	/**
 	 * Sets the base success rate of this condition succeeding</br>
 	 * Valid values are from 0.0 - 1.0
@@ -28,6 +44,10 @@ public class RandomChanceCondition extends LootCondition  {
 		return this;
 	}
 	
+	/* ####################
+	 * Load/Save methods
+	 * ####################
+	 */
 	@Override
     public JsonObject toJsonObject() {
 		JsonObject condition = new JsonObject();
@@ -36,15 +56,16 @@ public class RandomChanceCondition extends LootCondition  {
 	    return condition;
     }
 
-	@Override
-    public LootConditionType getType() {
-	    return LootConditionType.RANDOM_CHANCE;
-    }
 
 	@Override
     public LootCondition fromJsonObject(JsonObject condition) {
 	    chance = condition.get("chance").getAsDouble();
 		return this;
+    }
+
+	@Override
+    public LootConditionType getType() {
+	    return LootConditionType.RANDOM_CHANCE;
     }
 
 }

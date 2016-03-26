@@ -93,14 +93,4 @@ public class LootScore {
 	public int getScoreMax() {
 		return scores.get("max");
 	}
-	
-	public LootScore fromJsonObject(JsonObject scores) {
-		scoreName = scores.get("name").getAsString();
-		if(scores.get("exact") != null) {
-			setScore(scores.get("exact").getAsInt());
-		} else if(scores.get("min") != null && scores.get("max") != null) {
-			setScore(scores.get("min").getAsInt(),scores.get("max").getAsInt());
-		}
-		return this;
-	}
 }

@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import net.senmori.hunted.loot.condition.LootCondition;
 import net.senmori.hunted.loot.entry.Entry;
 import net.senmori.hunted.loot.entry.EntryType;
+import net.senmori.hunted.loot.utils.LootUtil;
 
 
 public class Pool {
@@ -35,14 +37,6 @@ public class Pool {
 		rolls.put("exact", 1);
 	}
 	
-	public List<Entry> getEntries() {
-		return entries;
-	}
-	
-	public List<LootCondition> getConditions() {
-		return conditions;
-	}
-	
 	public void addEntry(EntryType type, String name, int weight) {
 		entries.add(new Entry(type, name, weight));
 	}
@@ -52,19 +46,23 @@ public class Pool {
 	}
 	
 	public void setRolls(int amount) {
+		rolls.clear();
 		rolls.put("exact", amount);
 	}
 	
 	public void setRolls(int min, int max) {
+		rolls.clear();
 		rolls.put("min", min);
 		rolls.put("max", max);
 	}
 	
 	public void setBonusRolls(int num) {
+		bonusRolls.clear();
 		bonusRolls.put("exact", num);
 	}
 	
 	public void setBonusRolls(int min, int max) {
+		bonusRolls.clear();
 		bonusRolls.put("min", min);
 		bonusRolls.put("max", max);
 	}
@@ -72,7 +70,7 @@ public class Pool {
 	
     public JsonObject toJsonObject() {
 		// insert rolls
-		if(rolls.containsKey("min") && rolls.containsKey("max")) {
+		if(!rolls.containsKey("exact")) {
 			JsonObject rollsList = new JsonObject();
 			rollsList.addProperty("min", rolls.get("min"));
 			rollsList.addProperty("max", rolls.get("max"));
@@ -82,7 +80,7 @@ public class Pool {
 		}
 		
 		// bonus rolls
-		if(bonusRolls.containsKey("min") && bonusRolls.containsKey("max")) {
+		if(!bonusRolls.containsKey("exact")) {
 			JsonObject bRolls = new JsonObject();
 			bRolls.addProperty("min", bonusRolls.get("min"));
 			bRolls.addProperty("max", bonusRolls.get("max"));
@@ -110,5 +108,34 @@ public class Pool {
 			pool.add("conditions", cArray);
 		}
 		return pool;
+	}
+    
+    public Pool fromJson(JsonObject pool) {
+		// check for entries
+		if(pool.get("entries").isJsonArray()) {
+			for(JsonElement entryElement : pool.get("entries").getAsJsonArray()) {
+				if(!entryElement.isJsonObject()) continue;
+				JsonObject curr = entryElement.getAsJsonObject();
+				entries.add(new Entry().fromJson(curr));
+			}
+		}
+		
+		// check for conditions
+		if(pool.get("conditions").isJsonArray()) {
+			for(JsonElement conditionElement : pool.get("conditions").getAsJsonArray()) {
+				if(!conditionElement.isJsonObject()) continue;
+				JsonObject cond = conditionElement.getAsJsonObject();
+				conditions.add(LootUtil.getCondition(cond.get("condition").getAsString()).fromJsonObject(cond));
+			}
+		}
+	return this;
+    }
+    
+	public List<Entry> getEntries() {
+		return entries;
+	}
+	
+	public List<LootCondition> getConditions() {
+		return conditions;
 	}
 }

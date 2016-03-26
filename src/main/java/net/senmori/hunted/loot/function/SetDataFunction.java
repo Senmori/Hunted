@@ -4,12 +4,12 @@ package net.senmori.hunted.loot.function;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import net.senmori.hunted.loot.condition.LootCondition;
-import net.senmori.hunted.loot.utils.LootUtil;
+
+import org.bukkit.inventory.ItemStack;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 /**
  * Sets the item's data value.</br>
@@ -26,6 +26,19 @@ public class SetDataFunction extends LootFunction {
 	    dataValues = new HashMap<>();
     }
 	
+	/* ####################
+	 * ItemStack methods
+	 * ####################
+	 */
+	@Override
+    public ItemStack applyTo(ItemStack applyTo) {
+	    return applyTo;
+    }
+	
+	/* ########################
+	 * Property methods
+	 * ########################
+	 */
 	/**
 	 * Set this item's data value exactly.
 	 * @param data
@@ -50,10 +63,11 @@ public class SetDataFunction extends LootFunction {
 		return this;
 	}
 	
-	public boolean useExactOnly() {
-		return dataValues.containsKey("exact");
-	}
-
+	
+	/* ###########################
+	 * Load/Save methods
+	 * ###########################
+	 */
 	@Override
 	public JsonObject toJsonObject() {
 		JsonObject function = new JsonObject();
@@ -78,29 +92,33 @@ public class SetDataFunction extends LootFunction {
 	}
 
 	@Override
+    public LootFunction fromJsonObject(JsonObject element) {
+		if(element.get("data").isJsonPrimitive()) {
+			setDataValue(element.get("data").getAsInt(), element.get("data").getAsInt());
+		} else if(element.get("data").getAsJsonPrimitive().isNumber()) {
+			setDataValue(element.get("data").getAsInt());
+		}
+		
+	    // check for conditions
+	    if(element.get("conditions").isJsonArray()) { // we have conditions!
+	    	loadConditions(element.get("conditions").getAsJsonArray());
+	    }
+	    return this;
+    }
+	/* #####################
+	 * Getters
+	 * #####################
+	 */
+	
+	public boolean useExactOnly() {
+		return dataValues.containsKey("exact");
+	}
+	
+	@Override
     public LootFunctionType getType() {
 	    return LootFunctionType.SET_DATA;
     }
 
-	@Override
-    public LootFunction fromJsonObject(JsonElement element) {
-		JsonObject function = element.getAsJsonObject();
-		if(function.get("data").isJsonObject()) {
-			setDataValue(function.get("data").getAsInt(), function.get("data").getAsInt());
-		} else if(function.get("data").getAsJsonPrimitive().isNumber()) {
-			setDataValue(function.get("data").getAsInt());
-		}
-		
-	    // check for conditions
-	    if(function.get("conditions").isJsonArray()) { // we have conditions!
-	    	JsonArray conditions = function.get("conditions").getAsJsonArray();
-	    	while(conditions.iterator().hasNext()) {
-	    		JsonObject next = conditions.iterator().next().getAsJsonObject();
-	    		addCondition(LootUtil.getCondition(next.get("type").getAsString())); // get the correct instance of LootFunction
-	    		if(!conditions.iterator().hasNext()) break;
-	    	}
-	    }
-	    return this;
-    }
+
 
 }

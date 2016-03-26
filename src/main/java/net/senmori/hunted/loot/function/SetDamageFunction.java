@@ -4,12 +4,12 @@ package net.senmori.hunted.loot.function;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import net.senmori.hunted.loot.condition.LootCondition;
-import net.senmori.hunted.loot.utils.LootUtil;
+
+import org.bukkit.inventory.ItemStack;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 /**
  * Sets the item's damage value(durability) for tools</br>
@@ -27,6 +27,19 @@ public class SetDamageFunction extends LootFunction {
 	    damageValues.put("exact", 1.0);
     }
 	
+	/* ######################
+	 * ItemStack methods
+	 * ######################
+	 */
+	@Override
+    public ItemStack applyTo(ItemStack applyTo) {
+	    return applyTo;
+    }
+	
+	/* ###############################
+	 * Property methods 
+	 * ###############################
+	 */
 	/**
 	 * Set's the items damage fraction.</br>
 	 * <i>Note: (1.0 is undamaged, 0.0 is zero durability left)</i>
@@ -53,10 +66,10 @@ public class SetDamageFunction extends LootFunction {
 		return this;
 	}
 	
-	public boolean useExactOnly() {
-		return damageValues.containsKey("exact");
-	}
-
+	/* #########################
+	 * Load/Save methods
+	 * #########################
+	 */
 	@Override
 	public JsonObject toJsonObject() {
 		JsonObject function = new JsonObject();
@@ -81,29 +94,31 @@ public class SetDamageFunction extends LootFunction {
 	}
 
 	@Override
-    public LootFunctionType getType() {
-	    return LootFunctionType.SET_DAMAGE;
-    }
-
-	@Override
-    public LootFunction fromJsonObject(JsonElement element) {
-		JsonObject function = element.getAsJsonObject();
-	    if(function.get("damage").isJsonObject()) {
-	    	setDamage(function.get("damage").getAsDouble(), function.get("damage").getAsDouble());
-	    } else if(function.get("damage").getAsJsonPrimitive().isNumber()) {
-	    	setDamage(function.get("damage").getAsDouble());
+    public LootFunction fromJsonObject(JsonObject element) {
+	    if(element.get("damage").isJsonObject()) {
+	    	setDamage(element.get("damage").getAsDouble(), element.get("damage").getAsDouble());
+	    } else if(element.get("damage").getAsJsonPrimitive().isNumber()) {
+	    	setDamage(element.get("damage").getAsDouble());
 	    }
 	    
 	    // check for conditions
-	    if(function.get("conditions").isJsonArray()) { // we have conditions!
-	    	JsonArray conditions = function.get("conditions").getAsJsonArray();
-	    	while(conditions.iterator().hasNext()) {
-	    		JsonObject next = conditions.iterator().next().getAsJsonObject();
-	    		addCondition(LootUtil.getCondition(next.get("type").getAsString())); // get the correct instance of LootFunction
-	    		if(!conditions.iterator().hasNext()) break;
-	    	}
+	    if(element.get("conditions").isJsonArray()) { // we have conditions!
+	    	loadConditions(element.get("conditions").getAsJsonArray());
 	    }
 		return this;
+    }
+	
+	/* ####################
+	 * Getters
+	 * ####################
+	 */
+	public boolean useExactOnly() {
+		return damageValues.containsKey("exact");
+	}
+	
+	@Override
+    public LootFunctionType getType() {
+	    return LootFunctionType.SET_DAMAGE;
     }
 
 }

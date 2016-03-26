@@ -1,11 +1,14 @@
 package net.senmori.hunted.commands.debug;
 
 
+import java.util.Set;
+
 import net.senmori.hunted.commands.Subcommand;
-import net.senmori.hunted.loot.LootTable;
-import net.senmori.hunted.loot.Pool;
-import net.senmori.hunted.loot.storage.ResourceLocation;
+import net.senmori.hunted.loot.utils.LootUtil;
 import net.senmori.hunted.util.Reference.Permissions;
+
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 
 public class DebugCommand extends Subcommand {
 
@@ -18,10 +21,11 @@ public class DebugCommand extends Subcommand {
 	@Override
 	protected void perform() {
 		
-		String world = getPlayer().getWorld().getName();
-		ResourceLocation rl = new ResourceLocation(world, "hunted", "chests/");
-		LootTable table = new LootTable(rl, "test");
+		Block target = getPlayer().getTargetBlock((Set<Material>)null, 5);
 		
-		Pool pool = new Pool();
+		if(target != null && LootUtil.isValidBlock(target)) {
+			if(LootUtil.hasLootTable(target)) LootUtil.clearLootTable(target);
+			LootUtil.setLootTable(target, "hunted:chests/debug");
+		}
 	}
 }

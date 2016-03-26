@@ -1,5 +1,7 @@
 package net.senmori.hunted.loot.condition;
 
+import org.bukkit.inventory.ItemStack;
+
 import com.google.gson.JsonObject;
 
 import net.senmori.hunted.loot.condition.properties.EntitySelector;
@@ -20,6 +22,21 @@ public class EntityPropertiesCondition extends LootCondition {
 		onFire = false;
     }
 	
+	/* ###################################
+	 * ItemStack methods
+	 * ###################################
+	 */
+	@Override
+    public ItemStack applyTo(ItemStack applyTo) {
+	    return applyTo;
+    }
+	
+	
+	
+	/* ####################
+	 * Property Methods
+	 * ####################
+	 */
 	public EntityPropertiesCondition setEntity(EntitySelector entity) {
 		this.entity = entity.getName();
 		return this;
@@ -40,7 +57,12 @@ public class EntityPropertiesCondition extends LootCondition {
 		properties.addProperty("on_fire", onFire);
 		return this;
 	}
-
+	
+	
+	/* ######################################
+	 * Load/Save Methods
+	 * ######################################
+	 */
 	@Override
     public JsonObject toJsonObject() {
 		JsonObject condition = new JsonObject();
