@@ -63,35 +63,17 @@ public class LootTable {
 		root = new JsonObject();
 		pools = new ArrayList<>();
 	}
-	
-    public LootTable loadFromFile() {
-    	List<Pool> currPools = new ArrayList<>();
-    	try {
-    		JsonParser parser = new JsonParser();
-    		JsonElement element = parser.parse(new FileReader(lootTableFile));
-    		root = element.getAsJsonObject();
-    	} catch(FileNotFoundException e) {
-    		e.printStackTrace();
-    	}
-    	// parse file here, recreate all entries/functions/conditions
-		for(JsonElement ele : root.get("pools").getAsJsonArray()) {
-			JsonObject pool = ele.getAsJsonObject();
-			Pool curr = new Pool().fromJson(pool);
-			currPools.add(curr);
-		}
-    	pools.addAll(currPools); // add them to loottable here to allow time for recursion
-    	Bukkit.broadcastMessage("Loaded " + pools.size() + " pool(s)");
-    	return this;
-    }
-	
+
+    
+     
+    /* ##########################
+     * Property methods
+     * ##########################
+     */
     public void addPool(Pool pool) {
 		pools.add(pool);
 	}
-     
-    /* ##########################
-     * Editing functions
-     * ##########################
-     */
+    
     /**
      * Returns the first entry with the given name
      * @param entryName
@@ -136,7 +118,7 @@ public class LootTable {
     
     
     /* ##########################
-     * Writing methods
+     * Load/Save methods
      * ##########################
      */
     public void write() {
@@ -151,6 +133,25 @@ public class LootTable {
         } catch (IOException e) {
 	        e.printStackTrace();
         }
+    }
+    
+    public LootTable loadFromFile() {
+    	List<Pool> currPools = new ArrayList<>();
+    	try {
+    		JsonParser parser = new JsonParser();
+    		JsonElement element = parser.parse(new FileReader(lootTableFile));
+    		root = element.getAsJsonObject();
+    	} catch(FileNotFoundException e) {
+    		e.printStackTrace();
+    	}
+    	// parse file here, recreate all entries/functions/conditions
+		for(JsonElement ele : root.get("pools").getAsJsonArray()) {
+			JsonObject pool = ele.getAsJsonObject();
+			Pool curr = new Pool().fromJson(pool);
+			currPools.add(curr);
+		}
+    	pools.addAll(currPools); // add them to loottable here to allow time for recursion
+    	return this;
     }
     
     public JsonObject toJsonObject() {

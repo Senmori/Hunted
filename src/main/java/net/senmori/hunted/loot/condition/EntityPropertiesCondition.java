@@ -28,6 +28,8 @@ public class EntityPropertiesCondition extends LootCondition {
 	 */
 	@Override
     public ItemStack applyTo(ItemStack applyTo) {
+	
+		
 	    return applyTo;
     }
 	

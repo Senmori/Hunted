@@ -146,11 +146,18 @@ public class Pool {
 			Bukkit.broadcastMessage("    "); // debugging purposes only
     		JsonArray entries = pool.get("entries").getAsJsonArray();
     		int num = 0;
+    		int entryCount = 0;
+    		for(JsonElement entryElement : entries) {
+    			if(entryElement.getAsJsonObject().get("type") != null) {
+    				entryCount++;
+    			}
+    		}
 	    	for(JsonElement entryElement : entries) {
 	    		// Entry
 	    		JsonObject currentEntry = entryElement.getAsJsonObject();
+	    		Bukkit.broadcastMessage("Entry[RAW] (" + num + "): {Type: " + currentEntry.get("type").getAsString() + " Name: " + currentEntry.get("name").getAsString() + " Weight: " + currentEntry.get("weight").getAsString() + "}");
 	    		Entry cEntry = new Entry().fromJson(currentEntry);
-	    		Bukkit.broadcastMessage("Entry (" + num + "): {Type: " + cEntry.getType().toString() + " Name: " + cEntry.getName() + " Weight: " + cEntry.getWeight() + "}");
+	    		Bukkit.broadcastMessage("Entry[JSON] (" + num + "): {Type: " + cEntry.getType().toString() + " Name: " + cEntry.getName() + " Weight: " + cEntry.getWeight() + "}");
 	    			// check currentEntry for functions
 	    			if(currentEntry.get("functions") != null) {
 	    				JsonArray functions = currentEntry.get("functions").getAsJsonArray();
@@ -167,6 +174,8 @@ public class Pool {
 	    								Bukkit.broadcastMessage("Function Condition (" + num + ") Type: " + currCondition.get("condition").getAsString());
 	    								currFunction.addCondition(LootUtil.getCondition(currCondition.get("condition").getAsString()));
 	    							}
+	    						} else {
+	    							Bukkit.broadcastMessage("Function (" + num + "): NO CONDITIONS");
 	    						}
 	    					cEntry.addFunction(currFunction);
 	    				} 
@@ -180,14 +189,17 @@ public class Pool {
 	    					Bukkit.broadcastMessage("Entry Condition (" + num + "): Type: " + currentCondition.get("condition").getAsString());
 	    					cEntry.addCondition(LootUtil.getCondition(currentCondition.get("condition").getAsString()));
 	    				}
+	    			} else {
+	    				Bukkit.broadcastMessage("This entry has no conditions!");
 	    			}
     			addEntry(cEntry);
     			Bukkit.broadcastMessage("Entry #" + num + ": Conditions: " + cEntry.getConditions().size() + " | Functions: " + cEntry.getFunctions().size());
     			Bukkit.broadcastMessage("Entry #" + num + " loaded!");
-    			Bukkit.broadcastMessage("Pool entries: " + getEntries().size());
     			num++;
     			Bukkit.broadcastMessage("    ");// debugging purposes only
 			} // end entries loop
+			Bukkit.broadcastMessage("Pool entries[JSON]: " + entryCount);
+			Bukkit.broadcastMessage("Pool entries[loaded]: " + getEntries().size());
     	}
 		Bukkit.broadcastMessage("Loaded all entries");
     	if(pool.get("conditions") != null) {
