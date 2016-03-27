@@ -72,9 +72,7 @@ public class SetNBTFunction extends LootFunction {
     public LootFunction fromJsonObject(JsonObject element) {
 		tag = element.get("tag").getAsString();
 	    // check for conditions
-	    if(element.get("conditions").isJsonArray()) { // we have conditions!
-	    	loadConditions(element.get("conditions").getAsJsonArray());
-	    }
+	    //loadConditions(element.get("conditions").getAsJsonArray());
 	    return this;
     }
 	

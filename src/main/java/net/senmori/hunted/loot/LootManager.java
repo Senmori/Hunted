@@ -1,24 +1,19 @@
 package net.senmori.hunted.loot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.bukkit.plugin.java.JavaPlugin;
 
 import net.senmori.hunted.loot.storage.ResourceLocation;
 
+import org.bukkit.plugin.java.JavaPlugin;
+
 public class LootManager {
 
-	private JavaPlugin plugin;
-	private String defaultDomain;
+
 	private List<ResourceLocation> resources;
 	
 	public LootManager(JavaPlugin plugin) {
-		this.plugin = plugin;
 		resources = new ArrayList<>();
-		defaultDomain = plugin.getName().toLowerCase().replace(' ', '_');
 	}
 	
 	/** Add a new {@link ResourceLocation} and {@link LootTable} */

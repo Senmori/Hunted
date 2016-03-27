@@ -94,15 +94,14 @@ public class SetDataFunction extends LootFunction {
 	@Override
     public LootFunction fromJsonObject(JsonObject element) {
 		if(element.get("data").isJsonPrimitive()) {
-			setDataValue(element.get("data").getAsInt(), element.get("data").getAsInt());
-		} else if(element.get("data").getAsJsonPrimitive().isNumber()) {
 			setDataValue(element.get("data").getAsInt());
+		} else {
+			JsonObject dataValues = element.get("data").getAsJsonObject();
+			setDataValue(dataValues.get("min").getAsInt(), dataValues.get("max").getAsInt());
 		}
 		
 	    // check for conditions
-	    if(element.get("conditions").isJsonArray()) { // we have conditions!
-	    	loadConditions(element.get("conditions").getAsJsonArray());
-	    }
+	    //loadConditions(element.get("conditions").getAsJsonArray());
 	    return this;
     }
 	/* #####################

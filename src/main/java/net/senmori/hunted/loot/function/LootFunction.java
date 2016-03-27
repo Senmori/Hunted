@@ -3,6 +3,7 @@ package net.senmori.hunted.loot.function;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
 import net.senmori.hunted.loot.condition.LootCondition;
@@ -37,11 +38,12 @@ public abstract class LootFunction {
 		return conditions;
 	}
 	
-	protected void loadConditions(JsonArray conditions) {
+/*	protected void loadConditions(JsonArray conditions) {
+		if(conditions == null) return;
 		for(JsonElement cond : conditions) {
-			if(!cond.isJsonObject()) continue;
 			String type = cond.getAsJsonObject().get("condition").getAsString();
+			Bukkit.broadcastMessage("Function type: " + type);
 			addCondition(LootUtil.getCondition(type).fromJsonObject(cond.getAsJsonObject()));
 		}
-	}
+	}*/
 }

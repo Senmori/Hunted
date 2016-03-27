@@ -13,6 +13,7 @@ import net.senmori.hunted.loot.function.SetCountFunction;
 import net.senmori.hunted.loot.function.SetNBTFunction;
 import net.senmori.hunted.loot.utils.LootUtil;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -124,6 +125,7 @@ public class Entry {
 	}
 	
 	public void addFunction(LootFunction function) {
+		if(type.equals(EntryType.EMPTY)) return;
 		functions.add(function);
 	}
 	
@@ -168,24 +170,19 @@ public class Entry {
 			modifiers.put("quality", element.get("quality").getAsInt());
 		}
 		assignDefaultIcon();
-			// check functions
-		if(element.get("functions").isJsonArray()) {
-			// we have functions!
+/*		// check functions
+		if(element.get("functions") != null) {
 			for(JsonElement funcElement : element.get("functions").getAsJsonArray()) {
-				if(!funcElement.isJsonObject()) continue;
 				JsonObject function = funcElement.getAsJsonObject();
 				addFunction(LootUtil.getFunction(function.get("function").getAsString()).fromJsonObject(function));
 			}
 		}
-		// check for conditions at Entry level
-		if(element.get("conditions").isJsonArray()) {
-			 // we have conditions!
+		if(element.get("conditions") != null) {
 			for(JsonElement conditionElement : element.get("conditions").getAsJsonArray()) {
-				if(!conditionElement.isJsonObject()) continue;
 				JsonObject cond = conditionElement.getAsJsonObject();
 				addCondition(LootUtil.getCondition(cond.get("condition").getAsString()).fromJsonObject(cond));
-			}
-		}
+			}	
+		}*/
 	return this;
 	}
 	

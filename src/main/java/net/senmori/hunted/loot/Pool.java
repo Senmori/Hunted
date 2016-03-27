@@ -2,18 +2,20 @@ package net.senmori.hunted.loot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import org.bukkit.Bukkit;
 
 import net.senmori.hunted.loot.condition.LootCondition;
 import net.senmori.hunted.loot.entry.Entry;
 import net.senmori.hunted.loot.entry.EntryType;
+import net.senmori.hunted.loot.function.LootFunction;
 import net.senmori.hunted.loot.utils.LootUtil;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 
 public class Pool {
@@ -37,6 +39,10 @@ public class Pool {
 		rolls.put("exact", 1);
 	}
 	
+	/* #######################
+	 * Property methods
+	 * #######################
+	 */
 	public void addEntry(EntryType type, String name, int weight) {
 		entries.add(new Entry(type, name, weight));
 	}
@@ -67,6 +73,15 @@ public class Pool {
 		bonusRolls.put("max", max);
 	}
 	
+	public void addCondition(LootCondition condition) {
+		conditions.add(condition);
+	}
+	
+	
+	/* #######################
+	 * Load/Save methods
+	 * #######################
+	 */
 	
     public JsonObject toJsonObject() {
 		// insert rolls
@@ -111,26 +126,85 @@ public class Pool {
 	}
     
     public Pool fromJson(JsonObject pool) {
-		// check for entries
-		if(pool.get("entries").isJsonArray()) {
-			for(JsonElement entryElement : pool.get("entries").getAsJsonArray()) {
-				if(!entryElement.isJsonObject()) continue;
-				JsonObject curr = entryElement.getAsJsonObject();
-				entries.add(new Entry().fromJson(curr));
-			}
-		}
-		
-		// check for conditions
-		if(pool.get("conditions").isJsonArray()) {
-			for(JsonElement conditionElement : pool.get("conditions").getAsJsonArray()) {
-				if(!conditionElement.isJsonObject()) continue;
+		// check for rolls
+    	if(pool.get("rolls").isJsonPrimitive()) {
+    		rolls.clear();
+    		setRolls(pool.get("rolls").getAsInt());
+    	} else {
+    		rolls.clear();
+    		setRolls(pool.get("rolls").getAsJsonObject().get("min").getAsInt(), pool.get("rolls").getAsJsonObject().get("max").getAsInt());
+    	}
+    	// bonus rolls (these are optional, so null checking is required)
+    	if(pool.get("bonus_rolls") != null) {
+    		if(pool.get("bonus_rolls").isJsonPrimitive()) {
+    			setBonusRolls(pool.get("bonus_rolls").getAsInt());
+    		} else {
+    			setBonusRolls(pool.get("bonus_rolls").getAsJsonObject().get("min").getAsInt(), pool.get("bonus_rolls").getAsJsonObject().get("max").getAsInt());
+    		}
+    	}
+    	if(pool.get("entries") != null) {// should never be empty, but weirder things have happened
+			Bukkit.broadcastMessage("    "); // debugging purposes only
+    		JsonArray entries = pool.get("entries").getAsJsonArray();
+    		int num = 0;
+	    	for(JsonElement entryElement : entries) {
+	    		// Entry
+	    		JsonObject currentEntry = entryElement.getAsJsonObject();
+	    		Entry cEntry = new Entry().fromJson(currentEntry);
+	    		Bukkit.broadcastMessage("Entry (" + num + "): {Type: " + cEntry.getType().toString() + " Name: " + cEntry.getName() + " Weight: " + cEntry.getWeight() + "}");
+	    			// check currentEntry for functions
+	    			if(currentEntry.get("functions") != null) {
+	    				JsonArray functions = currentEntry.get("functions").getAsJsonArray();
+	    				for(JsonElement funcElement : functions) {
+	    					JsonObject currentFunction = funcElement.getAsJsonObject();
+	    					LootFunction currFunction = LootUtil.getFunction(currentFunction.get("function").getAsString());
+	    					Bukkit.broadcastMessage("Function (" + num + "): Type: " + currFunction.getType());
+	    						
+	    						// check function for conditions, because we all love recursion
+	    						if(currentFunction.get("conditions") != null) {
+	    							JsonArray conditions = currentFunction.get("conditions").getAsJsonArray();
+	    							for(JsonElement cond : conditions) {
+	    								JsonObject currCondition = cond.getAsJsonObject();
+	    								Bukkit.broadcastMessage("Function Condition (" + num + ") Type: " + currCondition.get("condition").getAsString());
+	    								currFunction.addCondition(LootUtil.getCondition(currCondition.get("condition").getAsString()));
+	    							}
+	    						}
+	    					cEntry.addFunction(currFunction);
+	    				} 
+	    			} // end function section
+	    			
+	    			// check currentEntry for conditions, fml.
+	    			if(currentEntry.get("conditions") != null) {
+	    				JsonArray entryConditions = currentEntry.get("conditions").getAsJsonArray();
+	    				for(JsonElement cond : entryConditions) {
+	    					JsonObject currentCondition = cond.getAsJsonObject();
+	    					Bukkit.broadcastMessage("Entry Condition (" + num + "): Type: " + currentCondition.get("condition").getAsString());
+	    					cEntry.addCondition(LootUtil.getCondition(currentCondition.get("condition").getAsString()));
+	    				}
+	    			}
+    			addEntry(cEntry);
+    			Bukkit.broadcastMessage("Entry #" + num + ": Conditions: " + cEntry.getConditions().size() + " | Functions: " + cEntry.getFunctions().size());
+    			Bukkit.broadcastMessage("Entry #" + num + " loaded!");
+    			Bukkit.broadcastMessage("Pool entries: " + getEntries().size());
+    			num++;
+    			Bukkit.broadcastMessage("    ");// debugging purposes only
+			} // end entries loop
+    	}
+		Bukkit.broadcastMessage("Loaded all entries");
+    	if(pool.get("conditions") != null) {
+	    	for(JsonElement conditionElement : pool.get("conditions").getAsJsonArray()) {
 				JsonObject cond = conditionElement.getAsJsonObject();
 				conditions.add(LootUtil.getCondition(cond.get("condition").getAsString()).fromJsonObject(cond));
-			}
-		}
+			}	
+    	} 
+    	Bukkit.broadcastMessage("Pool loaded " + entries.size() + " entries, and " + conditions.size() + " conditions");
 	return this;
     }
     
+    
+    /* #################
+     * Getters
+     * #################
+     */
 	public List<Entry> getEntries() {
 		return entries;
 	}

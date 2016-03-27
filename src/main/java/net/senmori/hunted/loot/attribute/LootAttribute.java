@@ -111,9 +111,7 @@ public class LootAttribute {
 		return attribute;
 	}
 	
-	@SuppressWarnings("unused")
     public LootAttribute fromJsonObject(JsonObject attribute) {
-		AttributeModifier modifier;
 		
 		String name = attribute.get("name").getAsString();
 		String attr = attribute.get("attribute").getAsString();

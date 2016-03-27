@@ -95,16 +95,15 @@ public class SetDamageFunction extends LootFunction {
 
 	@Override
     public LootFunction fromJsonObject(JsonObject element) {
-	    if(element.get("damage").isJsonObject()) {
-	    	setDamage(element.get("damage").getAsDouble(), element.get("damage").getAsDouble());
-	    } else if(element.get("damage").getAsJsonPrimitive().isNumber()) {
-	    	setDamage(element.get("damage").getAsDouble());
-	    }
+		if(element.get("damage").getAsJsonPrimitive().isNumber()) {
+			setDamage(element.get("damage").getAsDouble());
+		} else {
+			JsonObject damage = element.get("damage").getAsJsonObject();
+			setDamage(damage.get("min").getAsDouble(), damage.get("max").getAsDouble());
+		}
 	    
 	    // check for conditions
-	    if(element.get("conditions").isJsonArray()) { // we have conditions!
-	    	loadConditions(element.get("conditions").getAsJsonArray());
-	    }
+	    //loadConditions(element.get("conditions").getAsJsonArray());
 		return this;
     }
 	

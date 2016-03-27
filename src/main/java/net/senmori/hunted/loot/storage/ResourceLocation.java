@@ -9,6 +9,11 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 
 public class ResourceLocation {
+	//static ResourceLocations for locations accessed multiple times
+	public static ResourceLocation huntedChests = new ResourceLocation("world", "hunted", "chests");
+	
+	
+	
 	
 	private String resourceDomain;
 	private String resourcePath;

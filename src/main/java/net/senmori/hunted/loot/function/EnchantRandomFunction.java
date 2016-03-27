@@ -95,9 +95,7 @@ public class EnchantRandomFunction extends LootFunction {
 	    	if(!enchantments.iterator().hasNext()) break;
 	    }
 	    // check for conditions
-	    if(element.get("conditions").isJsonArray()) { // we have conditions!
-	    	loadConditions(element.get("conditions").getAsJsonArray());
-	    }
+	    //loadConditions(element.get("conditions").getAsJsonArray());
 		return this;
     }
 	

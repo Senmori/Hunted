@@ -65,6 +65,7 @@ public class LootTable {
 	}
 	
     public LootTable loadFromFile() {
+    	List<Pool> currPools = new ArrayList<>();
     	try {
     		JsonParser parser = new JsonParser();
     		JsonElement element = parser.parse(new FileReader(lootTableFile));
@@ -72,15 +73,14 @@ public class LootTable {
     	} catch(FileNotFoundException e) {
     		e.printStackTrace();
     	}
-    	
     	// parse file here, recreate all entries/functions/conditions
-    	if(root.get("pools").isJsonArray()){ 
-    		for(JsonElement ele : root.get("pools").getAsJsonArray()) {
-    			if(!ele.isJsonObject()) continue;
-    			JsonObject pool = ele.getAsJsonObject();
-    			addPool(new Pool().fromJson(pool));
-    		}
-    	}
+		for(JsonElement ele : root.get("pools").getAsJsonArray()) {
+			JsonObject pool = ele.getAsJsonObject();
+			Pool curr = new Pool().fromJson(pool);
+			currPools.add(curr);
+		}
+    	pools.addAll(currPools); // add them to loottable here to allow time for recursion
+    	Bukkit.broadcastMessage("Loaded " + pools.size() + " pool(s)");
     	return this;
     }
 	

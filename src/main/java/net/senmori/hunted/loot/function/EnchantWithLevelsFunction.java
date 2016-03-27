@@ -105,10 +105,14 @@ public class EnchantWithLevelsFunction extends LootFunction {
 
 	@Override
     public LootFunction fromJsonObject(JsonObject element) {
-	    // check for conditions
-	    if(element.get("conditions").isJsonArray()) { // we have conditions!
-	    	loadConditions(element.get("conditions").getAsJsonArray());
+	    treasure = element.get("treasure").getAsBoolean();
+	    if(element.get("levels").isJsonPrimitive()) {
+	    	setLevels(element.get("levels").getAsInt());
+	    } else {
+	    	JsonObject holder = element.get("levels").getAsJsonObject();
+	    	setLevels(holder.get("min").getAsInt(), holder.get("max").getAsInt());
 	    }
+	    //loadConditions(element.get("conditions").getAsJsonArray());
 	    return this;
     }
 	

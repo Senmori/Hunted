@@ -85,17 +85,15 @@ public class LootingEnchantFunction extends LootFunction {
 
 	@Override
     public LootFunction fromJsonObject(JsonObject element) {
-		if(element.get("count").isJsonObject()) {
+		if(element.get("count").isJsonPrimitive()) {
+			setCount(element.get("count").getAsInt());
+		} else {
 			JsonObject counts = element.get("count").getAsJsonObject();
 			setCount(counts.get("min").getAsInt(), counts.get("max").getAsInt());
-		} else if(element.get("count").getAsJsonPrimitive().isNumber()) {
-			setCount(element.get("count").getAsInt());
 		}
 		
 	    // check for conditions
-	    if(element.get("conditions").isJsonArray()) { // we have conditions!
-	    	loadConditions(element.get("conditions").getAsJsonArray());
-	    }
+	    //loadConditions(element.get("conditions").getAsJsonArray());
 	    return this;
     }
 	

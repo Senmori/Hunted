@@ -66,9 +66,7 @@ public class FurnaceSmeltFunction extends LootFunction {
 	@Override
     public LootFunction fromJsonObject(JsonObject element) {
 	    // check for conditions
-	    if(element.get("conditions").isJsonArray()) { // we have conditions!
-	    	loadConditions(element.get("conditions").getAsJsonArray());
-	    }
+	    //loadConditions(element.get("conditions").getAsJsonArray());
 	    return this;
     }
 	

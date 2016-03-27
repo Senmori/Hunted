@@ -1,7 +1,6 @@
 package net.senmori.hunted.listeners;
 
 import me.dpohvar.powernbt.api.NBTCompound;
-import me.dpohvar.powernbt.api.NBTManager;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.game.GameState;
 import net.senmori.hunted.loot.utils.LootUtil;
@@ -24,7 +23,6 @@ import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -32,7 +30,6 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -49,23 +46,26 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerUseSpawnEgg(CreatureSpawnEvent e) {
-		// debug purposes only
 		if(e.getSpawnReason().equals(SpawnReason.SPAWNER_EGG)) {
+			// set NoAI so it's easier to test
 			NBTCompound tag = Hunted.getInstance().nbtManager.read(e.getEntity());
 			tag.put("NoAI", 1);
 			Hunted.getInstance().nbtManager.write(e.getEntity(), tag);
+			// reset LootTables each time so I don't have to keep placing/breaking blocks
+			if(LootUtil.hasLootTable(e.getEntity())) {
+				LootUtil.clearLootTable(e.getEntity());
+			}
+			LootUtil.setLootTable(e.getEntity(), "hunted:chests/debug");
 		}
 	}
-	
+		
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
-		
 		if(LootUtil.isValidBlock(e.getClickedBlock()) && e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-			if(LootUtil.hasLootTable(e.getClickedBlock())) LootUtil.clearLootTable(e.getClickedBlock());
 			LootUtil.setLootTable(e.getClickedBlock(), "hunted:chests/debug");
 		}
 		// player is playing, store or lobby haven't been implemented yet
-		if (plugin.getPlayerManager().isPlaying(e.getPlayer().getUniqueId())) {
+		if (plugin.getPlayerManager().getState(e.getPlayer().getUniqueId()).equals(GameState.IN_GAME)) {
 			if (plugin.getConfigManager().activeWorld.equals(e.getPlayer().getWorld().getName())) {
 				if(e.getPlayer().hasPermission(Permissions.ADMIN_EXEMPT)) return;
 				if(e.getPlayer().hasPermission(Permissions.COMMAND_DEV_TOOLS)) return; // ignore dev testing

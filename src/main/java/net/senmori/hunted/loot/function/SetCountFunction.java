@@ -83,16 +83,15 @@ public class SetCountFunction extends LootFunction {
 
 	@Override
     public LootFunction fromJsonObject(JsonObject element) {
-		if(element.get("count").isJsonObject()) {
-			setCount(element.get("count").getAsInt(), element.get("count").getAsInt());
-		} else if(element.get("count").getAsJsonPrimitive().isNumber()) {
+		if(element.get("count").isJsonPrimitive()) {
 			setCount(element.get("count").getAsInt());
+		}else {
+			JsonObject count = element.get("count").getAsJsonObject();
+			setCount(count.get("min").getAsInt(), count.get("max").getAsInt());
 		}
 		
 	    // check for conditions
-	    if(element.get("conditions").isJsonArray()) { // we have conditions!
-	    	loadConditions(element.get("conditions").getAsJsonArray());
-	    }
+	    //loadConditions(element.get("conditions").getAsJsonArray());
 	    return this;
     }
 	
@@ -107,7 +106,7 @@ public class SetCountFunction extends LootFunction {
 	
 	@Override
     public LootFunctionType getType() {
-	    return LootFunctionType.SET_ATTRIBUTES;
+	    return LootFunctionType.SET_COUNT;
     }
 
 }

@@ -31,8 +31,7 @@ public class SetAttributesFunction extends LootFunction {
 	 */
 	@Override
     public ItemStack applyTo(ItemStack applyTo) {
-	    // TODO Auto-generated method stub
-	    return null;
+	    return applyTo;
     }
 	
 	
@@ -69,19 +68,15 @@ public class SetAttributesFunction extends LootFunction {
 	@Override
     public LootFunction fromJsonObject(JsonObject element) {
 		// iterate through modifiers
-		if(element.get("modifiers").isJsonArray()) {
-			JsonArray modifiers = element.get("modifiers").getAsJsonArray();
-			while(modifiers.iterator().hasNext()) {
-				JsonObject curr = modifiers.iterator().next().getAsJsonObject();
-				addModifier(new LootAttribute().fromJsonObject(curr));
-				if(!modifiers.iterator().hasNext()) break;
-			}
+		JsonArray modifiers = element.get("modifiers").getAsJsonArray();
+		while(modifiers.iterator().hasNext()) {
+			JsonObject curr = modifiers.iterator().next().getAsJsonObject();
+			addModifier(new LootAttribute().fromJsonObject(curr));
+			if(!modifiers.iterator().hasNext()) break;
 		}
 		
 	    // check for conditions
-	    if(element.get("conditions").isJsonArray()) { // we have conditions!
-	    	loadConditions(element.get("conditions").getAsJsonArray());
-	    }
+	    //loadConditions(element.get("conditions").getAsJsonArray());
 	    return this;
     }
 	

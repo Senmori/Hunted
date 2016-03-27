@@ -28,8 +28,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
-import com.google.gson.JsonObject;
-
 public class LootUtil {
 
 	private static List<Material> validBlocks;
@@ -109,6 +107,7 @@ public class LootUtil {
 	
 	
 	public static boolean isValidBlock(Block block) {
+		if(block == null) return false;
 		return validBlocks.contains(block.getType());
 	}
 	
