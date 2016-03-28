@@ -14,7 +14,6 @@ import net.senmori.hunted.commands.stuck.StuckCommand;
 import net.senmori.hunted.lib.MapConfiguration;
 import net.senmori.hunted.listeners.BlockListener;
 import net.senmori.hunted.listeners.PlayerListener;
-import net.senmori.hunted.loot.LootManager;
 import net.senmori.hunted.managers.CommandManager;
 import net.senmori.hunted.managers.ConfigManager;
 import net.senmori.hunted.managers.game.MenuManager;
@@ -65,7 +64,6 @@ public class Hunted extends JavaPlugin {
 	private ConfigManager configManager;
 	private CommandManager commandManager;
 	// loot manager
-	private LootManager lootManager;
 
 	// Connection Pool
 	private Database database; // SQL
@@ -99,7 +97,6 @@ public class Hunted extends JavaPlugin {
 		armorManager = new ArmorManager(getInstance());
 		// Misc. managers
 		commandManager = new CommandManager(this);
-		lootManager = new LootManager(getInstance());
 		
 
 		// setup commands
@@ -144,10 +141,6 @@ public class Hunted extends JavaPlugin {
 
 	public static Hunted getInstance() {
 		return instance;
-	}
-	
-	public LootManager getLootManager() {
-		return lootManager;
 	}
 
 	public ConfigManager getConfigManager() {

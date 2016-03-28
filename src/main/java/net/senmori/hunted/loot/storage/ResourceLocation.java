@@ -1,69 +1,62 @@
 package net.senmori.hunted.loot.storage;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.senmori.hunted.loot.LootTable;
-
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
+import org.apache.commons.lang3.StringUtils;
 
 public class ResourceLocation {
-	//static ResourceLocations for locations accessed multiple times
-	public static ResourceLocation huntedChests = new ResourceLocation("world", "hunted", "chests");
 	
+	protected final String resourceDomain;
+	protected final String resourcePath;
 	
-	
-	
-	private String resourceDomain;
-	private String resourcePath;
-	private String world;
-	private List<LootTable> associatedTables;
-	/**
-	 * A new Resource Location for Loot Tables.
-	 * @param domain - the namespace to use. 'null' defaults to "minecraft"
-	 * @param path - the path to the resource, including trailing slash
-	 */
-	public ResourceLocation(String world, String domain, String path) {
-		associatedTables = new ArrayList<>();
-		this.world = world == null ? Bukkit.getWorlds().get(0).getName() : world;
-		this.resourceDomain = domain == null ? "minecraft" : domain;
-		this.resourcePath = path;
+	protected ResourceLocation(String... resourceName) {
+		this.resourceDomain = StringUtils.isEmpty(resourceName[0]) ? "minecraft" : resourceName[0].toLowerCase();
+		this.resourcePath = resourceName[1];
 		Validate.notNull(this.resourcePath);
 	}
 	
-	public void addLootTable(LootTable table) {
-		associatedTables.add(table);
+	public ResourceLocation(String resourceDomain, String resourcePath) {
+		this(new String[] {resourceDomain, resourcePath});
 	}
 	
-	public LootTable getLootTable(String name) {
-		for(LootTable t : associatedTables) {
-			if(t.getName().equalsIgnoreCase(name)) return t;
+	public ResourceLocation(String resourceName) {
+		this(splitName(resourceName));
+	}
+	
+	
+	protected static String[] splitName(String toSplit) {
+		String[] string = new String[] {"minecraft", toSplit};
+		int i = toSplit.indexOf(58);
+		
+		if(i >= 0) {
+			string[1] = toSplit.substring(i + 1, toSplit.length());
+			
+			if(i > 1) {
+				string[0] = toSplit.substring(0,i);
+			}
 		}
-		return null;
+		return string;
 	}
 	
-	/** Get the namespace of this location. For Spigot plugins, this is the plugin's name in lowercase, and no spaces. */
-	public String getResourceDomain() {
-		return resourceDomain;
-	}
-	
-	/** Get the path, after the namespace folder, to the lowest level of directory for this ResourceLocation */
 	public String getResourcePath() {
-		return resourcePath;
+		return this.resourcePath;
 	}
 	
-	/** Get the world this ResourceLocation is associated with */
-	public String getWorldName() {
-		return world;
+	public String getResourceDomain() {
+		return this.resourceDomain;
 	}
 	
-	/** Get a String ready to be input into commands in-game. (i.e. namespace:path/to/file) */
 	public String toString() {
-		return resourceDomain + ":" + resourcePath;
+		return this.resourceDomain + ":" + this.resourcePath;
 	}
 	
-	public List<LootTable> getTables() {
-		return associatedTables;
+	public boolean equals(Object object) {
+		if(this == object) {
+			return true;
+		} else if(!(object instanceof ResourceLocation)) {
+			return false;
+		} else {
+			ResourceLocation resourceLocation = (ResourceLocation)object;
+			return this.resourceDomain.equals(resourceLocation.resourceDomain) && this.resourcePath.equals(resourceLocation.resourcePath);
+		}
 	}
 }

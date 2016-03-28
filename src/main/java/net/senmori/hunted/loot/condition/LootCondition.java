@@ -1,20 +1,35 @@
 package net.senmori.hunted.loot.condition;
 
-import org.bukkit.inventory.ItemStack;
-
+import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
 
+import net.senmori.hunted.loot.storage.ResourceLocation;
 
-
-public abstract class LootCondition {
+public interface LootCondition {
 	
-	protected LootCondition() {}
 	
-	// load/save to file methods
-	public abstract JsonObject toJsonObject();
-	public abstract LootCondition fromJsonObject(JsonObject condition);
-	public abstract LootConditionType getType();
 	
-	// apply this condition to an item, or see if the condition should apply
-	public abstract ItemStack applyTo(ItemStack applyTo);
+	
+	public abstract static class Serializer<T extends LootCondition> {
+		private final ResourceLocation lootTableLocation;
+		private final Class<T> conditionsClass;
+		
+		
+		protected Serializer(ResourceLocation location, Class<T> clazz) {
+			this.lootTableLocation = location;
+			this.conditionsClass = clazz;
+		}
+		
+		public ResourceLocation getLootTableLocation() {
+			return this.lootTableLocation;
+		}
+		
+		public Class<T> getConditionClass() {
+			return conditionsClass;
+		}
+		
+		public abstract void serialize(JsonObject json, T value, JsonSerializationContext context);
+		public abstract T deserialize(JsonObject json, JsonDeserializationContext context);
+	}
 }
