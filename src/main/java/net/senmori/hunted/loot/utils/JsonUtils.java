@@ -1,12 +1,5 @@
 package net.senmori.hunted.loot.utils;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -16,6 +9,12 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 
 /**
  * JSON Utility class created by MinecraftForge.
@@ -28,29 +27,29 @@ public class JsonUtils {
 	 * Does the given JsonObject contain a string field with the given name?
 	 */
 	public static boolean isString(JsonObject json, String memberName) {
-		return !isJsonPrimitive(json, memberName) ? false : json.getAsJsonPrimitive(memberName).isString();
+		return isJsonPrimitive(json, memberName) && json.getAsJsonPrimitive(memberName).isString();
 	}
 
 	/**
 	 * Is the given JsonElement a string?
 	 */
 	public static boolean isString(JsonElement json) {
-		return !json.isJsonPrimitive() ? false : json.getAsJsonPrimitive().isString();
+		return json.isJsonPrimitive() && json.getAsJsonPrimitive().isString();
 	}
 
 	public static boolean isNumber(JsonElement json) {
-		return !json.isJsonPrimitive() ? false : json.getAsJsonPrimitive().isNumber();
+		return json.isJsonPrimitive() && json.getAsJsonPrimitive().isNumber();
 	}
 
 	public static boolean isBoolean(JsonObject json, String memberName) {
-		return !isJsonPrimitive(json, memberName) ? false : json.getAsJsonPrimitive(memberName).isBoolean();
+		return isJsonPrimitive(json, memberName) && json.getAsJsonPrimitive(memberName).isBoolean();
 	}
 
 	/**
 	 * Does the given JsonObject contain an array field with the given name?
 	 */
 	public static boolean isJsonArray(JsonObject json, String memberName) {
-		return !hasField(json, memberName) ? false : json.get(memberName).isJsonArray();
+		return hasField(json, memberName) && json.get(memberName).isJsonArray();
 	}
 
 	/**
@@ -58,14 +57,14 @@ public class JsonUtils {
 	 * Java primitive wrapper)?
 	 */
 	public static boolean isJsonPrimitive(JsonObject json, String memberName) {
-		return !hasField(json, memberName) ? false : json.get(memberName).isJsonPrimitive();
+		return hasField(json, memberName) && json.get(memberName).isJsonPrimitive();
 	}
 
 	/**
 	 * Does the given JsonObject contain a field with the given name?
 	 */
 	public static boolean hasField(JsonObject json, String memberName) {
-		return json == null ? false : json.get(memberName) != null;
+		return json != null && json.get(memberName) != null;
 	}
 
 	/**
@@ -338,15 +337,15 @@ public class JsonUtils {
 
 	public static <T> T deserializeClass(JsonObject json, String memberName, T fallback,
 	        JsonDeserializationContext context, Class<? extends T> adapter) {
-		return (T) (json.has(memberName) ? deserializeClass(json.get(memberName), memberName, context, adapter)
-		        : fallback);
+		return json.has(memberName) ? deserializeClass(json.get(memberName), memberName, context, adapter)
+									: fallback;
 	}
 
 	/**
 	 * Gets a human-readable description of the given JsonElement's type. For example: "a number (4)"
 	 */
 	public static String toString(JsonElement json) {
-		String s = org.apache.commons.lang3.StringUtils.abbreviateMiddle(String.valueOf((Object) json), "...", 10);
+		String s = org.apache.commons.lang3.StringUtils.abbreviateMiddle(String.valueOf(json), "...", 10);
 
 		if (json == null) {
 			return "null (missing)";

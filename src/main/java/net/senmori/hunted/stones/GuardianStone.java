@@ -1,17 +1,16 @@
 package net.senmori.hunted.stones;
 
-import java.text.MessageFormat;
-import java.util.concurrent.TimeUnit;
-
 import net.md_5.bungee.api.ChatColor;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.SerializedLocation;
 import net.senmori.hunted.util.Reference.RewardMessage;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+
+import java.text.MessageFormat;
+import java.util.concurrent.TimeUnit;
 
 public class GuardianStone extends Stone {
 	private long lastActivated; // System time[in ms] in which stone was last

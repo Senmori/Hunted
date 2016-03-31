@@ -1,19 +1,18 @@
 package net.senmori.hunted.reward.rewards;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import net.md_5.bungee.api.ChatColor;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.game.GameState;
 import net.senmori.hunted.reward.Reward;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.util.Reference.RewardMessage;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class NotifyReward extends Reward {
 	private String name;

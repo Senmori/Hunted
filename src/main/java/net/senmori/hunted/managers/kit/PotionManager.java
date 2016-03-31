@@ -1,18 +1,17 @@
 package net.senmori.hunted.managers.kit;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.managers.ConfigManager;
-
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class PotionManager {
 	private Hunted plugin;
@@ -31,7 +30,7 @@ public class PotionManager {
 		return (int) Math.random() * (10 - 1) + 1 >= 10 ? generateSplashPotion() : generatePotion();
 	}
 
-	/** Generate a random potion using {@link PotionEffectEnum } */
+	/** Generate a random potion using {@link PotionEffectType } */
 	public ItemStack generatePotion() {
 		Potion potion = new Potion(getRandomPotionType());
 		int numEffects = rand.nextInt(3) + 1; // generate between 1 and 3
@@ -56,7 +55,7 @@ public class PotionManager {
 	}
 
 	/**
-	 * Get a random duration between 0 and {@link ConfigManger#maxEffectLength} in ticks
+	 * Get a random duration between 0 and {@link ConfigManager#maxEffectLength} in ticks
 	 */
 	public int getDuration() {
 		return rand.nextInt(plugin.getConfigManager().maxEffectLength + 1) * 20;

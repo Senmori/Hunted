@@ -1,15 +1,14 @@
 package net.senmori.hunted.reward.rewards;
 
-import java.text.MessageFormat;
-
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.reward.Reward;
 import net.senmori.hunted.util.Reference.RewardMessage;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import java.text.MessageFormat;
 
 public class EffectReward extends Reward {
 	private String name;

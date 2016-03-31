@@ -1,13 +1,12 @@
 package net.senmori.hunted.commands.add.parameters;
 
-import java.util.Arrays;
-
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.lib.SerializedLocation;
 import net.senmori.hunted.util.Reference.Permissions;
-
 import org.bukkit.ChatColor;
+
+import java.util.Arrays;
 
 public class AddArenaLocation extends Subcommand {
 

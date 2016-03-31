@@ -1,17 +1,16 @@
 package net.senmori.hunted.managers;
 
+import net.senmori.hunted.Hunted;
+import net.senmori.hunted.lib.MapConfiguration;
+import net.senmori.hunted.util.LogHandler;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import net.senmori.hunted.Hunted;
-import net.senmori.hunted.lib.MapConfiguration;
-import net.senmori.hunted.util.LogHandler;
-
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ConfigManager {
 	private Hunted plugin;

@@ -15,13 +15,13 @@ package net.senmori.hunted.lib.actionbarapi;
  *
  */
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 /**
  * @author hamzaxx

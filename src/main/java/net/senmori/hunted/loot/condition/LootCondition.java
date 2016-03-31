@@ -3,15 +3,20 @@ package net.senmori.hunted.loot.condition;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-
+import net.senmori.hunted.loot.LootContext;
 import net.senmori.hunted.loot.storage.ResourceLocation;
+
+import java.util.Random;
 
 public interface LootCondition {
 	
+
+	boolean testCondition(LootContext context, Random rand);
+
+
+
 	
-	
-	
-	public abstract static class Serializer<T extends LootCondition> {
+	abstract class Serializer<T extends LootCondition> {
 		private final ResourceLocation lootTableLocation;
 		private final Class<T> conditionsClass;
 		

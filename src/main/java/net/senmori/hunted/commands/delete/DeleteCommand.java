@@ -1,13 +1,13 @@
 package net.senmori.hunted.commands.delete;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.commands.delete.parameters.DeleteLocation;
 import net.senmori.hunted.commands.delete.parameters.DeleteStone;
 import net.senmori.hunted.util.Reference.Permissions;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class DeleteCommand extends Subcommand {
 

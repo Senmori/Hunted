@@ -4,20 +4,39 @@ import org.apache.commons.lang.Validate;
 import org.apache.commons.lang3.StringUtils;
 
 public class ResourceLocation {
-	
+
+
 	protected final String resourceDomain;
 	protected final String resourcePath;
-	
+
+	/**
+	 * Generates a new ResourceLocation given an array of strings. <br>
+	 * Index 0: resource domain<br>
+	 * Index 1: resource Path<br>
+	 * i.e. {"minecraft", "chests/jungle_temple"} <br>
+	 * Do not include ".json"
+	 * @param resourceName
+     */
 	protected ResourceLocation(String... resourceName) {
 		this.resourceDomain = StringUtils.isEmpty(resourceName[0]) ? "minecraft" : resourceName[0].toLowerCase();
 		this.resourcePath = resourceName[1];
 		Validate.notNull(this.resourcePath);
 	}
-	
+
+	/**
+	 * Generates a new ResourceLocation give the following parameters
+	 * @param resourceDomain
+	 * @param resourcePath
+     */
 	public ResourceLocation(String resourceDomain, String resourcePath) {
 		this(new String[] {resourceDomain, resourcePath});
 	}
-	
+
+	/**
+	 * Generates a ResourceLocation from the given parameter. <br>
+	 * Valid Parameter formatting: [domain]:[path] <br>
+	 * @param resourceName
+     */
 	public ResourceLocation(String resourceName) {
 		this(splitName(resourceName));
 	}

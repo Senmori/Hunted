@@ -1,21 +1,19 @@
 package net.senmori.hunted.loot.properties;
 
-import java.util.Random;
-
-import net.senmori.hunted.loot.storage.ResourceLocation;
-
-import org.bukkit.entity.Entity;
-
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSerializationContext;
+import net.senmori.hunted.loot.storage.ResourceLocation;
+import org.bukkit.entity.Entity;
+
+import java.util.Random;
 
 public interface EntityProperty {
 	
 	boolean testProperty(Random rand, Entity entity);
 	
 	
-	public abstract static class Serializer<T extends EntityProperty> {
+	abstract class Serializer<T extends EntityProperty> {
 		private final ResourceLocation name;
 		private final Class<T> clazz;
 		

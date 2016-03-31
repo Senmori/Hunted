@@ -1,5 +1,11 @@
 package net.senmori.hunted.managers.game;
 
+import net.senmori.hunted.Hunted;
+import net.senmori.hunted.lib.MapConfiguration;
+import net.senmori.hunted.lib.SerializedLocation;
+import net.senmori.hunted.lib.game.LocationType;
+import org.bukkit.Location;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -7,13 +13,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import net.senmori.hunted.Hunted;
-import net.senmori.hunted.lib.MapConfiguration;
-import net.senmori.hunted.lib.SerializedLocation;
-import net.senmori.hunted.lib.game.LocationType;
-
-import org.bukkit.Location;
 
 public class SpawnManager {
 	/** Where players spawn when they die or enter the Hunted world */

@@ -1,17 +1,14 @@
 package net.senmori.hunted.lib.game;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-import net.md_5.bungee.api.ChatColor;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class Profile {
 

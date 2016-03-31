@@ -4,7 +4,7 @@
   <artifactId>hunted</artifactId>
   <version>0.6-SNAPSHOT</version>
   <name>Hunted</name>
-  <description>Hunted minigame for the Broken Buttons server</description>
+  <description>Hunted mini-game for the Broken Buttons server</description>
   <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <main.Class>${project.groupId}.${project.artifactId}.${project.name}</main.Class>
@@ -17,7 +17,7 @@
     <dependency>
            <groupId>org.spigotmc</groupId>
            <artifactId>spigot</artifactId>
-           <version>1.9-R0.1-SNAPSHOT</version>
+           <version>1.9.2-R0.1-SNAPSHOT</version>
     </dependency>
 	<dependency>
         <groupId>me.dpohvar.powernbt</groupId>

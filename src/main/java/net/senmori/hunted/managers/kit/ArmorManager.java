@@ -1,19 +1,18 @@
 package net.senmori.hunted.managers.kit;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.kit.armor.Armor;
 import net.senmori.hunted.kit.armor.ArmorEnchantment;
 import net.senmori.hunted.kit.armor.ArmorSlot;
-
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class ArmorManager {
 

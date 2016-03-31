@@ -2,7 +2,6 @@ package net.senmori.hunted.stones;
 
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.SerializedLocation;
-
 import org.bukkit.entity.Player;
 
 public class TeleportStone extends Stone {

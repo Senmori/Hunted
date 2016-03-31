@@ -1,24 +1,22 @@
 package net.senmori.hunted.managers.game;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.SerializedLocation;
-import net.senmori.hunted.lib.actionbarapi.ActionBarAPI;
 import net.senmori.hunted.lib.game.GameState;
 import net.senmori.hunted.lib.game.Profile;
 import net.senmori.hunted.stones.Stone;
 import net.senmori.hunted.util.Reference.ErrorMessage;
 import net.senmori.hunted.util.Reference.Permissions;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class PlayerManager {
 

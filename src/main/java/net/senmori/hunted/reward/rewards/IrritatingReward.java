@@ -1,14 +1,13 @@
 package net.senmori.hunted.reward.rewards;
 
-import java.util.Random;
-
 import net.md_5.bungee.api.ChatColor;
 import net.senmori.hunted.reward.Reward;
 import net.senmori.hunted.util.Reference.RewardMessage;
-
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+
+import java.util.Random;
 
 public class IrritatingReward extends Reward {
 	private String name;

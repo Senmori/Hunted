@@ -3,7 +3,6 @@ package net.senmori.hunted.commands.give.parameters;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.util.Reference.Permissions;
-
 import org.bukkit.inventory.ItemStack;
 
 public class GivePotionCommand extends Subcommand {

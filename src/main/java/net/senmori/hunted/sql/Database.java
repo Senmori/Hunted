@@ -1,5 +1,8 @@
 package net.senmori.hunted.sql;
 
+import net.senmori.hunted.Hunted;
+import net.senmori.hunted.util.LogHandler;
+
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -7,9 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import net.senmori.hunted.Hunted;
-import net.senmori.hunted.util.LogHandler;
 
 /**
  * This class sets up the correct database type. </br> It also handles connecting to the database. </br> - Closing

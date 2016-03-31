@@ -1,8 +1,8 @@
 package net.senmori.hunted.util;
 
-import java.util.logging.Level;
-
 import net.senmori.hunted.Hunted;
+
+import java.util.logging.Level;
 
 public class LogHandler {
 	public static void log(Level level, String message) {

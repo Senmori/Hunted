@@ -1,12 +1,11 @@
 package net.senmori.hunted.managers.game;
 
+import net.senmori.hunted.reward.Reward;
+import org.bukkit.entity.Player;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import net.senmori.hunted.reward.Reward;
-
-import org.bukkit.entity.Player;
 
 public class RewardManager {
 	private List<Reward> rewards;

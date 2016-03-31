@@ -1,9 +1,5 @@
 package net.senmori.hunted.commands.add;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.commands.add.parameters.AddArenaLocation;
 import net.senmori.hunted.commands.add.parameters.AddLobbyLocation;
@@ -11,6 +7,10 @@ import net.senmori.hunted.commands.add.parameters.AddMapConfiguration;
 import net.senmori.hunted.commands.add.parameters.AddStone;
 import net.senmori.hunted.commands.add.parameters.AddStoreLocation;
 import net.senmori.hunted.util.Reference.Permissions;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class AddCommand extends Subcommand {
 

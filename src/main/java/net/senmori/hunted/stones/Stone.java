@@ -2,7 +2,6 @@ package net.senmori.hunted.stones;
 
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.SerializedLocation;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -14,7 +13,7 @@ public abstract class Stone {
 	 */
 	public enum StoneType {
 		GUARDIAN, // normal guardian stones(rewards, etc)
-		TELEPORT; // Teleports players to a specified point
+		TELEPORT // Teleports players to a specified point
 	}
 
 	private SerializedLocation sLoc;

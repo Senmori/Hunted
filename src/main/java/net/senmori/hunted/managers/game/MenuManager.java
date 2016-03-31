@@ -1,12 +1,7 @@
 package net.senmori.hunted.managers.game;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.menu.Menu;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,6 +10,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MenuManager implements Listener {
 

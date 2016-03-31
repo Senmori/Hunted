@@ -1,7 +1,6 @@
 package net.senmori.hunted.managers.kit;
 
 import net.senmori.hunted.Hunted;
-
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

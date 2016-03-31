@@ -3,13 +3,12 @@ package net.senmori.hunted.listeners;
 import me.dpohvar.powernbt.api.NBTCompound;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.game.GameState;
-import net.senmori.hunted.loot.utils.LootUtil;
+import net.senmori.hunted.loot.utils.LootUtils;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.stones.Stone;
 import net.senmori.hunted.stones.Stone.StoneType;
 import net.senmori.hunted.tasks.TntExplosion;
 import net.senmori.hunted.util.Reference.Permissions;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -33,7 +32,6 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.material.Attachable;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -52,17 +50,17 @@ public class PlayerListener implements Listener {
 			tag.put("NoAI", 1);
 			Hunted.getInstance().nbtManager.write(e.getEntity(), tag);
 			// reset LootTables each time so I don't have to keep placing/breaking blocks
-			if(LootUtil.hasLootTable(e.getEntity())) {
-				LootUtil.clearLootTable(e.getEntity());
+			if(LootUtils.hasLootTable(e.getEntity())) {
+				LootUtils.clearLootTable(e.getEntity());
 			}
-			LootUtil.setLootTable(e.getEntity(), "hunted:chests/debug");
+			LootUtils.setLootTable(e.getEntity(), "hunted:chests/debug");
 		}
 	}
 		
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
-		if(LootUtil.isValidBlock(e.getClickedBlock()) && e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-			LootUtil.setLootTable(e.getClickedBlock(), "hunted:chests/debug");
+		if(LootUtils.isValidBlock(e.getClickedBlock()) && e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+			LootUtils.setLootTable(e.getClickedBlock(), "hunted:chests/debug");
 		}
 		// player is playing, store or lobby haven't been implemented yet
 		if (plugin.getPlayerManager().getState(e.getPlayer().getUniqueId()).equals(GameState.IN_GAME)) {

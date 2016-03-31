@@ -1,13 +1,5 @@
 package net.senmori.hunted.managers.kit;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.kit.HuntedWeapon;
 import net.senmori.hunted.kit.weapon.WeaponType;
@@ -16,10 +8,17 @@ import net.senmori.hunted.kit.weapon.bow.Bow.BowTitle;
 import net.senmori.hunted.kit.weapon.enchantment.WeaponEnchant;
 import net.senmori.hunted.kit.weapon.sword.SwordName;
 import net.senmori.hunted.kit.weapon.sword.SwordTitle;
-
 import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class WeaponManager {
 	private Hunted plugin;
@@ -54,7 +53,7 @@ public class WeaponManager {
 	public ItemStack generateWeapon() {
 		Random rand = new Random();
 		// 10% chance of it being as ascented weapon
-		boolean isAscented = rand.nextInt(plugin.getConfigManager().ascentedItemChance)% plugin.getConfigManager().ascentedItemChance == 0 ? true : false;
+		boolean isAscented = rand.nextInt(plugin.getConfigManager().ascentedItemChance) % plugin.getConfigManager().ascentedItemChance == 0;
 		WeaponType type = getRandomWeaponType(isAscented);
 		// 20% chance of an item having a title
 		String displayName = getRandomName(type, rand.nextInt(11) % 5 == 0, isAscented);

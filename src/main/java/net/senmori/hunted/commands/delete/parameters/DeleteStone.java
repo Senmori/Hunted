@@ -1,19 +1,18 @@
 package net.senmori.hunted.commands.delete.parameters;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
-import java.util.Set;
-
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.stones.Stone;
 import net.senmori.hunted.util.Reference.ErrorMessage;
 import net.senmori.hunted.util.Reference.Permissions;
 import net.senmori.hunted.util.Reference.SuccessMessage;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+
+import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.Set;
 
 public class DeleteStone extends Subcommand {
 

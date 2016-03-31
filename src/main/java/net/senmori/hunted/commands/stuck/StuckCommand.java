@@ -1,16 +1,15 @@
 package net.senmori.hunted.commands.stuck;
 
-import java.util.Arrays;
-
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.lib.game.GameState;
 import net.senmori.hunted.util.Reference.ErrorMessage;
 import net.senmori.hunted.util.Reference.Permissions;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+
+import java.util.Arrays;
 
 public class StuckCommand extends Subcommand {
 

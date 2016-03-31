@@ -1,14 +1,13 @@
 package net.senmori.hunted.commands.give;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.commands.give.parameters.GiveArmorCommand;
 import net.senmori.hunted.commands.give.parameters.GivePotionCommand;
 import net.senmori.hunted.commands.give.parameters.GiveWeaponCommand;
-import net.senmori.hunted.util.Reference;
 import net.senmori.hunted.util.Reference.Permissions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HuntedGiveCommand extends Subcommand {
 	

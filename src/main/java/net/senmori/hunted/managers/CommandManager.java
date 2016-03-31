@@ -1,17 +1,18 @@
 package net.senmori.hunted.managers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.md_5.bungee.api.ChatColor;
 import net.senmori.hunted.commands.Subcommand;
-
+import net.senmori.hunted.util.LogHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.craftbukkit.libs.joptsimple.internal.Strings;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommandManager implements CommandExecutor {
 	private JavaPlugin plugin;
@@ -27,7 +28,9 @@ public class CommandManager implements CommandExecutor {
 	}
 
 	public void registerCommand(Subcommand command) {
-		commands.add(command);
+		if(!commands.add(command)) {
+			LogHandler.warning(command.getName() + " is already registered!");
+		}
 	}
 
 	public void setCommandPrefix(String commandPrefix) {
@@ -55,14 +58,13 @@ public class CommandManager implements CommandExecutor {
 		} else {
 			// display list of subcommand names, along with their descriptions
 			StringBuilder sb = new StringBuilder();
-			sb.append(ChatColor.GREEN + "---------------- " + ChatColor.YELLOW + "Hunted comands" + ChatColor.GREEN
-			        + " ----------------");
+			sb.append(ChatColor.GREEN + Strings.repeat('-', 16) + " " + ChatColor.YELLOW + "Hunted commands" + ChatColor.GREEN + " " + Strings.repeat('-', 16));
 			for (Subcommand sub : commands) {
 				sb.append("\n");
 				sb.append(ChatColor.GREEN + sub.getName() + ChatColor.YELLOW + " - " + ChatColor.YELLOW
 				        + sub.getDescription());
 			}
-			sb.append(ChatColor.GREEN + "----------------------------------------------");
+			sb.append(ChatColor.GREEN + Strings.repeat('-', 49));
 			if (sender instanceof Player) {
 				Player player = (Player) sender;
 				player.sendMessage(sb.toString());

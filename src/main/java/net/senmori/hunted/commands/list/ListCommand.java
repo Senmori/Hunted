@@ -1,9 +1,5 @@
 package net.senmori.hunted.commands.list;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.commands.list.parameters.ListArenaLocations;
 import net.senmori.hunted.commands.list.parameters.ListGuardianStones;
@@ -11,6 +7,10 @@ import net.senmori.hunted.commands.list.parameters.ListLobbyLocations;
 import net.senmori.hunted.commands.list.parameters.ListStoreLocations;
 import net.senmori.hunted.commands.list.parameters.ListTeleportStones;
 import net.senmori.hunted.util.Reference.Permissions;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ListCommand extends Subcommand {
 

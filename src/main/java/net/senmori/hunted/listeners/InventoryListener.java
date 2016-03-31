@@ -2,7 +2,6 @@ package net.senmori.hunted.listeners;
 
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.game.GameState;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

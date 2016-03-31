@@ -109,35 +109,4 @@ public class Reference {
 		/** Standard message for when rewardee receives an irritating reward */
 		public static final String IRRITATING_MESSAGE = "Good luck fixing this...";
 	}
-
-	/** Data that is stored for whenever a custom mob egg is used/spawned */
-	public class MonsterEggData {
-		public static final byte CREEPER = 50;
-		public static final byte SKELETON = 51;
-		public static final byte SPIDER = 52;
-		public static final byte ZOMBIE = 54;
-		public static final byte SLIME = 55;
-		public static final byte GHAST = 56;
-		public static final byte ZOMBIE_PIGMAN = 57;
-		public static final byte ENDERMAN = 58;
-		public static final byte CAVE_SPIDER = 59;
-		public static final byte SILVERFISH = 60;
-		public static final byte BLAZE = 61;
-		public static final byte MAGMA_CUBE = 62;
-		public static final byte BAT = 65;
-		public static final byte WITCH = 66;
-		public static final byte ENDERMITE = 67;
-		public static final byte GUARDIAN = 68;
-		public static final byte PIG = 90;
-		public static final byte SHEEP = 91;
-		public static final byte COW = 92;
-		public static final byte CHICKEN = 93;
-		public static final byte SQUID = 94;
-		public static final byte WOLF = 95;
-		public static final byte MOOSHROOM = 96;
-		public static final byte OCELOT = 98;
-		public static final byte HORSE = 100;
-		public static final byte RABBIT = 101;
-		public static final byte VILLAGER = 120;
-	}
 }

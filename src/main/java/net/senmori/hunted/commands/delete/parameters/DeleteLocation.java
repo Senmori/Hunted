@@ -1,16 +1,15 @@
 package net.senmori.hunted.commands.delete.parameters;
 
-import java.text.MessageFormat;
-import java.util.Arrays;
-
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.util.Reference.ErrorMessage;
 import net.senmori.hunted.util.Reference.Permissions;
 import net.senmori.hunted.util.Reference.SuccessMessage;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+
+import java.text.MessageFormat;
+import java.util.Arrays;
 
 public class DeleteLocation extends Subcommand {
 

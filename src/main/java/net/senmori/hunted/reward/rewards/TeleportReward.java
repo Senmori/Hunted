@@ -2,7 +2,6 @@ package net.senmori.hunted.reward.rewards;
 
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.reward.Reward;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 

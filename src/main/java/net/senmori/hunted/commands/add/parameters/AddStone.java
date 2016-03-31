@@ -1,8 +1,5 @@
 package net.senmori.hunted.commands.add.parameters;
 
-import java.util.Arrays;
-import java.util.Set;
-
 import net.md_5.bungee.api.ChatColor;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
@@ -12,10 +9,12 @@ import net.senmori.hunted.stones.Stone.StoneType;
 import net.senmori.hunted.stones.TeleportStone;
 import net.senmori.hunted.util.Reference.ErrorMessage;
 import net.senmori.hunted.util.Reference.Permissions;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+
+import java.util.Arrays;
+import java.util.Set;
 
 public class AddStone extends Subcommand {
 	public AddStone() {

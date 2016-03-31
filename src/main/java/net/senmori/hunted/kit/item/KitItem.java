@@ -1,7 +1,6 @@
 package net.senmori.hunted.kit.item;
 
 import net.senmori.hunted.reward.rewards.ItemReward;
-
 import org.bukkit.Material;
 
 public enum KitItem {
@@ -69,6 +68,6 @@ public enum KitItem {
 	 * {@link OTHER} - does not match criteria for first two categories <br>
 	 */
 	public enum Category {
-		FOOD, UTILITY, OTHER;
+		FOOD, UTILITY, OTHER
 	}
 }

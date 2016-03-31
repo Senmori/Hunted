@@ -1,15 +1,14 @@
 package net.senmori.hunted.reward.rewards;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import net.senmori.hunted.kit.armor.Armor;
 import net.senmori.hunted.kit.item.KitItem;
 import net.senmori.hunted.kit.item.KitItem.Category;
 import net.senmori.hunted.kit.weapon.WeaponType;
 import net.senmori.hunted.reward.Reward;
-
 import org.bukkit.entity.Player;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class ItemReward extends Reward {
 

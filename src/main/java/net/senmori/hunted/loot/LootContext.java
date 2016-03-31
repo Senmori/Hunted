@@ -1,16 +1,15 @@
 package net.senmori.hunted.loot;
 
-import java.io.IOException;
-import java.util.Set;
-
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-
 import com.google.common.collect.Sets;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+
+import java.io.IOException;
+import java.util.Set;
 
 public class LootContext {
 	
@@ -20,7 +19,7 @@ public class LootContext {
 	protected Entity lootedEntity;
 	protected Entity killer;
 	protected Player player;
-	protected Set<LootTable> lootTables = Sets.<LootTable>newLinkedHashSet();
+	protected Set<LootTable> lootTables = Sets.newLinkedHashSet();
 	
 	public LootContext(float luckIn, World world, LootTableManager manager, Entity lootedEntity, Entity killer, Player player) {
 		this.luck = luckIn;
@@ -111,14 +110,14 @@ public class LootContext {
 		}
 	}
 	
-	public static enum EntityTarget {
+	public enum EntityTarget {
 		THIS("this"),
 		KILLER("killer"),
 		KILLER_PLAYER("killer_player");
 		
 		private final String targetType;
 		
-		private EntityTarget(String type) {
+		EntityTarget(String type) {
 			this.targetType = type;
 		}
 		

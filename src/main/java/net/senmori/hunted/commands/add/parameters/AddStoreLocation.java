@@ -1,12 +1,12 @@
 package net.senmori.hunted.commands.add.parameters;
 
-import java.util.Arrays;
-
 import net.md_5.bungee.api.ChatColor;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.lib.SerializedLocation;
 import net.senmori.hunted.util.Reference.Permissions;
+
+import java.util.Arrays;
 
 public class AddStoreLocation extends Subcommand {
 

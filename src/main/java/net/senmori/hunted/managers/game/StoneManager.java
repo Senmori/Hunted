@@ -1,17 +1,16 @@
 package net.senmori.hunted.managers.game;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.stones.Stone;
 import net.senmori.hunted.stones.TeleportStone;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class StoneManager {
 	private List<Stone> masterStoneList;

@@ -1,7 +1,5 @@
 package net.senmori.hunted;
 
-import java.util.logging.Logger;
-
 import me.dpohvar.powernbt.PowerNBT;
 import me.dpohvar.powernbt.api.NBTManager;
 import net.senmori.hunted.commands.add.AddCommand;
@@ -34,10 +32,11 @@ import net.senmori.hunted.reward.rewards.SmiteReward;
 import net.senmori.hunted.reward.rewards.TeleportReward;
 import net.senmori.hunted.sql.Database;
 import net.senmori.hunted.util.LogHandler;
-
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.logging.Logger;
 
 public class Hunted extends JavaPlugin {
 	// static variables

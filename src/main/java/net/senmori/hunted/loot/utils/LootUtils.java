@@ -1,18 +1,17 @@
 package net.senmori.hunted.loot.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.dpohvar.powernbt.api.NBTCompound;
 import me.dpohvar.powernbt.api.NBTManager;
 import net.senmori.hunted.Hunted;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
-public class LootUtil {
+import java.util.ArrayList;
+import java.util.List;
+
+public class LootUtils {
 
 	private static List<Material> validBlocks;
 	private static NBTManager manager;
@@ -30,7 +29,7 @@ public class LootUtil {
 		manager = Hunted.getInstance().nbtManager;
 	}
 	
-	private LootUtil() {}
+	private LootUtils() {}
 	
 	/* ##############################
 	 * Loot Table functions for blocks & entities

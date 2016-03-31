@@ -1,11 +1,10 @@
 package net.senmori.hunted.kit.weapon.enchantment;
 
+import net.senmori.hunted.kit.weapon.WeaponType;
+import org.bukkit.enchantments.Enchantment;
+
 import java.util.Arrays;
 import java.util.List;
-
-import net.senmori.hunted.kit.weapon.WeaponType;
-
-import org.bukkit.enchantments.Enchantment;
 
 public enum WeaponEnchant {
 	ARROW_DAMAGE(Enchantment.ARROW_DAMAGE, Arrays.asList(WeaponType.BOW)),

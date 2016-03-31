@@ -1,13 +1,13 @@
 package net.senmori.hunted.commands.edit;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.commands.edit.parameters.EditActiveMap;
 import net.senmori.hunted.commands.edit.parameters.EditConfig;
 import net.senmori.hunted.util.Reference.Permissions;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class EditCommand extends Subcommand {
 
