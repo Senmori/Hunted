@@ -11,7 +11,6 @@ import net.senmori.hunted.loot.LootContext;
 import net.senmori.hunted.loot.adapter.InheritanceAdapter;
 import net.senmori.hunted.loot.storage.ResourceLocation;
 import net.senmori.hunted.loot.utils.JsonUtils;
-import org.bukkit.Bukkit;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -98,7 +97,6 @@ public class LootConditionManager {
 
         @Override
         public LootCondition deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
-            Bukkit.broadcastMessage("Deserializing loot condition " + (++i));
             JsonObject json = JsonUtils.getJsonObject(jsonElement, "condition");
             String name = JsonUtils.getString(json, "condition");
             ResourceLocation location = new ResourceLocation(name);

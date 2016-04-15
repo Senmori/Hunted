@@ -18,7 +18,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.bukkit.Bukkit;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.concurrent.ConcurrentHashMap;
@@ -92,6 +91,7 @@ public class LootTableManager {
                 try {
                     LootTable table = load(resource);
                     registeredLootTables.put(resource, table);
+                    table.setResourceLocation(resource);
                     return table;
                 } catch (IOException e) {
                     Bukkit.getLogger().log(Level.WARNING, "Couldn\'t load loot table " + resource);
@@ -100,51 +100,14 @@ public class LootTableManager {
             } else {
                 // no LootTable file exists, create new file, and return empty LootTable
                 LootTable newTable = LootTable.emptyLootTable();
-                write(newTable, resource);
                 registeredLootTables.put(resource, newTable);
+                newTable.setResourceLocation(resource);
                 return newTable;
             }
         }
     }
 
     private static void reloadLootTables() {
-    }
-
-    /**
-     * Write to file the {@link LootTable} that is associated with the given {@link ResourceLocation}
-     * @param location
-     */
-    public static boolean save(ResourceLocation location, LootTable table) {
-        registeredLootTables.put(location, table); // update table
-        return write(table, location);
-    }
-
-    public static boolean save(LootTable table) {
-        for (ResourceLocation location : registeredLootTables.keySet()) {
-            if (registeredLootTables.get(location).equals(table)) {
-                return save(location, table);
-            }
-        }
-        return false;
-    }
-
-    // write table data to file
-    private static boolean write(LootTable table, ResourceLocation location) {
-        if (table == null) {
-            throw new IllegalArgumentException("Loot Table cannot be null when writing to file!");
-        }
-        String tableString = gson.toJson(table);
-        File file = getFile(location);
-        try (FileWriter writer = new FileWriter(file)) {
-            String s = gson.toJson(table);
-            writer.write(s);
-            writer.close();
-        } catch(IOException e) {
-            e.printStackTrace();
-            Bukkit.getLogger().log(Level.WARNING, "Couldn\'t create loot table \'" + location + "\' at file \'" + location.getResourcePath() + "\'");
-            return false;
-        }
-        return true;
     }
 
     private static String getFilePath(ResourceLocation location) {
@@ -194,7 +157,6 @@ public class LootTableManager {
                 String s;
                 try {
                     s = Files.toString(file, Charsets.UTF_8);
-                    Bukkit.broadcastMessage("Loaded table string : " + s);
                 } catch(IOException e) {
                     Bukkit.getLogger().log(Level.WARNING, "Couldn\'t load the loot table at " + resource + " from " + file, e);
                     return LootTable.emptyLootTable();

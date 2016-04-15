@@ -8,8 +8,13 @@ import com.google.gson.JsonSerializationContext;
 import net.senmori.hunted.loot.adapter.InheritanceAdapter;
 import net.senmori.hunted.loot.conditions.LootCondition;
 import net.senmori.hunted.loot.entry.LootEntry;
+import net.senmori.hunted.loot.entry.LootEntryEmpty;
+import net.senmori.hunted.loot.entry.LootEntryItem;
+import net.senmori.hunted.loot.entry.LootEntryTable;
+import net.senmori.hunted.loot.storage.ResourceLocation;
 import net.senmori.hunted.loot.utils.JsonUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -19,9 +24,9 @@ import java.util.List;
 public class LootPool {
 
 	public static RandomValueRange noBonusRollsRange = new RandomValueRange(0.0f, 0.0f);
-	protected List<LootEntry> entries;
-	protected List<LootCondition> conditions;
-	protected RandomValueRange rolls;
+    protected List<LootEntry> entries = new ArrayList<>();
+    protected List<LootCondition> conditions = new ArrayList<>();
+    protected RandomValueRange rolls;
 	protected RandomValueRange bonusRolls;
 
     /**
@@ -59,14 +64,28 @@ public class LootPool {
 	}
 
     public void addLootEntry(LootEntry entry) {
-		if (entries == null) entries = new ArrayList<LootEntry>();
-		entries.add(entry);
-	}
+        if (!entries.add(entry)) {
+            Bukkit.broadcastMessage("Error adding entry!");
+        }
+    }
+
+    public void addLootEntry(Material material, int weight, int quality) {
+        addLootEntry(new LootEntryItem(material, weight, quality, null, null));
+    }
+
+    public void addLootEntry(ResourceLocation location, int weight, int quality) {
+        addLootEntry(new LootEntryTable(location, weight, quality, null));
+    }
+
+    public void addEmptyLootEntry(int weight, int quality) {
+        addLootEntry(new LootEntryEmpty(weight, quality, null));
+    }
 
     public void addLootCondition(LootCondition condition) {
-		if (conditions == null) conditions = new ArrayList<LootCondition>();
-		conditions.add(condition);
-	}
+        if (!conditions.add(condition)) {
+            Bukkit.broadcastMessage("Error adding condition!");
+        }
+    }
 
     /**
      * Returns a {@link RandomValueRange} set that can contain a minimum, and maximum value. <br>
@@ -99,7 +118,6 @@ public class LootPool {
 
 		@Override
 		public LootPool deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
-			Bukkit.broadcastMessage("Deserializing loot pool " + (++i));
 			JsonObject jsonObject = JsonUtils.getJsonObject(jsonElement, "loot pool");
 			LootEntry[] lootEntries = JsonUtils.deserializeClass(jsonObject, "entries", context, LootEntry[].class);
 			LootCondition[] lootConditions = JsonUtils.deserializeClass(jsonObject, "conditions", new LootCondition[0], context, LootCondition[].class);

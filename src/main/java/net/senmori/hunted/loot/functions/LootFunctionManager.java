@@ -11,7 +11,6 @@ import net.senmori.hunted.loot.adapter.InheritanceAdapter;
 import net.senmori.hunted.loot.conditions.LootCondition;
 import net.senmori.hunted.loot.storage.ResourceLocation;
 import net.senmori.hunted.loot.utils.JsonUtils;
-import org.bukkit.Bukkit;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -96,7 +95,6 @@ public class LootFunctionManager {
 
         @Override
         public LootFunction deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
-            Bukkit.broadcastMessage("Deserializing loot table " + (++i));
             JsonObject jsonObject = JsonUtils.getJsonObject(jsonElement, "function");
             ResourceLocation location = new ResourceLocation(JsonUtils.getString(jsonObject, "function"));
             LootFunction.Serializer serializer;

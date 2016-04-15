@@ -7,6 +7,7 @@ import net.senmori.hunted.loot.conditions.LootCondition;
 import net.senmori.hunted.loot.functions.LootFunction;
 import net.senmori.hunted.loot.utils.JsonUtils;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_9_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -19,13 +20,13 @@ import java.util.List;
 public class LootEntryItem extends LootEntry {
 
     private List<LootFunction> functions;
-    private Material name;
+    private String name;
 
     public LootEntryItem(Material material, int weight, int quality, List<LootFunction> functions, List<LootCondition> conditions) {
         super(weight, quality, conditions);
         if (functions == null) { this.functions = new ArrayList<>(); }
         this.functions = functions;
-        this.name = material;
+        setMaterial(material);
     }
 
     public void addFunction(LootFunction function) {
@@ -38,9 +39,12 @@ public class LootEntryItem extends LootEntry {
 
     }
 
-    public Material getMaterial() { return name; }
+    public String getMaterial() { return name; }
 
-    public void setMaterial(Material newMaterial) { this.name = newMaterial; }
+    public void setMaterial(Material newMaterial) {
+        ItemStack stack = new ItemStack(newMaterial);
+        name = CraftItemStack.asNMSCopy(stack).getName();
+    }
 
     public List<LootFunction> getFunctions() { return this.functions; }
 

@@ -5,56 +5,88 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import net.senmori.hunted.loot.adapter.InheritanceAdapter;
+import net.senmori.hunted.loot.storage.ResourceLocation;
 import net.senmori.hunted.loot.utils.JsonUtils;
 import org.bukkit.Bukkit;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
 
 public class LootTable {
 
-	private List<LootPool> pools;
-	
-	public LootTable(List<LootPool> pools) {
-		this.pools = pools;
-	}
+    private ResourceLocation location;
+    private File file;
+    private List<LootPool> pool = new ArrayList<>();
+
+    public LootTable(List<LootPool> pool) {
+        this.pool = pool;
+    }
 
 	public LootTable() {
-		this.pools = new ArrayList<>();
-	}
+        this.pool = new ArrayList<>();
+    }
 
 	/** Add another LootPool to this LootTable */
 	public void addLootPool(LootPool pool) {
-		if (pools == null) pools = new ArrayList<>();
-		pools.add(pool);
-	}
+        this.pool.add(pool);
+    }
 
-	public List<LootPool> getPools() { return pools; }
+    public List<LootPool> getLootPool() { return pool; }
 
-	public static LootTable emptyLootTable() { return new LootTable(new ArrayList<LootPool>()); }
+    public void setResourceLocation(ResourceLocation location) {
+        this.location = location;
+        file = LootTableManager.getFile(location);
+    }
+
+    public static LootTable emptyLootTable() { return new LootTable(new ArrayList<>()); }
 
 
 	public boolean save() {
-		return LootTableManager.save(this);
-	}
+        if (file != null && file.exists()) {
+            try (FileWriter writer = new FileWriter(file)) {
+                String json = LootTableManager.gson.toJson(this);
+                writer.write(json);
+                writer.close();
+            } catch (IOException e) {
+                Bukkit.getLogger().log(Level.WARNING, "Couldn't create loot table \'" + location + "\' at file \'" + location.getResourcePath() + "\'");
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            file = LootTableManager.getFile(location);
+            try (FileWriter writer = new FileWriter(file)) {
+                file.createNewFile();
+                String json = LootTableManager.gson.toJson(this);
+                writer.write(json);
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
+    }
 
 	public static class Serializer extends InheritanceAdapter<LootTable> {
 
 		public Serializer() {}
 
 		public LootTable deserialize(JsonElement json, Type type, JsonDeserializationContext context) {
-			Bukkit.broadcastMessage("Deserializing loot table");
 			JsonObject jsonObject = JsonUtils.getJsonObject(json, "loot table");
-			LootPool[] lootPools = JsonUtils.deserializeClass(jsonObject, "pools", new LootPool[0], context, LootPool[].class);
-			return new LootTable(Arrays.asList(lootPools));
-		}
+            LootPool[] lootPool = JsonUtils.deserializeClass(jsonObject, "pools", new LootPool[0], context, LootPool[].class);
+            return new LootTable(Arrays.asList(lootPool));
+        }
 
 		public JsonElement serialize(LootTable table, Type type, JsonSerializationContext context) {
 			JsonObject jsonObject = new JsonObject();
-			jsonObject.add("pools", context.serialize(table.getPools()));
-			return jsonObject;
+            jsonObject.add("pools", context.serialize(table.getLootPool()));
+            return jsonObject;
 		}
 	}
 }

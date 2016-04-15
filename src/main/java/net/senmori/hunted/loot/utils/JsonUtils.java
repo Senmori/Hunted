@@ -9,7 +9,9 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.JsonReader;
-import org.bukkit.Material;
+import net.minecraft.server.v1_9_R1.Item;
+import net.minecraft.server.v1_9_R1.MinecraftKey;
+import org.bukkit.craftbukkit.v1_9_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
@@ -108,10 +110,11 @@ public class JsonUtils {
     public static ItemStack getItem(JsonElement json, String memberName) {
 		if (json.isJsonPrimitive()) {
 			String s = json.getAsString();
-			Material material = Material.valueOf(s.toUpperCase());
-			ItemStack item = new ItemStack(material);
-
-			if (item == null) {
+            // replace default material selection because bukkit Materials != Minecraft names in all cases
+            MinecraftKey key = new MinecraftKey(s);
+            ItemStack item = CraftItemStack.asNewCraftStack(Item.REGISTRY.get(key));
+            // end
+            if (item == null) {
 				throw new JsonSyntaxException("Expected " + memberName + " to be an item, was unknown string \'" + s + "\'");
 			} else {
 				return item;

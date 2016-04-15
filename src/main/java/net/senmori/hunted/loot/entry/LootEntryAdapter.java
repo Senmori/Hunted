@@ -9,7 +9,6 @@ import com.google.gson.JsonSyntaxException;
 import net.senmori.hunted.loot.adapter.InheritanceAdapter;
 import net.senmori.hunted.loot.conditions.LootCondition;
 import net.senmori.hunted.loot.utils.JsonUtils;
-import org.bukkit.Bukkit;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -46,7 +45,6 @@ public class LootEntryAdapter extends InheritanceAdapter<LootEntry> {
     @Override
     public LootEntry deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = JsonUtils.getJsonObject(jsonElement, "loot item");
-        Bukkit.broadcastMessage("Deserializing loot entry (" + (++i) + ")");
         String s = JsonUtils.getString(jsonObject, "type");
         int w = JsonUtils.getInt(jsonObject, "weight", 1);
         int q = JsonUtils.getInt(jsonObject, "quality", 0);
