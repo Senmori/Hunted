@@ -25,7 +25,6 @@
         <version>0.8.5.1</version>
     </dependency>
   </dependencies>
-  
   <!-- Maven build parameters -->
   <build>
   	<finalName>${project.name}-${project.version}</finalName>

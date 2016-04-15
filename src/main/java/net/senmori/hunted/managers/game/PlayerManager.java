@@ -115,8 +115,7 @@ public class PlayerManager {
 	 * @param player
 	 */
 	public void enterWorld(Player player) {
-		lastKnownLocation.put(player.getUniqueId().toString(),
-		        new SerializedLocation(player.getLocation(), player.getDisplayName()));
+		lastKnownLocation.put(player.getUniqueId().toString(), new SerializedLocation(player.getLocation(), player.getDisplayName()));
 		trackPlayer(player.getUniqueId());
 	}
 

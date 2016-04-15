@@ -1,52 +1,51 @@
 package net.senmori.hunted.loot.properties;
 
+import com.google.common.collect.Maps;
 import net.senmori.hunted.loot.storage.ResourceLocation;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 
 /**
- * Created by Senmori on 3/29/2016.
+ * Created by Senmori on 4/13/2016.
  */
 public class EntityPropertyManager {
 
-    private static ConcurrentHashMap<ResourceLocation, EntityProperty.Serializer<?>> nameToSerializerMap = new ConcurrentHashMap<>();
-    private static ConcurrentHashMap<Class<? extends EntityProperty>, EntityProperty.Serializer<?>> classToSerializerMap = new ConcurrentHashMap<>();
+    private static Map<ResourceLocation, EntityProperty.Serializer<?>> nameToSerializerMap = Maps.newHashMap();
+    private static Map<Class<? extends EntityProperty>, EntityProperty.Serializer<?>> classToSerializerMap = Maps.newHashMap();
 
-    // load entity properties here
-    static {
-
+    public EntityPropertyManager() {
     }
 
-    public EntityPropertyManager() {}
+    static {
+        registerProperty(new EntityOnFire.Serializer());
+    }
 
     public static <T extends EntityProperty> void registerProperty(EntityProperty.Serializer<? extends T> property) {
-        ResourceLocation location = property.getName();
-        Class propertyClass = property.getClass();
-
-        if(nameToSerializerMap.containsKey(location)) {
-            throw new IllegalArgumentException("Can\'t re-register entity property name " + location);
-        } else if(classToSerializerMap.containsKey(propertyClass)) {
-            throw new IllegalArgumentException("Can\'t re-register entity property class " + propertyClass.getName());
+        ResourceLocation resourcelocation = property.getName();
+        Class oclass = property.getPropertyClass();
+        if (nameToSerializerMap.containsKey(resourcelocation)) {
+            throw new IllegalArgumentException("Can\'t re-register entity property name " + resourcelocation);
+        } else if (classToSerializerMap.containsKey(oclass)) {
+            throw new IllegalArgumentException("Can\'t re-register entity property class " + oclass.getName());
         } else {
-            nameToSerializerMap.put(location, property);
-            classToSerializerMap.put(propertyClass, property);
+            nameToSerializerMap.put(resourcelocation, property);
+            classToSerializerMap.put(oclass, property);
         }
     }
 
-    public static EntityProperty.Serializer<?> getSerializerForName(ResourceLocation location) {
-        EntityProperty.Serializer serializer = (EntityProperty.Serializer) nameToSerializerMap.get(location);
-
+    public static EntityProperty.Serializer<?> getSerializerForName(ResourceLocation name) {
+        EntityProperty.Serializer serializer = nameToSerializerMap.get(name);
         if(serializer == null) {
-            throw new IllegalArgumentException("Unknown loot entity property \'" + location + "\'");
+            throw new IllegalArgumentException("Unknown loot entity property \'" + name + "\'");
         } else {
             return serializer;
         }
     }
 
-    public static <T extends EntityProperty> EntityProperty.Serializer<?> getSerializerFor(T propertyClass) {
-        EntityProperty.Serializer serializer = (EntityProperty.Serializer)classToSerializerMap.get(propertyClass);
+    public static <T extends EntityProperty> EntityProperty.Serializer<T> getSerializerFor(T property) {
+        EntityProperty.Serializer serializer = classToSerializerMap.get(property.getClass());
         if(serializer == null) {
-            throw new IllegalArgumentException("Unknown loot entity property " + propertyClass);
+            throw new IllegalArgumentException("Unknown loot entity property " + property);
         } else {
             return serializer;
         }

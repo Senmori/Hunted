@@ -2,10 +2,11 @@ package net.senmori.hunted.loot.storage;
 
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Bukkit;
 
 public class ResourceLocation {
 
-
+	protected final String resourceWorld;
 	protected final String resourceDomain;
 	protected final String resourcePath;
 
@@ -20,11 +21,13 @@ public class ResourceLocation {
 	protected ResourceLocation(String... resourceName) {
 		this.resourceDomain = StringUtils.isEmpty(resourceName[0]) ? "minecraft" : resourceName[0].toLowerCase();
 		this.resourcePath = resourceName[1];
+		this.resourceWorld = Bukkit.getWorld("world").getName();
 		Validate.notNull(this.resourcePath);
 	}
 
 	/**
-	 * Generates a new ResourceLocation give the following parameters
+	 * Generates a new ResourceLocation give the following parameters<br>
+	 * * Do not include ".json"
 	 * @param resourceDomain
 	 * @param resourcePath
      */
@@ -59,10 +62,11 @@ public class ResourceLocation {
 	public String getResourcePath() {
 		return this.resourcePath;
 	}
-	
 	public String getResourceDomain() {
 		return this.resourceDomain;
 	}
+
+	public String getResourceWorld() { return this.resourceWorld; }
 	
 	public String toString() {
 		return this.resourceDomain + ":" + this.resourcePath;

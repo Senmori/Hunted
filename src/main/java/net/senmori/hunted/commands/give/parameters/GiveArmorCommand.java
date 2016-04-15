@@ -9,8 +9,8 @@ public class GiveArmorCommand extends Subcommand {
 	public GiveArmorCommand() {
 	    this.name = "armor";
 	    this.description = "Give random armor";
-	    this.permission = Permissions.COMMAND_DEV_TOOLS;
-	    this.needsPlayer = true;
+		this.permission = Permissions.ADMIN_EXEMPT;
+		this.needsPlayer = true;
     }
 
 	@Override

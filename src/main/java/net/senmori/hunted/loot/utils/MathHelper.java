@@ -3,7 +3,8 @@ package net.senmori.hunted.loot.utils;
 import java.util.Random;
 
 /**
- * Created by Senmori on 3/29/2016.
+ * Helper functions, created by Mojang/MinecraftForge
+ * @author Mojang, MinecraftForge
  */
 public class MathHelper {
 

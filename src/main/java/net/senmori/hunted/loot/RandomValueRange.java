@@ -1,12 +1,11 @@
 package net.senmori.hunted.loot;
 
 import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import net.senmori.hunted.loot.adapter.InheritanceAdapter;
 import net.senmori.hunted.loot.utils.JsonUtils;
 
 import java.lang.reflect.Type;
@@ -44,35 +43,36 @@ public class RandomValueRange {
 
 	public boolean isInRange(int value) { return (float)value <= this.max && (float)value >= this.min; }
 
-
 	private int floorFloat(float value) {
 		int i = (int)value;
 		return value < (float)i ? i-1 : i;
 	}
 
 
-	public static class Serializer implements JsonSerializer<RandomValueRange>, JsonDeserializer<RandomValueRange> {
+	public static class Serializer extends InheritanceAdapter<RandomValueRange> {
 		public Serializer() {}
 
+		@Override
 		public RandomValueRange deserialize(JsonElement element, Type type, JsonDeserializationContext context) {
-            if(net.senmori.hunted.loot.utils.JsonUtils.isNumber(element)) {
-                return new RandomValueRange(JsonUtils.getFloat(element, "value"));
+			if (JsonUtils.isNumber(element)) {
+				return new RandomValueRange(JsonUtils.getFloat(element, "value"));
             } else {
-                com.google.gson.JsonObject object = JsonUtils.getJsonObject(element, "value");
-                float min = JsonUtils.getFloat(object, "min");
+				JsonObject object = JsonUtils.getJsonObject(element, "value");
+				float min = JsonUtils.getFloat(object, "min");
                 float max = JsonUtils.getFloat(object, "max");
                 return new RandomValueRange(min, max);
             }
         }
 
+		@Override
 		public JsonElement serialize(RandomValueRange range, Type type, JsonSerializationContext context) {
             if(range.min == range.max) {
-                return new JsonPrimitive(Float.valueOf(range.min));
-            } else {
+				return new JsonPrimitive((int) range.min);
+			} else {
                 JsonObject object = new com.google.gson.JsonObject();
-                object.addProperty("min", Float.valueOf(range.min));
-                object.addProperty("max", Float.valueOf(range.max));
-                return object;
+				object.addProperty("min", (int) range.min);
+				object.addProperty("max", (int) range.max);
+				return object;
             }
 		}
 	}

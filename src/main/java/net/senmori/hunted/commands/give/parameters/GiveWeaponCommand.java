@@ -10,7 +10,7 @@ public class GiveWeaponCommand extends Subcommand {
 	public GiveWeaponCommand() {
 		this.name = "weapon";
 		this.description = "give weapon";
-		this.permission = Permissions.COMMAND_DEV_TOOLS;
+		this.permission = Permissions.ADMIN_EXEMPT;
 		this.needsPlayer = true;
 	}
 	

@@ -1,25 +1,28 @@
 package net.senmori.hunted.loot;
 
 import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import net.senmori.hunted.loot.condition.LootCondition;
+import net.senmori.hunted.loot.adapter.InheritanceAdapter;
+import net.senmori.hunted.loot.conditions.LootCondition;
 import net.senmori.hunted.loot.entry.LootEntry;
 import net.senmori.hunted.loot.utils.JsonUtils;
+import org.bukkit.Bukkit;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class LootPool {
 
-	private List<LootEntry> poolEntries;
-	private List<LootCondition> poolConditions;
-	private RandomValueRange rolls;
-	private RandomValueRange bonusRolls;
+	public static RandomValueRange noBonusRollsRange = new RandomValueRange(0.0f, 0.0f);
+	protected List<LootEntry> entries;
+	protected List<LootCondition> conditions;
+	protected RandomValueRange rolls;
+	protected RandomValueRange bonusRolls;
 
     /**
      * LootPool is a collection of {@link LootEntry} and {@link LootCondition}, which will generate a random set of loot.
@@ -29,35 +32,41 @@ public class LootPool {
      * @param bonusRolls - how many <i>extra</i> times this LootPool will attempt to generate a loot item
      */
 	public LootPool(List<LootEntry> entries, List<LootCondition> poolConditions, RandomValueRange rolls, RandomValueRange bonusRolls) {
-		this.poolEntries = entries;
-		this.poolConditions = poolConditions;
+		this.entries = entries;
+		this.conditions = poolConditions;
 		this.rolls = rolls;
 		this.bonusRolls = bonusRolls;
 	}
 
+	public LootPool(float rolls) {
+		this(null, null, new RandomValueRange(rolls), noBonusRollsRange);
+	}
+
     public LootPool(List<LootEntry> entries, List<LootCondition> conditions, float rolls) {
-        this(entries, conditions, new RandomValueRange(rolls), new RandomValueRange(0.0F, 0.0F));
-    }
+		this(entries, conditions, new RandomValueRange(rolls), noBonusRollsRange);
+	}
 
     public LootPool(List<LootEntry> entries, List<LootCondition> conditions, float rollMin, float rollMax) {
-        this(entries,conditions, new RandomValueRange(rollMin, rollMax), new RandomValueRange(0.0F, 0.0F));
-    }
+		this(entries, conditions, new RandomValueRange(rollMin, rollMax), noBonusRollsRange);
+	}
 
     public LootPool(List<LootEntry> entries, List<LootCondition> conditions, float rollsMin, float rollsMax, float bonusRolls) {
-        this(entries, conditions, new RandomValueRange(rollsMin, rollsMax), new RandomValueRange(bonusRolls));
-    }
+		this(entries, conditions, new RandomValueRange(rollsMin, rollsMax), noBonusRollsRange);
+	}
 
     public LootPool(List<LootEntry> entries, List<LootCondition> conditions, float rollsMin, float rollsMax, float bonusRollsMin, float bonusRollsMax) {
-        this(entries, conditions, new RandomValueRange(rollsMin, rollsMax), new RandomValueRange(bonusRollsMin, bonusRollsMax));
-    }
+		this(entries, conditions, new RandomValueRange(rollsMin, rollsMax), noBonusRollsRange);
+	}
 
     public void addLootEntry(LootEntry entry) {
-        poolEntries.add(entry);
-    }
+		if (entries == null) entries = new ArrayList<LootEntry>();
+		entries.add(entry);
+	}
 
     public void addLootCondition(LootCondition condition) {
-        poolConditions.add(condition);
-    }
+		if (conditions == null) conditions = new ArrayList<LootCondition>();
+		conditions.add(condition);
+	}
 
     /**
      * Returns a {@link RandomValueRange} set that can contain a minimum, and maximum value. <br>
@@ -79,34 +88,39 @@ public class LootPool {
         return bonusRolls;
     }
 
-    public List<LootEntry> getEntries() { return poolEntries; }
+	public List<LootEntry> getEntries() { return entries; }
 
-    public List<LootCondition> getConditions() { return poolConditions; }
+	public List<LootCondition> getConditions() { return conditions; }
 
 
-	public static class Serializer implements JsonDeserializer<LootPool>, JsonSerializer<LootPool> {
+	public static class Serializer extends InheritanceAdapter<LootPool> {
+		private int i = 0;
 		public Serializer() {}
 
-		public LootPool deserialize(JsonElement json, Type type, JsonDeserializationContext context) {
-			JsonObject jsonObject = JsonUtils.getJsonObject(json, "loot pool");
-			LootEntry[] aLootEntry = JsonUtils.deserializeClass(jsonObject, "entries", context, LootEntry[].class);
-			LootCondition[] aLootCondition = JsonUtils.deserializeClass(jsonObject, "conditions", new LootCondition[0], context, LootCondition[].class);
+		@Override
+		public LootPool deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
+			Bukkit.broadcastMessage("Deserializing loot pool " + (++i));
+			JsonObject jsonObject = JsonUtils.getJsonObject(jsonElement, "loot pool");
+			LootEntry[] lootEntries = JsonUtils.deserializeClass(jsonObject, "entries", context, LootEntry[].class);
+			LootCondition[] lootConditions = JsonUtils.deserializeClass(jsonObject, "conditions", new LootCondition[0], context, LootCondition[].class);
 			RandomValueRange rolls = JsonUtils.deserializeClass(jsonObject, "rolls", context, RandomValueRange.class);
 			RandomValueRange bonusRolls = JsonUtils.deserializeClass(jsonObject, "bonus_rolls", new RandomValueRange(0.0F, 0.0F), context, RandomValueRange.class);
-			return new LootPool(Arrays.asList(aLootEntry), Arrays.asList(aLootCondition), rolls, bonusRolls);
+			return new LootPool(Arrays.asList(lootEntries), Arrays.asList(lootConditions), rolls, bonusRolls);
 		}
 
+		@Override
 		public JsonElement serialize(LootPool pool, Type type, JsonSerializationContext context) {
-			JsonObject object = new JsonObject();
-			object.add("entries", context.serialize(pool.poolEntries));
-			object.add("rolls", context.serialize(pool.rolls));
-			if(pool.bonusRolls.getMin() != 0.0F && pool.bonusRolls.getMax() != 0.0F) {
-				object.add("bonus_rolls", context.serialize(pool.bonusRolls));
+			JsonObject json = new JsonObject();
+			json.add("rolls", context.serialize(pool.rolls));
+			if (pool.bonusRolls != null && pool.bonusRolls.getMin() != 0.0F && pool.bonusRolls.getMax() != 0.0F) {
+				json.add("bonus_rolls", context.serialize(pool.bonusRolls));
 			}
-			if(pool.poolConditions != null && !pool.poolConditions.isEmpty()) {
-				object.add("conditions", context.serialize(pool.poolConditions));
+			json.add("entries", context.serialize(pool.entries));
+			if (pool.conditions != null && !pool.conditions.isEmpty()) {
+				context.serialize(pool.conditions);
 			}
-			return object;
+			return json;
 		}
 	}
+
 }

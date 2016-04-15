@@ -7,55 +7,44 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
-import net.senmori.hunted.loot.LootContext.EntityTarget;
-import net.senmori.hunted.loot.condition.LootCondition;
-import net.senmori.hunted.loot.condition.LootConditionManager;
+import net.senmori.hunted.loot.conditions.LootCondition;
+import net.senmori.hunted.loot.conditions.LootConditionManager;
 import net.senmori.hunted.loot.entry.LootEntry;
-import net.senmori.hunted.loot.function.LootFunction;
-import net.senmori.hunted.loot.function.LootFunctionManager;
+import net.senmori.hunted.loot.entry.LootEntryAdapter;
+import net.senmori.hunted.loot.functions.LootFunction;
+import net.senmori.hunted.loot.functions.LootFunctionManager;
 import net.senmori.hunted.loot.storage.ResourceLocation;
+import org.apache.commons.io.FilenameUtils;
 import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.net.URL;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 public class LootTableManager {
 
-    /* Classes to include:(so I don't forget
-        RandomValueRange.class, RandomValueRange.Serializer
-        LootPool.class LootPool.Serializer
-        LootTable.class  LootTable.Serializer
-        LootEntry.class  LootEntry.Serializer
-        LootCondition  LootConditionManager.Serializer
-        LootFunction   LootFunctionManager.Serializer
-        LootContext.EntityTarget.class  LootContext.EntityTarget.Serializer
-     */
-    private static final GsonBuilder builder = new GsonBuilder()
-                                                 .registerTypeAdapter(RandomValueRange.class, new RandomValueRange.Serializer())
-                                                 .registerTypeAdapter(LootPool.class, new LootPool.Serializer())
-                                                 .registerTypeAdapter(LootTable.class, new LootTable.Serializer())
-                                                 .registerTypeHierarchyAdapter(LootEntry.class, new LootEntry.Serializer())
-                                                 .registerTypeHierarchyAdapter(LootCondition.class, new LootConditionManager.Serializer())
-                                                 .registerTypeHierarchyAdapter(LootFunction.class, new LootFunctionManager.Serializer())
-                                                 .registerTypeHierarchyAdapter(EntityTarget.class, new EntityTarget.Serializer());
-	private static final Gson GSON_INSTANCE = builder.setPrettyPrinting().create();
+    public static Gson gson;
     /* ConcurrentHashMap because it's thread safe, supposedly */
 	private static ConcurrentHashMap<ResourceLocation, LootTable> registeredLootTables = new ConcurrentHashMap<>();
-    // Thread-safe Set; We shouldn't be accessing this a lot but better safe than sorry.
-    private static Set<ResourceLocation> lootTables = Collections.synchronizedSet(new HashSet<ResourceLocation>());
-    private static final String worldFolder = Bukkit.getWorldContainer().getAbsolutePath().replace('.', ' ').trim(); // remove the trailing '.', because it messes things up in Windows.
-	private static final String baseFolder = worldFolder + "world" + File.separator + "data" + File.separator + "loot_tables" + File.separator;
+    //private static Set<String> registeredDomains = new HashSet<>();
 
-    private LootTableManager() {}
+    static {
+        gson = (new GsonBuilder()
+                        .registerTypeHierarchyAdapter(LootEntry.class, new LootEntryAdapter())
+                        .registerTypeHierarchyAdapter(LootCondition.class, new LootConditionManager.Serializer())
+                        .registerTypeHierarchyAdapter(LootFunction.class, new LootFunctionManager.Serializer())
+                        .registerTypeAdapter(RandomValueRange.class, new RandomValueRange.Serializer())
+                        .registerTypeAdapter(LootPool.class, new LootPool.Serializer())
+                        .registerTypeAdapter(LootTable.class, new LootTable.Serializer())
+                        .setPrettyPrinting().create());
+    }
+
+    public LootTableManager() {
+    }
+
 
     /**
      * Get a {@link ResourceLocation} that matches the given path.<br>
@@ -88,112 +77,110 @@ public class LootTableManager {
     }
 
     /**
-     * Get a {@link LootTable} from the given {@link ResourceLocation}
-     * @param resource
-     * @return
-     */
-    public static LootTable getLootTable(ResourceLocation resource) { return registeredLootTables.get(resource); }
-
-	private void reloadLootTables() {
-		registeredLootTables.clear();
-
-        synchronized (lootTables) {
-            Iterator i = lootTables.iterator();
-            while(i.hasNext()) {
-                ResourceLocation location = (ResourceLocation)i.next();
-                registeredLootTables.put(location, getLootTable(location));
-            }
-        }
-	}
-
-    /**
      * Add a {@link ResourceLocation} which will generate the .json file. <br>
      * If a .json file is not already created, it will create one and return it. <br>
      * If the {@link LootTable} is already loaded, it will return that. <br>
-     * @param resourceLocation
+     * @param resource
      */
-    public static LootTable createOrLoadLootTable(ResourceLocation resourceLocation) {
-        if(!lootTables.contains(resourceLocation)) {
-            lootTables.add(resourceLocation);
-        }
-
-       if(registeredLootTables.containsKey(resourceLocation)) {
-           return registeredLootTables.get(resourceLocation);
-       } else {
-           File file = new File(getResourceFilePath(resourceLocation));
-           if(file.exists()) {
-               // load file
-               try {
-                   LootTable table = load(resourceLocation);
-                   registeredLootTables.put(resourceLocation, table);
-                   return table;
-               }catch(IOException e) {
-                   Bukkit.getLogger().log(Level.WARNING, "Couldn\'t load loot table " + resourceLocation);
-                   return LootTable.getEmptyLootTable();
-               }
-
-           } else {
-               // no LootTable file exists, create new file, and return empty LootTable
-                LootTable newTable = LootTable.getEmptyLootTable();
-                write(newTable, resourceLocation);
-                registeredLootTables.put(resourceLocation, newTable);
+    public static LootTable getLootTable(ResourceLocation resource) {
+        if (registeredLootTables.containsKey(resource)) {
+            return registeredLootTables.get(resource);
+        } else {
+            File file = getFile(resource);
+            if (file != null && file.exists()) {
+                // load file
+                try {
+                    LootTable table = load(resource);
+                    registeredLootTables.put(resource, table);
+                    return table;
+                } catch (IOException e) {
+                    Bukkit.getLogger().log(Level.WARNING, "Couldn\'t load loot table " + resource);
+                    return LootTable.emptyLootTable();
+                }
+            } else {
+                // no LootTable file exists, create new file, and return empty LootTable
+                LootTable newTable = LootTable.emptyLootTable();
+                write(newTable, resource);
+                registeredLootTables.put(resource, newTable);
                 return newTable;
+            }
+        }
+    }
 
-           }
-       }
+    private static void reloadLootTables() {
     }
 
     /**
-     * Write to file the {@link LootTable} assicated with the given {@link ResourceLocation}
+     * Write to file the {@link LootTable} that is associated with the given {@link ResourceLocation}
      * @param location
      */
-    public static void save(ResourceLocation location) {
-        LootTable table = registeredLootTables.get(location);
-        registeredLootTables.put(location, table); // update registeredLootTables
-        write(table, location);
+    public static boolean save(ResourceLocation location, LootTable table) {
+        registeredLootTables.put(location, table); // update table
+        return write(table, location);
+    }
+
+    public static boolean save(LootTable table) {
+        for (ResourceLocation location : registeredLootTables.keySet()) {
+            if (registeredLootTables.get(location).equals(table)) {
+                return save(location, table);
+            }
+        }
+        return false;
     }
 
     // write table data to file
-    private static void write(LootTable table, ResourceLocation location) {
-        File fullFilePath = new File(getResourceFilePath(location));
-        File filePathNoFile = new File(getResourceFilePath(location).replaceFirst("^\\\\(.+\\\\)*(.+)\\.(.+)$", " ").trim()); // remove file from path to make parent directories
-        Bukkit.broadcastMessage("File Path No File: " + filePathNoFile);
-        try(Writer writer = new FileWriter(filePathNoFile)) {
-            if(!filePathNoFile.getParentFile().exists()) {
-                filePathNoFile.mkdirs();
-            }
-            if(!fullFilePath.exists() && fullFilePath.isFile()) {
-                fullFilePath.mkdirs();
-                fullFilePath.createNewFile();
-            }
-            String s = GSON_INSTANCE.toJson(table);
-            Bukkit.broadcastMessage(s);
+    private static boolean write(LootTable table, ResourceLocation location) {
+        if (table == null) {
+            throw new IllegalArgumentException("Loot Table cannot be null when writing to file!");
+        }
+        String tableString = gson.toJson(table);
+        File file = getFile(location);
+        try (FileWriter writer = new FileWriter(file)) {
+            String s = gson.toJson(table);
             writer.write(s);
             writer.close();
         } catch(IOException e) {
             e.printStackTrace();
-            Bukkit.getLogger().log(Level.WARNING, "Couldn\'t create loot table \'" + location + "\' at file \'" + fullFilePath + "\'");
+            Bukkit.getLogger().log(Level.WARNING, "Couldn\'t create loot table \'" + location + "\' at file \'" + location.getResourcePath() + "\'");
+            return false;
         }
+        return true;
     }
 
-    public static String getResourceFilePath(ResourceLocation location) {
-        return LootTableManager.baseFolder + location.getResourceDomain() + File.separator + location.getResourcePath() + ".json";
+    private static String getFilePath(ResourceLocation location) {
+        return Bukkit.getWorld(location.getResourceWorld()).getWorldFolder() + File.separator + "data" + File.separator + "loot_tables" + File.separator + location.getResourceDomain() + File.separator + location.getResourcePath() + ".json";
     }
+
+    public static File getFile(ResourceLocation location) {
+        String url = getFilePath(location);
+        String baseUrl = FilenameUtils.getPath(url);
+        String fileName = FilenameUtils.getBaseName(url) + "." + FilenameUtils.getExtension(url);
+        try {
+            File path = new File(baseUrl);
+            if (!path.exists()) { path.mkdirs(); }
+            File file = new File(baseUrl + fileName);
+            if (!file.exists()) { file.createNewFile(); }
+            return file;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 
     public static LootTable load(ResourceLocation location) throws IOException, JsonSyntaxException {
         if(location.getResourcePath().contains(".")) {
             Bukkit.getLogger().log(Level.WARNING, "Invalid loot table name \'" + location + "\' (can\'t contain periods)");
-            return LootTable.getEmptyLootTable();
+            return LootTable.emptyLootTable();
         } else {
             LootTable lootTable = loadLootTable(location);
-
             if(lootTable == null) {
                 lootTable = loadBuiltInTable(location);
             }
 
             if(lootTable == null) {
-                Bukkit.getLogger().log(Level.WARNING, "Couldn\'t find resource table " + location);
-                return LootTable.getEmptyLootTable();
+                return LootTable.emptyLootTable();
             }
             return lootTable;
         }
@@ -201,35 +188,34 @@ public class LootTableManager {
 
     /* Get a loot table by a ResourceLocation */
     private static LootTable loadLootTable(ResourceLocation resource) {
-        File file = new File(getResourceFilePath(resource));
-
+        File file = getFile(resource);
         if(file.exists()) {
             if(file.isFile()) {
                 String s;
-
                 try {
                     s = Files.toString(file, Charsets.UTF_8);
+                    Bukkit.broadcastMessage("Loaded table string : " + s);
                 } catch(IOException e) {
                     Bukkit.getLogger().log(Level.WARNING, "Couldn\'t load the loot table at " + resource + " from " + file, e);
-                    return LootTable.getEmptyLootTable();
+                    return LootTable.emptyLootTable();
                 }
 
                 try {
-                    return LootTableManager.GSON_INSTANCE.fromJson(s, LootTable.class);
+                    return gson.fromJson(s, LootTable.class);
                 } catch(JsonParseException e) {
                     Bukkit.getLogger().log(Level.SEVERE, "Couldn\'t load loot table " + resource + " from " + file, e);
-                    return LootTable.getEmptyLootTable();
+                    return LootTable.emptyLootTable();
                 }
             } else {
                 Bukkit.getLogger().log(Level.WARNING, "Expected to find loot table " + resource + "at " + file + " but it is a folder");
-                return LootTable.getEmptyLootTable();
+                return LootTable.emptyLootTable();
             }
         } else {
             try {
                 file.createNewFile();
-                return LootTable.getEmptyLootTable();
+                return LootTable.emptyLootTable();
             }catch(IOException e) {
-                return LootTable.getEmptyLootTable();
+                return LootTable.emptyLootTable();
             }
         }
     }
@@ -246,14 +232,14 @@ public class LootTableManager {
                 s = Resources.toString(url, Charsets.UTF_8);
             } catch(IOException e) {
                 Bukkit.getLogger().log(Level.WARNING, "Couldn\'t load loot table " + location + " from " + url, e);
-                return LootTable.getEmptyLootTable();
+                return LootTable.emptyLootTable();
             }
 
             try {
-                return LootTableManager.GSON_INSTANCE.fromJson(s, LootTable.class);
+                return gson.fromJson(s, LootTable.class);
             }catch(JsonParseException e) {
                 Bukkit.getLogger().log(Level.WARNING, "Couldn't load loot table " + location + " from " + url);
-                return LootTable.getEmptyLootTable();
+                return LootTable.emptyLootTable();
             }
         } else {
             return null;

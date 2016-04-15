@@ -3,53 +3,55 @@ package net.senmori.hunted.loot.entry;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import net.senmori.hunted.loot.condition.LootCondition;
-import net.senmori.hunted.loot.function.LootFunction;
+import net.senmori.hunted.loot.conditions.LootCondition;
+import net.senmori.hunted.loot.functions.LootFunction;
 import net.senmori.hunted.loot.utils.JsonUtils;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by Senmori on 3/29/2016.
+ * Created by Senmori on 4/1/2016.
  */
 public class LootEntryItem extends LootEntry {
 
-    private ItemStack itemstack;
-    protected List<LootFunction> lootFunctions;
+    private List<LootFunction> functions;
+    private Material name;
 
-    public LootEntryItem(ItemStack stack, int weight, int quality, List<LootCondition> conditions, List<LootFunction> functions){
+    public LootEntryItem(Material material, int weight, int quality, List<LootFunction> functions, List<LootCondition> conditions) {
         super(weight, quality, conditions);
-        this.lootFunctions = functions;
-        this.itemstack = stack;
+        if (functions == null) { this.functions = new ArrayList<>(); }
+        this.functions = functions;
+        this.name = material;
     }
 
-    public LootEntryItem(Material material, int weight, int quality, List<LootCondition> conditions, List<LootFunction> functions) {
-        super(weight, quality, conditions);
-        this.lootFunctions = functions;
-        this.itemstack = new ItemStack(material);
+    public void addFunction(LootFunction function) {
+        if (functions == null) { functions = new ArrayList<>(); }
+        functions.add(function);
     }
-
-    public ItemStack getItemstack() { return this.itemstack; }
-
-    public void setItemStack(ItemStack newItemStack) { itemstack = newItemStack; }
-
 
     @Override
-    protected void serialize(JsonObject object, JsonSerializationContext context) {
-        if (this.lootFunctions != null && this.lootFunctions.size() > 0) {
-            object.add("functions", context.serialize(this.lootFunctions));
-        }
+    public void addLoot(List<ItemStack> itemstacks) {
 
-        Material material = this.itemstack.getType();
-        if(material == null) {
-            throw new IllegalArgumentException("Unknown material \'" + material + "\'");
-        } else {
-            object.addProperty("name", material.toString().toLowerCase());
+    }
+
+    public Material getMaterial() { return name; }
+
+    public void setMaterial(Material newMaterial) { this.name = newMaterial; }
+
+    public List<LootFunction> getFunctions() { return this.functions; }
+
+    @Override
+    protected void serialize(JsonObject json, JsonSerializationContext context) {
+        json.addProperty("name", this.name.toString().toLowerCase());
+        if (this.functions != null && !this.functions.isEmpty()) {
+            json.add("functions", context.serialize(this.functions));
         }
     }
+
 
     public static LootEntryItem deserialize(JsonObject object, JsonDeserializationContext context, int weight, int quality, List<LootCondition> conditions) {
         ItemStack stack = JsonUtils.getItem(object, "name");
@@ -59,6 +61,6 @@ public class LootEntryItem extends LootEntry {
         } else {
             functions = new LootFunction[0];
         }
-        return new LootEntryItem(stack, weight, quality, conditions, Arrays.asList(functions));
+        return new LootEntryItem(stack.getType(), weight, quality, Arrays.asList(functions), conditions);
     }
 }

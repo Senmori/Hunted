@@ -39,9 +39,6 @@ public class Reference {
 		// Stuck command
 		public static final String COMMAND_STUCK = "hunted.commands.stuck";
 		public static final String COMMAND_STUCK_OTHER = "hunted.commands.stuck.other";
-		
-		// Give command
-		public static final String COMMAND_DEV_TOOLS = "hunted.commands.dev";
 
 		// Interaction permissions
 		public static final String ADMIN_BREAK = "hunted.admin.break";
@@ -75,7 +72,7 @@ public class Reference {
 
 		public static final String NO_COMMAND_PERMISSION = "You do not have permission to run this command!";
 
-		public static final String NO_FILE_FOUND_ERROR = "That file does not exist!";
+		public static final String NO_FILE_FOUND_ERROR = "{0} does not exist!";
 		
 		public static final String WRONG_WORLD_ERROR = "You are not in the correct world for this command!";
 	}

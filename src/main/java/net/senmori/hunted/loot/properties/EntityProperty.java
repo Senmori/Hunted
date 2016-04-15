@@ -8,30 +8,29 @@ import org.bukkit.entity.Entity;
 
 import java.util.Random;
 
+/**
+ * Created by Senmori on 4/12/2016.
+ */
 public interface EntityProperty {
-	
-	boolean testProperty(Random rand, Entity entity);
-	
-	
-	abstract class Serializer<T extends EntityProperty> {
-		private final ResourceLocation name;
-		private final Class<T> clazz;
-		
-		protected Serializer(ResourceLocation name, Class<T> clazz) {
-			this.name = name;
-			this.clazz = clazz;
-		}
-		
-		public ResourceLocation getName() {
-			return this.name;
-		}
-		
-		public Class<T> getPropertyClass() {
-			return this.clazz;
-		}
-		
-		public abstract JsonElement serialize(T property, JsonSerializationContext context);
-		public abstract T deserialize(JsonElement element, JsonDeserializationContext context);
-	}
-	
+
+    boolean testProperty(Random rand, Entity entity);
+
+
+    abstract class Serializer<T extends EntityProperty> {
+        private ResourceLocation name;
+        private Class<T> propertyClass;
+
+        protected Serializer(ResourceLocation name, Class<T> propertyClass) {
+            this.name = name;
+            this.propertyClass = propertyClass;
+        }
+
+        public ResourceLocation getName() { return this.name; }
+
+        public Class<T> getPropertyClass() { return this.propertyClass; }
+
+        public abstract JsonElement serialize(T type, JsonSerializationContext context);
+
+        public abstract T deserialize(JsonElement json, JsonDeserializationContext context);
+    }
 }

@@ -8,7 +8,6 @@ import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.stones.Stone;
 import net.senmori.hunted.stones.Stone.StoneType;
 import net.senmori.hunted.tasks.TntExplosion;
-import net.senmori.hunted.util.Reference.Permissions;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -65,8 +64,7 @@ public class PlayerListener implements Listener {
 		// player is playing, store or lobby haven't been implemented yet
 		if (plugin.getPlayerManager().getState(e.getPlayer().getUniqueId()).equals(GameState.IN_GAME)) {
 			if (plugin.getConfigManager().activeWorld.equals(e.getPlayer().getWorld().getName())) {
-				if(e.getPlayer().hasPermission(Permissions.ADMIN_EXEMPT)) return;
-				if(e.getPlayer().hasPermission(Permissions.COMMAND_DEV_TOOLS)) return; // ignore dev testing
+				if (plugin.getPlayerManager().isExempt(e.getPlayer())) return;
 				if (!Hunted.getInstance().getStoneManager().isValidActivator(e.getClickedBlock().getType())) {
 					e.setCancelled(true);
 					e.setUseInteractedBlock(Result.DENY);
@@ -99,7 +97,6 @@ public class PlayerListener implements Listener {
 					return;
 				}
 				// cancel everything but interaction with specific items/blocks
-				// we want
 				e.setCancelled(true);
 				e.setUseInteractedBlock(Result.DENY);
 				e.setUseItemInHand(Result.DENY);

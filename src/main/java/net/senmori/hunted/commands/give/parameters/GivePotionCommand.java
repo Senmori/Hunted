@@ -10,7 +10,7 @@ public class GivePotionCommand extends Subcommand {
 	public GivePotionCommand() {
 		this.name = "potion";
 		this.description = "give potion";
-		this.permission = Permissions.COMMAND_DEV_TOOLS;
+		this.permission = Permissions.ADMIN_EXEMPT;
 		this.needsPlayer = true;
 	}
 	

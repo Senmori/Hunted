@@ -21,12 +21,12 @@ public class LootUtils {
 	private static final String deathLootSeed = "DeathLootTableSeed";
 	static {
 		validBlocks = new ArrayList<>();
+		manager = Hunted.getInstance().nbtManager;
 		validBlocks.add(Material.CHEST);
 		validBlocks.add(Material.DROPPER);
 		validBlocks.add(Material.DISPENSER);
 		validBlocks.add(Material.HOPPER);
 		validBlocks.add(Material.TRAPPED_CHEST);
-		manager = Hunted.getInstance().nbtManager;
 	}
 	
 	private LootUtils() {}
@@ -43,7 +43,7 @@ public class LootUtils {
 	}
 	
 	public static boolean hasLootTable(Block block) {
-		if(!validBlocks.contains(block.getType())) return false;
+		if (!isValidBlock(block)) return false;
 		return manager.read(block).containsKey(lootTableKey) || manager.read(block).containsKey(lootTableSeed);
 	}
 	
@@ -61,7 +61,7 @@ public class LootUtils {
 	}
 	
 	public static boolean clearLootTable(Block block) {
-		if(!validBlocks.contains(block.getType())) return true;
+		if (!isValidBlock(block)) return true;
 		NBTCompound tag = manager.read(block);
 		tag.remove(lootTableKey);
 		tag.remove(lootTableSeed);
@@ -81,7 +81,7 @@ public class LootUtils {
 	}
 	
 	public static boolean setLootTable(Block block, String table) {
-		if(!validBlocks.contains(block.getType())) return false;
+		if (!isValidBlock(block)) return false;
 		NBTCompound tag = manager.read(block);
 		tag.put(lootTableKey, table);
 		manager.write(block, tag);

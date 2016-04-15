@@ -1,14 +1,10 @@
 package net.senmori.hunted.loot;
 
 import com.google.common.collect.Sets;
-import com.google.gson.TypeAdapter;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.io.IOException;
 import java.util.Set;
 
 public class LootContext {
@@ -57,9 +53,9 @@ public class LootContext {
 	public LootTableManager getLootTableManager() {
 		return lootTableManager;
 	}
-	
-	
-	public Entity getEntity(LootContext.EntityTarget target) {
+
+
+	public Entity getEntity(EntityTarget target) {
 		switch(target) {
 			case THIS:
 				return this.getLootedEntity();
@@ -107,40 +103,6 @@ public class LootContext {
 		
 		public LootContext build() {
 			return new LootContext(luck, world, lootTableManager, lootedEntity, killer, player);
-		}
-	}
-	
-	public enum EntityTarget {
-		THIS("this"),
-		KILLER("killer"),
-		KILLER_PLAYER("killer_player");
-		
-		private final String targetType;
-		
-		EntityTarget(String type) {
-			this.targetType = type;
-		}
-		
-		public static LootContext.EntityTarget fromString(String type) {
-			for(LootContext.EntityTarget target : values()) {
-				if(target.targetType.equals(type)) {
-					return target;
-				}
-			}
-			throw new IllegalArgumentException("Invalid entity target " + type);
-		}
-		
-		public static class Serializer extends TypeAdapter<LootContext.EntityTarget> {
-
-			@Override
-            public EntityTarget read(JsonReader reader) throws IOException {
-	            return LootContext.EntityTarget.fromString(reader.nextString());
-            }
-
-			@Override
-            public void write(JsonWriter writer, EntityTarget target) throws IOException {
-	            writer.value(target.targetType);
-            }
 		}
 	}
 }

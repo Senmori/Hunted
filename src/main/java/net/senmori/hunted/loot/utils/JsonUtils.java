@@ -17,8 +17,7 @@ import java.io.Reader;
 import java.io.StringReader;
 
 /**
- * JSON Utility class created by MinecraftForge.
- * 
+ * JSON Utility class created by MinecraftForge and Mojang.
  * @author MinecraftForge
  */
 public class JsonUtils {
@@ -317,8 +316,7 @@ public class JsonUtils {
 		return json.has(memberName) ? getJsonArray(json.get(memberName), memberName) : fallback;
 	}
 
-	public static <T> T deserializeClass(JsonElement json, String memberName, JsonDeserializationContext context,
-	        Class<? extends T> adapter) {
+	public static <T> T deserializeClass(JsonElement json, String memberName, JsonDeserializationContext context, Class<? extends T> adapter) {
 		if (json != null) {
 			return context.deserialize(json, adapter);
 		} else {
@@ -326,8 +324,7 @@ public class JsonUtils {
 		}
 	}
 
-	public static <T> T deserializeClass(JsonObject json, String memberName, JsonDeserializationContext context,
-	        Class<? extends T> adapter) {
+	public static <T> T deserializeClass(JsonObject json, String memberName, JsonDeserializationContext context, Class<? extends T> adapter) {
 		if (json.has(memberName)) {
 			return deserializeClass(json.get(memberName), memberName, context, adapter);
 		} else {
@@ -335,10 +332,8 @@ public class JsonUtils {
 		}
 	}
 
-	public static <T> T deserializeClass(JsonObject json, String memberName, T fallback,
-	        JsonDeserializationContext context, Class<? extends T> adapter) {
-		return json.has(memberName) ? deserializeClass(json.get(memberName), memberName, context, adapter)
-									: fallback;
+	public static <T> T deserializeClass(JsonObject json, String memberName, T fallback, JsonDeserializationContext context, Class<? extends T> adapter) {
+		return json.has(memberName) ? deserializeClass(json.get(memberName), memberName, context, adapter) : fallback;
 	}
 
 	/**

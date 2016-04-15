@@ -15,7 +15,7 @@ public class HuntedGiveCommand extends Subcommand {
 	public HuntedGiveCommand() {
 		this.name = "give";
 		this.description = "give command";
-		this.permission = Permissions.COMMAND_DEV_TOOLS;
+		this.permission = Permissions.ADMIN_EXEMPT;
 		this.needsPlayer = false;
 		
 		parameters = new ArrayList<Subcommand>();

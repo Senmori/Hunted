@@ -11,7 +11,7 @@ import org.bukkit.entity.Entity;
 import java.util.Random;
 
 /**
- * Created by Senmori on 3/29/2016.
+ * Created by Senmori on 4/12/2016.
  */
 public class EntityOnFire implements EntityProperty {
 
@@ -19,28 +19,26 @@ public class EntityOnFire implements EntityProperty {
 
     public EntityOnFire(boolean onFire) { this.onFire = onFire; }
 
-    public boolean getOnFire() { return this.onFire; }
+    public void setOnFire(boolean value) { this.onFire = value; }
 
     @Override
     public boolean testProperty(Random rand, Entity entity) {
-        return entity.getFireTicks() > 0;
+        return onFire ? entity.getFireTicks() > 0 : entity.getFireTicks() <= 0;
     }
 
-
+    public boolean getOnFire() { return this.onFire; }
 
     public static class Serializer extends EntityProperty.Serializer<EntityOnFire> {
-        protected Serializer() {
-            super(new ResourceLocation("on_fire"), EntityOnFire.class);
+        protected Serializer() { super(new ResourceLocation("on_fire"), EntityOnFire.class); }
+
+        @Override
+        public JsonElement serialize(EntityOnFire type, JsonSerializationContext context) {
+            return new JsonPrimitive(type.onFire);
         }
 
         @Override
-        public JsonElement serialize(EntityOnFire property, JsonSerializationContext context) {
-            return new JsonPrimitive(property.onFire);
-        }
-
-        @Override
-        public EntityOnFire deserialize(JsonElement element, JsonDeserializationContext context) {
-            return new EntityOnFire(JsonUtils.getBoolean(element, "on_fire"));
+        public EntityOnFire deserialize(JsonElement json, JsonDeserializationContext context) {
+            return new EntityOnFire(JsonUtils.getBoolean(json, "on_fire"));
         }
     }
 }

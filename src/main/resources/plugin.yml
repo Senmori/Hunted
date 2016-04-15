@@ -30,5 +30,6 @@ permissions:
         children:
             hunted.admin.break: true
             hunted.admin.place: true
+            hunted.admin.exempt: true
     hunted.admin.exempt:
         default: false
