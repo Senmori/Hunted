@@ -3,8 +3,8 @@ package net.senmori.hunted.loot.functions;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import net.senmori.hunted.loot.LootContext;
 import net.senmori.hunted.loot.conditions.LootCondition;
+import net.senmori.hunted.loot.core.LootContext;
 import net.senmori.hunted.loot.storage.ResourceLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.FurnaceRecipe;
@@ -21,11 +21,15 @@ public class Smelt extends LootFunction {
 
     public Smelt(List<LootCondition> conditions) { super(conditions); }
 
+    public Smelt() { this(null); }
+
     @Override
     public ItemStack apply(ItemStack itemstack, Random rand, LootContext context) {
         for (Recipe recipe : Bukkit.getRecipesFor(itemstack)) {
             if (recipe instanceof FurnaceRecipe) {
-                return recipe.getResult();
+                ItemStack result = recipe.getResult();
+                result.setAmount(itemstack.getAmount());
+                return result;
             }
         }
         return itemstack;

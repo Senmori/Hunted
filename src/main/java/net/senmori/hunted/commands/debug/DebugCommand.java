@@ -2,12 +2,11 @@ package net.senmori.hunted.commands.debug;
 
 
 import net.senmori.hunted.commands.Subcommand;
-import net.senmori.hunted.loot.LootTable;
-import net.senmori.hunted.loot.LootTableManager;
+import net.senmori.hunted.loot.core.LootTable;
+import net.senmori.hunted.loot.core.LootTableManager;
+import net.senmori.hunted.loot.menu.PoolSelectionMenu;
 import net.senmori.hunted.loot.storage.ResourceLocation;
 import net.senmori.hunted.util.Reference.Permissions;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 
 public class DebugCommand extends Subcommand {
 
@@ -19,11 +18,8 @@ public class DebugCommand extends Subcommand {
 
 	@Override
 	protected void perform() {
-		ResourceLocation debugTableLocation = new ResourceLocation("hunted:chests/debug");
-		LootTable table = LootTableManager.getLootTable(debugTableLocation);
-        Bukkit.broadcastMessage("Pool Entries(x): " + table.getLootPool().getEntries().size());
-        table.getLootPool().addLootEntry(Material.DIAMOND, 1, 1);
-        Bukkit.broadcastMessage("Pool Entries(y): " + table.getLootPool().getEntries().size());
-        table.save();
+        LootTable table = LootTableManager.getLootTable(new ResourceLocation("hunted:chests/debug"));
+        PoolSelectionMenu menu = new PoolSelectionMenu(table);
+        menu.show(getPlayer());
     }
 }

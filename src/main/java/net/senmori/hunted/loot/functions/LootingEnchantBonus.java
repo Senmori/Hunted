@@ -3,9 +3,9 @@ package net.senmori.hunted.loot.functions;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import net.senmori.hunted.loot.LootContext;
-import net.senmori.hunted.loot.RandomValueRange;
 import net.senmori.hunted.loot.conditions.LootCondition;
+import net.senmori.hunted.loot.core.LootContext;
+import net.senmori.hunted.loot.core.RandomValueRange;
 import net.senmori.hunted.loot.storage.ResourceLocation;
 import net.senmori.hunted.loot.utils.JsonUtils;
 import org.bukkit.enchantments.Enchantment;
@@ -26,6 +26,10 @@ public class LootingEnchantBonus extends LootFunction {
     public LootingEnchantBonus(RandomValueRange count, List<LootCondition> conditions) {
         super(conditions);
         this.count = count;
+    }
+
+    public LootingEnchantBonus(RandomValueRange count) {
+        this(count, null);
     }
 
     public void setMin(int min) {

@@ -3,8 +3,8 @@ package net.senmori.hunted.loot.functions;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import net.senmori.hunted.loot.LootContext;
 import net.senmori.hunted.loot.conditions.LootCondition;
+import net.senmori.hunted.loot.core.LootContext;
 import net.senmori.hunted.loot.storage.ResourceLocation;
 import org.bukkit.inventory.ItemStack;
 

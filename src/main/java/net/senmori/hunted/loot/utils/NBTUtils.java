@@ -41,4 +41,17 @@ public class NBTUtils {
         manager.write(stack, root);
         return stack;
     }
+
+
+    /**
+     * Set the NBT data of the given itemstack.<br>
+     *
+     * @param nbtString must be in JSON format.
+     * @param stack
+     * @param nbtString
+     * @return
+     */
+    public static ItemStack setNBT(ItemStack stack, String nbtString) {
+        return stack;
+    }
 }

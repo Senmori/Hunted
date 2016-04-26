@@ -1,4 +1,4 @@
-package net.senmori.hunted.loot;
+package net.senmori.hunted.loot.core;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -25,7 +25,7 @@ import java.util.logging.Level;
 
 public class LootTableManager {
 
-    public static Gson gson;
+    private static Gson gson;
     /* ConcurrentHashMap because it's thread safe, supposedly */
 	private static ConcurrentHashMap<ResourceLocation, LootTable> registeredLootTables = new ConcurrentHashMap<>();
     //private static Set<String> registeredDomains = new HashSet<>();
@@ -44,6 +44,9 @@ public class LootTableManager {
     public LootTableManager() {
     }
 
+    public static Gson getGson() { return gson; }
+
+    public static ConcurrentHashMap<ResourceLocation, LootTable> getRegisteredLootTables() { return registeredLootTables; }
 
     /**
      * Get a {@link ResourceLocation} that matches the given path.<br>
@@ -82,6 +85,24 @@ public class LootTableManager {
      * @param resource
      */
     public static LootTable getLootTable(ResourceLocation resource) {
+        return getLootTable(resource, false);
+    }
+
+    public static LootTable getLootTable(ResourceLocation resource, boolean forceReload) {
+        if (forceReload) {
+            File file = getFile(resource);
+            if (file != null && file.exists()) {
+                try {
+                    LootTable table = load(resource);
+                    table.setResourceLocation(resource);
+                    registeredLootTables.put(resource, table);
+                    return table;
+                } catch (IOException e) {
+                    Bukkit.getLogger().log(Level.WARNING, "Couldn\'t load loot table \'" + resource);
+                    return LootTable.emptyLootTable();
+                }
+            }
+        }
         if (registeredLootTables.containsKey(resource)) {
             return registeredLootTables.get(resource);
         } else {
@@ -107,9 +128,6 @@ public class LootTableManager {
         }
     }
 
-    private static void reloadLootTables() {
-    }
-
     private static String getFilePath(ResourceLocation location) {
         return Bukkit.getWorld(location.getResourceWorld()).getWorldFolder() + File.separator + "data" + File.separator + "loot_tables" + File.separator + location.getResourceDomain() + File.separator + location.getResourcePath() + ".json";
     }
@@ -129,8 +147,6 @@ public class LootTableManager {
         }
         return null;
     }
-
-
 
     public static LootTable load(ResourceLocation location) throws IOException, JsonSyntaxException {
         if(location.getResourcePath().contains(".")) {

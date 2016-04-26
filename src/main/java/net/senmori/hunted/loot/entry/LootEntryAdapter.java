@@ -40,8 +40,6 @@ public class LootEntryAdapter extends InheritanceAdapter<LootEntry> {
         return object;
     }
 
-    int i = 0;
-
     @Override
     public LootEntry deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = JsonUtils.getJsonObject(jsonElement, "loot item");

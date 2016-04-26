@@ -149,9 +149,7 @@ public class MapConfiguration {
 
 			Location loc = new Location(world, x, y, z);
 			plugin.getSpawnManager().addHuntedLocation(new SerializedLocation(loc, name));
-			huntedLocations++;
 		}
-		totalLocations += huntedLocations;
 		// load lobby locations
 		for (String name : config.getConfigurationSection("lobby-loc").getKeys(false)) {
 			int x = config.getInt("lobby-loc." + name + ".x");
@@ -160,10 +158,7 @@ public class MapConfiguration {
 
 			Location loc = new Location(world, x, y, z);
 			plugin.getSpawnManager().addLobbyLocation(new SerializedLocation(loc, name));
-			lobbyLocations++;
-
 		}
-		totalLocations += lobbyLocations;
 		// load store locations
 		for (String name : config.getConfigurationSection("store-loc").getKeys(false)) {
 			int x = config.getInt("store-loc." + name + ".x");
@@ -172,10 +167,7 @@ public class MapConfiguration {
 
 			Location loc = new Location(world, x, y, z);
 			plugin.getSpawnManager().addStoreLocation(new SerializedLocation(loc, name));
-			storeLocations++;
 		}
-		totalLocations += storeLocations;
-		LogHandler.info("Loaded " + totalLocations + " locations!");
 
 		// load stone locations
 		for (String name : config.getConfigurationSection("stone").getKeys(false)) {
@@ -208,14 +200,10 @@ public class MapConfiguration {
 					// activated
 					gs.setLastActivated(gs.getCooldown() - TimeUnit.MINUTES.toMillis(lastActivated));
 				}
-				guardianStones++;
 				continue;
 			}
 			new TeleportStone(new SerializedLocation(loc, name));
-			teleportStones++;
 		}
-		totalStones += guardianStones + teleportStones;
-		LogHandler.info("Loaded " + totalStones + " stones!");
 		save();
 	}
 

@@ -1,4 +1,4 @@
-package net.senmori.hunted.loot;
+package net.senmori.hunted.loot.core;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -77,7 +77,7 @@ public class LootAttributeModifier {
     public static LootAttributeModifier deserialize(JsonObject json, JsonDeserializationContext context) {
         String modifierName = JsonUtils.getString(json, "name");
         String attributeName = JsonUtils.getString(json, "attribute");
-        int operation = getOperationFromString(JsonUtils.getString(json, "operation"));
+        int operation = LootAttributeModifier.getOperationFromString(JsonUtils.getString(json, "operation"));
         RandomValueRange randomAmount = JsonUtils.deserializeClass(json, "amount", context, RandomValueRange.class);
         UUID uuid = null;
         EquipmentSlot[] slots;

@@ -39,7 +39,6 @@ public class GuardianStone extends Stone {
 
 	/**
 	 * Toggle redstone lamps to show whether or not this stone is active <br>
-	 * @param block - The indicator block {@link Material#REDSTONE_LAMP_OFF} or {@link Material#REDSTONE_LAMP_ON} <br>
 	 */
 	public void toggleIndicators() {
 		Block block = getLocation().getBlock();

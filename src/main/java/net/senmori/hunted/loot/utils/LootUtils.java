@@ -2,6 +2,8 @@ package net.senmori.hunted.loot.utils;
 
 import me.dpohvar.powernbt.api.NBTCompound;
 import me.dpohvar.powernbt.api.NBTManager;
+import net.minecraft.server.v1_9_R1.Item;
+import net.minecraft.server.v1_9_R1.MinecraftKey;
 import net.senmori.hunted.Hunted;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -93,4 +95,14 @@ public class LootUtils {
 		if(block == null) return false;
 		return validBlocks.contains(block.getType());
 	}
+
+
+    public static String getNameForItem(net.minecraft.server.v1_9_R1.ItemStack stack) {
+        for (MinecraftKey key : Item.REGISTRY.keySet()) {
+            if (Item.REGISTRY.get(key).getName().equals(stack.getItem().getName())) {
+                return key.toString();
+            }
+        }
+        return stack.getName();
+    }
 }

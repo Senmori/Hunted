@@ -1,4 +1,4 @@
-package net.senmori.hunted.loot;
+package net.senmori.hunted.loot.core;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
@@ -14,7 +14,8 @@ import java.util.Random;
 
 public class RandomValueRange {
 
-	private float min;
+    public static RandomValueRange emptyRange = new RandomValueRange(0.0f, 0.0f);
+    private float min;
 	private float max;
 
 	public RandomValueRange(float min, float max) {
@@ -27,6 +28,15 @@ public class RandomValueRange {
 		this.max = value;
 	}
 
+    public void setMin(float min) {this.min = min < 1 ? 0 : min; }
+
+    public void setMax(float max) { this.max = max < 1 ? 0 : max; }
+
+    public void setValues(float min, float max) {
+        setMin(min);
+        setMax(max);
+    }
+
 	public float getMin() { return this.min; }
 
 	public float getMax() { return this.max; }
@@ -34,8 +44,8 @@ public class RandomValueRange {
 	public int generateInt(Random rand) {
 		int vMin = floorFloat(min);
 		int vMax = floorFloat(max);
-		return vMin > vMax ? vMin : rand.nextInt(vMax - vMin +1) + vMin;
-	}
+        return vMin > vMax ? vMin : rand.nextInt(vMax - vMin + 1) + vMin;
+    }
 
 	public float generateFloat(Random rand) {
 		return min >= max ? min : rand.nextFloat() * (max - min) + min;
@@ -47,6 +57,16 @@ public class RandomValueRange {
 		int i = (int)value;
 		return value < (float)i ? i-1 : i;
 	}
+
+    public boolean isEmpty() { return (this.min == 0.0f && this.max == 0.0f); }
+
+    public String toString() {
+        if (min == max) {
+            return String.valueOf((int) min);
+        } else {
+            return "Min: " + (int) min + ", Max: " + (int) max;
+        }
+    }
 
 
 	public static class Serializer extends InheritanceAdapter<RandomValueRange> {

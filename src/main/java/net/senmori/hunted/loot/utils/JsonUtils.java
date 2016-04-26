@@ -20,7 +20,7 @@ import java.io.StringReader;
 
 /**
  * JSON Utility class created by MinecraftForge and Mojang.
- * @author MinecraftForge
+ * @author MinecraftForge, Mojang
  */
 public class JsonUtils {
 

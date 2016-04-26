@@ -3,9 +3,9 @@ package net.senmori.hunted.loot.functions;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import net.senmori.hunted.loot.LootContext;
-import net.senmori.hunted.loot.RandomValueRange;
 import net.senmori.hunted.loot.conditions.LootCondition;
+import net.senmori.hunted.loot.core.LootContext;
+import net.senmori.hunted.loot.core.RandomValueRange;
 import net.senmori.hunted.loot.storage.ResourceLocation;
 import net.senmori.hunted.loot.utils.JsonUtils;
 import org.bukkit.inventory.ItemStack;
@@ -22,6 +22,10 @@ public class SetCount extends LootFunction {
     public SetCount(RandomValueRange range, List<LootCondition> conditions) {
         super(conditions);
         this.range = range;
+    }
+
+    public SetCount(RandomValueRange range) {
+        this(range, null);
     }
 
     public void setMin(int min) {

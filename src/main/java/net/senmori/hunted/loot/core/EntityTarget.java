@@ -1,4 +1,4 @@
-package net.senmori.hunted.loot;
+package net.senmori.hunted.loot.core;
 
 /**
  * Created by Senmori on 4/12/2016.

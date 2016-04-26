@@ -1,6 +1,5 @@
 package net.senmori.hunted.listeners;
 
-import me.dpohvar.powernbt.api.NBTCompound;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.game.GameState;
 import net.senmori.hunted.loot.utils.LootUtils;
@@ -40,15 +39,13 @@ public class PlayerListener implements Listener {
 	public PlayerListener(Hunted plugin) {
 		this.plugin = plugin;
 	}
-	
+
 	@EventHandler
 	public void onPlayerUseSpawnEgg(CreatureSpawnEvent e) {
 		if(e.getSpawnReason().equals(SpawnReason.SPAWNER_EGG)) {
 			// set NoAI so it's easier to test
-			NBTCompound tag = Hunted.getInstance().nbtManager.read(e.getEntity());
-			tag.put("NoAI", 1);
-			Hunted.getInstance().nbtManager.write(e.getEntity(), tag);
-			// reset LootTables each time so I don't have to keep placing/breaking blocks
+            e.getEntity().setAI(false);
+            // reset LootTables each time so I don't have to keep placing/breaking blocks
 			if(LootUtils.hasLootTable(e.getEntity())) {
 				LootUtils.clearLootTable(e.getEntity());
 			}
@@ -61,7 +58,8 @@ public class PlayerListener implements Listener {
 		if(LootUtils.isValidBlock(e.getClickedBlock()) && e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			LootUtils.setLootTable(e.getClickedBlock(), "hunted:chests/debug");
 		}
-		// player is playing, store or lobby haven't been implemented yet
+
+        // player is playing, store or lobby haven't been implemented yet
 		if (plugin.getPlayerManager().getState(e.getPlayer().getUniqueId()).equals(GameState.IN_GAME)) {
 			if (plugin.getConfigManager().activeWorld.equals(e.getPlayer().getWorld().getName())) {
 				if (plugin.getPlayerManager().isExempt(e.getPlayer())) return;
@@ -115,7 +113,7 @@ public class PlayerListener implements Listener {
 				}
 			}
 		}
-	}
+    }
 
 	@EventHandler
 	public void onPlayerPickupItem(PlayerPickupItemEvent e) {

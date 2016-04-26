@@ -7,8 +7,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSyntaxException;
-import net.senmori.hunted.loot.LootContext;
 import net.senmori.hunted.loot.adapter.InheritanceAdapter;
+import net.senmori.hunted.loot.core.LootContext;
 import net.senmori.hunted.loot.storage.ResourceLocation;
 import net.senmori.hunted.loot.utils.JsonUtils;
 

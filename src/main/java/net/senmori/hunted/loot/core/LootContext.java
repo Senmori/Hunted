@@ -1,4 +1,4 @@
-package net.senmori.hunted.loot;
+package net.senmori.hunted.loot.core;
 
 import com.google.common.collect.Sets;
 import org.bukkit.World;

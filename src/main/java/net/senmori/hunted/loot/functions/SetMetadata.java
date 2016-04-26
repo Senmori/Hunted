@@ -3,9 +3,9 @@ package net.senmori.hunted.loot.functions;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
-import net.senmori.hunted.loot.LootContext;
-import net.senmori.hunted.loot.RandomValueRange;
 import net.senmori.hunted.loot.conditions.LootCondition;
+import net.senmori.hunted.loot.core.LootContext;
+import net.senmori.hunted.loot.core.RandomValueRange;
 import net.senmori.hunted.loot.storage.ResourceLocation;
 import net.senmori.hunted.loot.utils.JsonUtils;
 import org.bukkit.inventory.ItemStack;
@@ -24,6 +24,10 @@ public class SetMetadata extends LootFunction {
         this.range = range;
     }
 
+    public SetMetadata(RandomValueRange range) {
+        this(range, null);
+    }
+
     public void setMin(int min) {
         int max = (int) range.getMax();
         range = new RandomValueRange(min, max);
@@ -38,9 +42,11 @@ public class SetMetadata extends LootFunction {
         range = new RandomValueRange(min, max);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public ItemStack apply(ItemStack itemstack, Random rand, LootContext context) {
-        return null;
+        itemstack.getData().setData((byte) range.generateInt(rand));
+        return itemstack;
     }
 
     public RandomValueRange getRange() { return this.range; }

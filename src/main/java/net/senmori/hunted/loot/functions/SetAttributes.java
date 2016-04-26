@@ -6,9 +6,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSyntaxException;
-import net.senmori.hunted.loot.LootAttributeModifier;
-import net.senmori.hunted.loot.LootContext;
 import net.senmori.hunted.loot.conditions.LootCondition;
+import net.senmori.hunted.loot.core.LootAttributeModifier;
+import net.senmori.hunted.loot.core.LootContext;
 import net.senmori.hunted.loot.storage.ResourceLocation;
 import net.senmori.hunted.loot.utils.JsonUtils;
 import net.senmori.hunted.loot.utils.NBTUtils;
@@ -31,6 +31,10 @@ public class SetAttributes extends LootFunction {
     public SetAttributes(List<LootAttributeModifier> modifiers, List<LootCondition> conditions) {
         super(conditions);
         this.modifiers = modifiers;
+    }
+
+    public SetAttributes(List<LootAttributeModifier> modifiers) {
+        this(modifiers, null);
     }
 
     public void addModifier(LootAttributeModifier modifier) {

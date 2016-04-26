@@ -8,8 +8,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSyntaxException;
-import net.senmori.hunted.loot.LootContext;
 import net.senmori.hunted.loot.conditions.LootCondition;
+import net.senmori.hunted.loot.core.LootContext;
 import net.senmori.hunted.loot.storage.ResourceLocation;
 import net.senmori.hunted.loot.utils.JsonUtils;
 import net.senmori.hunted.loot.utils.MathHelper;
@@ -35,6 +35,10 @@ public class EnchantRandomly extends LootFunction {
         this.enchantments = enchantments;
     }
 
+    public EnchantRandomly(List<Enchantment> enchantments) {
+        this(enchantments, null);
+    }
+
     public void addEnchantment(Enchantment enchant) {
         if (enchantments.contains(enchant)) return;
         enchantments.add(enchant);
@@ -52,19 +56,19 @@ public class EnchantRandomly extends LootFunction {
             List list = Lists.newArrayList();
 
             Enchantment[] possible = Enchantment.values();
-            boolean continueLoop = true;
             do {
                 int i = rand.nextInt(possible.length);
                 if (possible[i].canEnchantItem(itemstack) && !itemstack.getType().equals(Material.ENCHANTED_BOOK)) {
                     enchant = possible[i];
+                    break;
                 }
-            } while (continueLoop);
+            } while (true);
         }
 
         if (enchant == null) return itemstack; // this should never happen
+        int level = MathHelper.getRandomIntegerInRange(rand, enchant.getStartLevel(), enchant.getMaxLevel());
         if (itemstack.getType().equals(Material.ENCHANTED_BOOK)) {
             EnchantmentStorageMeta meta = (EnchantmentStorageMeta) itemstack.getItemMeta();
-            int level = MathHelper.getRandomIntegerInRange(rand, enchant.getStartLevel(), enchant.getMaxLevel());
             if (meta.hasStoredEnchant(enchant)) {
                 int oldEnchantLevel = meta.getStoredEnchantLevel(enchant);
                 meta.addStoredEnchant(enchant, level + oldEnchantLevel, false);
@@ -77,7 +81,7 @@ public class EnchantRandomly extends LootFunction {
             }
         } else {
             ItemMeta meta = itemstack.getItemMeta();
-            meta.addEnchant(enchant, MathHelper.getRandomIntegerInRange(rand, enchant.getStartLevel(), enchant.getMaxLevel()), false);
+            meta.addEnchant(enchant, level, false);
             itemstack.setItemMeta(meta);
             return itemstack;
         }

@@ -34,4 +34,8 @@ public class MathHelper {
     public static double getRandomDoubleInRange(Random rand, double min, double max){
         return min >= max ? min : rand.nextDouble() * (max - min) + min;
     }
+
+    public static int clampInt(int num, int min, int max) {
+        return num < min ? min : (num > max ? max : num);
+    }
 }

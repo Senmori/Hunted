@@ -11,10 +11,11 @@ import net.senmori.hunted.commands.list.ListCommand;
 import net.senmori.hunted.commands.stuck.StuckCommand;
 import net.senmori.hunted.lib.MapConfiguration;
 import net.senmori.hunted.listeners.BlockListener;
+import net.senmori.hunted.listeners.InventoryListener;
 import net.senmori.hunted.listeners.PlayerListener;
+import net.senmori.hunted.loot.menu.LootMenuManager;
 import net.senmori.hunted.managers.CommandManager;
 import net.senmori.hunted.managers.ConfigManager;
-import net.senmori.hunted.managers.game.MenuManager;
 import net.senmori.hunted.managers.game.PlayerManager;
 import net.senmori.hunted.managers.game.RewardManager;
 import net.senmori.hunted.managers.game.SpawnManager;
@@ -53,8 +54,8 @@ public class Hunted extends JavaPlugin {
 	private StoneManager stoneManager;
 	private SpawnManager spawnManager;
 	private PlayerManager playerManager;
-	private MenuManager menuManager;
-	// kit managers
+    private LootMenuManager lootMenuManager;
+    // kit managers
 	private KitManager kitManager;
 	private WeaponManager weaponManager;
 	private PotionManager potionManager;
@@ -62,7 +63,6 @@ public class Hunted extends JavaPlugin {
 	// misc. managers
 	private ConfigManager configManager;
 	private CommandManager commandManager;
-	// loot manager
 
 	// Connection Pool
 	private Database database; // SQL
@@ -88,8 +88,8 @@ public class Hunted extends JavaPlugin {
 		stoneManager = new StoneManager();
 		spawnManager = new SpawnManager();
 		rewardManager = new RewardManager();
-		menuManager = new MenuManager(getInstance());
-		// kit managers
+        lootMenuManager = new LootMenuManager();
+        // kit managers
 		kitManager = new KitManager(getInstance());
 		weaponManager = new WeaponManager(getInstance());
 		potionManager = new PotionManager(getInstance());
@@ -123,13 +123,13 @@ public class Hunted extends JavaPlugin {
 		// Listeners
 		getServer().getPluginManager().registerEvents(new BlockListener(getInstance()), this);
 		getServer().getPluginManager().registerEvents(new PlayerListener(getInstance()), this);
-		LogHandler.info("Listeners enabled!");
+        getServer().getPluginManager().registerEvents(new InventoryListener(getInstance()), this);
+        LogHandler.info("Listeners enabled!");
 		
 		// Power NBT
-		if(Bukkit.getPluginManager().getPlugin("PowerNBT") != null) {
-			nbtManager = PowerNBT.getApi();
+        if (Bukkit.getPluginManager().getPlugin("PowerNBT").isEnabled()) {
+            nbtManager = PowerNBT.getApi();
 		}
-
 		instance = this;
 	}
 
@@ -154,9 +154,9 @@ public class Hunted extends JavaPlugin {
 		return playerManager;
 	}
 
-	public MenuManager getMenuManager() {
-		return menuManager;
-	}
+    public LootMenuManager getLootMenuManager() {
+        return lootMenuManager;
+    }
 
 	public KitManager getKitManager() {
 		return kitManager;
