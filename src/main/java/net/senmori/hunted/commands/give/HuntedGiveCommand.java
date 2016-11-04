@@ -43,7 +43,6 @@ public class HuntedGiveCommand extends Subcommand {
 			getPlayer().sendMessage(getUsageTemplate(true));
 		}
 		return;
-	    
     }
 
 }

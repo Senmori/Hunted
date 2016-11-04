@@ -1,21 +1,27 @@
 package net.senmori.hunted.listeners;
 
+import static net.minecraft.server.v1_10_R1.SoundEffects.de;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.game.GameState;
-import net.senmori.hunted.loot.utils.LootUtils;
+import net.senmori.hunted.lib.game.Stat;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.stones.Stone;
 import net.senmori.hunted.stones.Stone.StoneType;
 import net.senmori.hunted.tasks.TntExplosion;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.EndGateway;
+import org.bukkit.craftbukkit.v1_10_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_10_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_10_R1.entity.CraftLivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Result;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -27,9 +33,12 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerPickupArrowEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Attachable;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -39,34 +48,24 @@ public class PlayerListener implements Listener {
 	public PlayerListener(Hunted plugin) {
 		this.plugin = plugin;
 	}
-
+    
 	@EventHandler
-	public void onPlayerUseSpawnEgg(CreatureSpawnEvent e) {
-		if(e.getSpawnReason().equals(SpawnReason.SPAWNER_EGG)) {
-			// set NoAI so it's easier to test
-            e.getEntity().setAI(false);
-            // reset LootTables each time so I don't have to keep placing/breaking blocks
-			if(LootUtils.hasLootTable(e.getEntity())) {
-				LootUtils.clearLootTable(e.getEntity());
-			}
-			LootUtils.setLootTable(e.getEntity(), "hunted:chests/debug");
+	public void onCreatureSpawn(CreatureSpawnEvent e) {
+		if(e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.SPAWNER_EGG) {
+			e.getEntity().setAI(false);
 		}
 	}
-		
+
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent e) {
-		if(LootUtils.isValidBlock(e.getClickedBlock()) && e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-			LootUtils.setLootTable(e.getClickedBlock(), "hunted:chests/debug");
-		}
-
         // player is playing, store or lobby haven't been implemented yet
 		if (plugin.getPlayerManager().getState(e.getPlayer().getUniqueId()).equals(GameState.IN_GAME)) {
 			if (plugin.getConfigManager().activeWorld.equals(e.getPlayer().getWorld().getName())) {
 				if (plugin.getPlayerManager().isExempt(e.getPlayer())) return;
 				if (!Hunted.getInstance().getStoneManager().isValidActivator(e.getClickedBlock().getType())) {
 					e.setCancelled(true);
-					e.setUseInteractedBlock(Result.DENY);
-					e.setUseItemInHand(Result.DENY);
+					e.setUseInteractedBlock(Event.Result.DENY);
+					e.setUseItemInHand(Event.Result.DENY);
 					return;
 				}
 
@@ -81,8 +80,8 @@ public class PlayerListener implements Listener {
 					Stone s = Hunted.getInstance().getStoneManager().getStone(block.getLocation());
 					if (s == null || !plugin.getPlayerManager().canInteractWithStone(s, e.getPlayer())) {
 						e.setCancelled(true);
-						e.setUseInteractedBlock(Result.DENY);
-						e.setUseItemInHand(Result.DENY);
+						e.setUseInteractedBlock(Event.Result.DENY);
+						e.setUseItemInHand(Event.Result.DENY);
 						return;
 					}
 					if (s != null && s.getType().equals(StoneType.GUARDIAN)) {
@@ -96,8 +95,8 @@ public class PlayerListener implements Listener {
 				}
 				// cancel everything but interaction with specific items/blocks
 				e.setCancelled(true);
-				e.setUseInteractedBlock(Result.DENY);
-				e.setUseItemInHand(Result.DENY);
+				e.setUseInteractedBlock(Event.Result.DENY);
+				e.setUseItemInHand(Event.Result.DENY);
 				return;
 			}
 		}
@@ -148,8 +147,7 @@ public class PlayerListener implements Listener {
 				if (plugin.getSpawnManager().getLobbyLocations().size() > 0) {
 					e.setRespawnLocation(plugin.getSpawnManager().getRandomLobbyLocation().getLocation());
 				} else {
-					e.setRespawnLocation(e.getRespawnLocation()); // because
-					                                              // paranoia
+					e.setRespawnLocation(e.getRespawnLocation()); // because paranoia
 				}
 			}
 		}
@@ -160,6 +158,7 @@ public class PlayerListener implements Listener {
 	public void onPlayerKick(PlayerKickEvent e) {
 		if (plugin.getPlayerManager().isPlaying(e.getPlayer().getUniqueId())) {
 			//new LogOutTimer(plugin, e.getPlayer().getUniqueId().toString(), 30);
+            plugin.getPlayerManager().untrackPlayer(e.getPlayer().getUniqueId());
 		}
 	}
 
@@ -175,7 +174,6 @@ public class PlayerListener implements Listener {
 				plugin.getPlayerManager().enterWorld(e.getPlayer());
 				return;
 			}
-			plugin.getPlayerManager().setState(e.getPlayer().getUniqueId(), GameState.NOT_PLAYING);
 		}
 	}
 
@@ -193,13 +191,9 @@ public class PlayerListener implements Listener {
 
 	@EventHandler
 	public void onEntityDeathEvent(EntityDeathEvent e) {
-		Player killer = null;
-		if(e.getEntity().getKiller() instanceof Player) {
-			killer = e.getEntity().getKiller();
-		}
-		
-		if(killer != null) {
-			plugin.getPlayerManager().getPlayer(killer.getUniqueId()).updateStat("kills", 1);
+		if(e.getEntity().getKiller() != null) {
+			Player killer = e.getEntity().getKiller();
+			plugin.getPlayerManager().getPlayer(killer.getUniqueId()).updateStat(Stat.KILLS, 1);
 		}
 	}
 
@@ -207,10 +201,9 @@ public class PlayerListener implements Listener {
 	public void onPlayerHurtByEntity(EntityDamageByEntityEvent e) {
 		if (e.getEntity() instanceof Player) {
 			Player player = (Player) e.getEntity();
-			if (plugin.getPlayerManager().getState(player.getUniqueId()).equals(GameState.IN_STORE)
-			        || plugin.getPlayerManager().getState(player.getUniqueId()).equals(GameState.LOBBY)) {
+			if (plugin.getPlayerManager().getState(player.getUniqueId()).equals(GameState.IN_STORE) || plugin.getPlayerManager().getState(player.getUniqueId()).equals(GameState.LOBBY)) {
+                e.setDamage(0.0d);
 				e.setCancelled(true);
-				e.setDamage(0.0);
 			}
 		}
 	}
@@ -220,10 +213,9 @@ public class PlayerListener implements Listener {
 		if (e.getCause().equals(DamageCause.VOID)) return;
 		if (e.getEntity() instanceof Player) {
 			Player player = (Player) e.getEntity();
-			if (plugin.getPlayerManager().getState(player.getUniqueId()).equals(GameState.IN_STORE)
-					|| plugin.getPlayerManager().getState(player.getUniqueId()).equals(GameState.LOBBY)) {
+			if (plugin.getPlayerManager().getState(player.getUniqueId()).equals(GameState.IN_STORE) || plugin.getPlayerManager().getState(player.getUniqueId()).equals(GameState.LOBBY)) {
 				e.setCancelled(true);
-				e.setDamage(0.0);
+				e.setDamage(0.0d);
 			}
 		}
 	}

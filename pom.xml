@@ -2,9 +2,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.senmori</groupId>
   <artifactId>hunted</artifactId>
-  <version>0.6-SNAPSHOT</version>
+  <version>0.7-SNAPSHOT</version>
   <name>Hunted</name>
-  <description>Hunted mini-game for the Broken Buttons server</description>
+  <description>Hunted mini-game</description>
   <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <main.Class>${project.groupId}.${project.artifactId}.${project.name}</main.Class>
@@ -15,14 +15,9 @@
   <dependencies>
     <!-- Spigot Server -->
     <dependency>
-           <groupId>org.spigotmc</groupId>
-           <artifactId>spigot</artifactId>
-           <version>1.9.2-R0.1-SNAPSHOT</version>
-    </dependency>
-	<dependency>
-        <groupId>me.dpohvar.powernbt</groupId>
-        <artifactId>PowerNBT</artifactId>
-        <version>0.8.5.1</version>
+           <groupId>org.bukkit</groupId>
+           <artifactId>craftbukkit</artifactId>
+           <version>1.10.2-R0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <!-- Maven build parameters -->

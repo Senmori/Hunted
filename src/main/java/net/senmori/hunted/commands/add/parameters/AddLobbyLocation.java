@@ -1,10 +1,14 @@
 package net.senmori.hunted.commands.add.parameters;
 
-import net.md_5.bungee.api.ChatColor;
+
+import java.text.MessageFormat;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.lib.SerializedLocation;
+import net.senmori.hunted.util.ActionBar;
+import net.senmori.hunted.util.Reference;
 import net.senmori.hunted.util.Reference.Permissions;
+import org.bukkit.ChatColor;
 
 import java.util.Arrays;
 
@@ -14,17 +18,16 @@ public class AddLobbyLocation extends Subcommand {
 		this.name = "lobby";
 		this.needsPlayer = true;
 		this.description = "Adds respawn locations to the Hunted arena.";
-		this.permission = Permissions.COMMAND_ADD;
+		this.permission = Permissions.COMMAND_ADD_LOBBY;
 		this.requiredArgs = Arrays.asList("name");
 	}
 
 	@Override
 	protected void perform() {
 		int count = Hunted.getInstance().getSpawnManager().getLobbyLocations().size() + 1;
-		String locName = args.length >= 2 ? args[1] : "RLoc-" + count;
-		Hunted.getInstance().getSpawnManager()
-		        .addLobbyLocation(new SerializedLocation(getPlayer().getLocation(), locName));
-		getPlayer().sendMessage(ChatColor.GREEN + "Successfully added a new lobby location (" + locName + ")");
+		String locName = args.length >= 2 ? args[1] : "LobbyLoc-" + count;
+		Hunted.getInstance().getSpawnManager().addLobbyLocation(new SerializedLocation(getPlayer().getLocation(), locName));
+		ActionBar.sendMessage(getPlayer(), ChatColor.GREEN + MessageFormat.format(Reference.SuccessMessage.LOBBY_LOCATION_CREATED, args[1]));
 	}
 
 }

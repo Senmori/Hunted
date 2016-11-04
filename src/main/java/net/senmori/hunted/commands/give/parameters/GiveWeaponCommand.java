@@ -16,9 +16,7 @@ public class GiveWeaponCommand extends Subcommand {
 	
 	@Override
 	protected void perform() {
-		ItemStack weapon = Hunted.getInstance().getWeaponManager().generateWeapon();
-		getPlayer().getInventory().setItem(3,weapon);
-		getPlayer().sendMessage("Generated " + weapon.getAmount() + " " + weapon.getType());
+		getPlayer().getInventory().addItem(Hunted.getInstance().getWeaponManager().generateWeapon());
 	}
 
 }

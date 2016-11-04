@@ -3,6 +3,7 @@ package net.senmori.hunted.commands.give.parameters;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.util.Reference.Permissions;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class GivePotionCommand extends Subcommand {
@@ -16,8 +17,7 @@ public class GivePotionCommand extends Subcommand {
 	
 	@Override
 	protected void perform() {
-		ItemStack potion = Hunted.getInstance().getPotionManager().getPotion();
-		getPlayer().getInventory().setItem(7, potion);
+		getPlayer().getInventory().addItem(Hunted.getInstance().getPotionManager().getPotion());
 	}
 
 }

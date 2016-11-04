@@ -1,9 +1,10 @@
 package net.senmori.hunted.managers;
 
-import net.md_5.bungee.api.ChatColor;
+
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.util.LogHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -40,7 +41,7 @@ public class CommandManager implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		List<String> argsList = new ArrayList<String>();
+		List<String> argsList = new ArrayList<>();
 
 		if (args.length > 0) {
 			String commandName = args[0].toLowerCase();

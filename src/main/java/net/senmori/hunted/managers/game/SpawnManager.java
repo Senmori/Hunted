@@ -37,15 +37,15 @@ public class SpawnManager {
 	 * Add a location to {@link #huntedLocations} <br>
 	 * @param loc - {@link SerializedLocation}
 	 */
-	public void addHuntedLocation(SerializedLocation loc) {
+	public void addArenaLocation(SerializedLocation loc) {
 		huntedLocations.add(loc);
-		Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveHuntedLocation(loc);
+		Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveArenaLocation(loc);
 	}
 
 	/** Add a location to {@link #huntedLocations} */
-	public void addHuntedLocation(Location loc, String locName) {
+	public void addArenaLocation(Location loc, String locName) {
 		huntedLocations.add(new SerializedLocation(loc, locName));
-		Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveHuntedLocation(new SerializedLocation(loc, locName));
+		Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveArenaLocation(new SerializedLocation(loc, locName));
 	}
 
 	/** Add a location to {@link #lobbyLocations} */
@@ -253,6 +253,20 @@ public class SpawnManager {
 		return list.get(0);
 	}
 
+	public Set<SerializedLocation> getLocationsByType(LocationType type) {
+        switch(type) {
+            case ARENA:
+                return getHuntedLocations();
+            case LOBBY:
+                return getLobbyLocations();
+            case STORE:
+                return getStoreLocations();
+            default:
+                return new HashSet<SerializedLocation>();
+        }
+    }
+	
+	
 	/*
 	 * Generic getters
 	 */

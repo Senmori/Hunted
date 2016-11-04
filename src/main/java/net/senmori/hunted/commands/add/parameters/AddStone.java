@@ -1,14 +1,18 @@
 package net.senmori.hunted.commands.add.parameters;
 
-import net.md_5.bungee.api.ChatColor;
+
+import java.text.MessageFormat;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.lib.SerializedLocation;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.stones.Stone.StoneType;
 import net.senmori.hunted.stones.TeleportStone;
+import net.senmori.hunted.util.ActionBar;
+import net.senmori.hunted.util.Reference;
 import net.senmori.hunted.util.Reference.ErrorMessage;
 import net.senmori.hunted.util.Reference.Permissions;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -20,7 +24,7 @@ public class AddStone extends Subcommand {
 	public AddStone() {
 		this.name = "stone";
 		this.needsPlayer = true;
-		this.permission = Permissions.COMMAND_ADD;
+		this.permission = Permissions.COMMAND_ADD_STONE;
 		this.requiredArgs = Arrays.asList("name");
 	}
 
@@ -30,7 +34,7 @@ public class AddStone extends Subcommand {
 		String stoneName = args.length >= 2 ? args[1] : "Stone-";
 		// player isn't looking at a valid block
 		if (targetBlock == null) {
-			getPlayer().sendMessage(ChatColor.YELLOW + ErrorMessage.STONE_CREATION_ERROR);
+			ActionBar.sendMessage(getPlayer(), ChatColor.RED + ErrorMessage.STONE_CREATION_ERROR);
 			return;
 		}
 
@@ -39,15 +43,16 @@ public class AddStone extends Subcommand {
 			case "-g":
 				stoneName = "GStone-" + Hunted.getInstance().getStoneManager().getGuardianStones().size() + 1;
 				createNewStone(StoneType.GUARDIAN, targetBlock.getLocation(), stoneName);
+                ActionBar.sendMessage(getPlayer(), ChatColor.GREEN + MessageFormat.format(Reference.SuccessMessage.STONE_CREATED, stoneName));
 				break;
 			case "teleport":
 			case "-t":
 				stoneName = "TStone-" + Hunted.getInstance().getStoneManager().getTeleportStones().size() + 1;
 				createNewStone(StoneType.TELEPORT, targetBlock.getLocation(), stoneName);
+                ActionBar.sendMessage(getPlayer(), ChatColor.GREEN + MessageFormat.format(Reference.SuccessMessage.STONE_CREATED, stoneName));
 				break;
 			default:
 				break;
-
 		}
 	}
 

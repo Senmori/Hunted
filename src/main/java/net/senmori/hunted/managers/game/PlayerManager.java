@@ -22,27 +22,35 @@ public class PlayerManager {
 
 	private Hunted plugin;
 	private Map<UUID, Profile> activePlayers;
-	private Map<String, ItemStack[]> playerInventories;
-	private Map<String, SerializedLocation> lastKnownLocation;
+	private Map<UUID, ItemStack[]> playerInventories;
+	private Map<UUID, SerializedLocation> lastKnownLocation;
 
 	public PlayerManager(Hunted plugin) {
 		this.plugin = plugin;
 		activePlayers = new HashMap<UUID, Profile>();
-		playerInventories = new HashMap<String, ItemStack[]>();
-		lastKnownLocation = new HashMap<String, SerializedLocation>();
+		playerInventories = new HashMap<UUID, ItemStack[]>();
+		lastKnownLocation = new HashMap<UUID, SerializedLocation>();
 	}
 
 	/*
 	 * ################### Tracking methods ###################
 	 */
-
-	/** Setup the player for entrance in the Hunted arena */
+	
+	/**
+	 * Setup the player for entrance into the Hunted world
+	 *
+	 * @param uuid uuid of the player
+	 */
 	public void trackPlayer(UUID uuid) {
 		activePlayers.put(uuid, new Profile(Bukkit.getPlayer(uuid)));
-		setState(uuid, GameState.IN_GAME);
+		setState(uuid, GameState.LOBBY);
 	}
-
-	/** Remove player from being tracked */
+	
+	/**
+	 * Remove the player from being track
+	 *
+	 * @param uuid
+	 */
 	public void untrackPlayer(UUID uuid) {
 		activePlayers.remove(uuid);
 	}
@@ -115,7 +123,8 @@ public class PlayerManager {
 	 * @param player
 	 */
 	public void enterWorld(Player player) {
-		lastKnownLocation.put(player.getUniqueId().toString(), new SerializedLocation(player.getLocation(), player.getDisplayName()));
+		lastKnownLocation.put(player.getUniqueId(), new SerializedLocation(player.getLocation(), player.getDisplayName()));
+		playerInventories.put(player.getUniqueId(), player.getInventory().getContents());
 		trackPlayer(player.getUniqueId());
 	}
 
@@ -131,13 +140,12 @@ public class PlayerManager {
 			player.getActivePotionEffects().clear();
 
 			// restore inventory
-			for (ItemStack is : playerInventories.get(player.getUniqueId().toString())) {
-				player.getInventory().addItem(is);
-			}
+			getPlayer(player.getUniqueId()).restoreInventory();
 			player.teleport(lastKnownLocation.get(player.getUniqueId()).getLocation(), TeleportCause.PLUGIN);
 			untrackPlayer(player.getUniqueId());
 		}
 		setState(player.getUniqueId(), GameState.NOT_PLAYING);
+		untrackPlayer(player.getUniqueId());
 	}
 
 	/*
@@ -184,7 +192,6 @@ public class PlayerManager {
 				return true;
 			case NOT_PLAYING:
 			case OFFLINE:
-				return false;
 			default:
 				return false;
 		}
@@ -213,7 +220,7 @@ public class PlayerManager {
 	 *            - of the player
 	 * @return SerializedLocation of where the player was at
 	 */
-	public SerializedLocation getLastKnownLocation(String uuid) {
+	public SerializedLocation getLastKnownLocation(UUID uuid) {
 		return lastKnownLocation.get(uuid);
 	}
 

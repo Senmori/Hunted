@@ -18,7 +18,6 @@ public class InventoryListener implements Listener {
 	@EventHandler
 	public void onInventoryClickEvent(InventoryClickEvent e) {
         if (e.getWhoClicked() instanceof Player) {
-            plugin.getLootMenuManager().onClick(e);
         }
     }
 
@@ -26,7 +25,8 @@ public class InventoryListener implements Listener {
 	@EventHandler
 	public void onInventoryDrag(InventoryDragEvent e) {
         if (e.getWhoClicked() instanceof Player) {
-            plugin.getLootMenuManager().onDrag(e);
         }
+
+
     }
 }

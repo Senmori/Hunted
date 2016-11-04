@@ -1,8 +1,9 @@
 package net.senmori.hunted.reward.rewards;
 
-import net.md_5.bungee.api.ChatColor;
+
 import net.senmori.hunted.reward.Reward;
 import net.senmori.hunted.util.Reference.RewardMessage;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;

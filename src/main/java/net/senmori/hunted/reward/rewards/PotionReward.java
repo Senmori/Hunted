@@ -1,9 +1,11 @@
 package net.senmori.hunted.reward.rewards;
 
-import net.md_5.bungee.api.ChatColor;
+
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.reward.Reward;
+import net.senmori.hunted.util.ActionBar;
 import net.senmori.hunted.util.Reference.RewardMessage;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -20,8 +22,7 @@ public class PotionReward extends Reward {
 	@Override
 	public void generateLoot(Player player) {
 		ItemStack potion = Hunted.getInstance().getPotionManager().getPotion();
-		player.sendMessage(ChatColor.GREEN
-		        + MessageFormat.format(RewardMessage.STONE_REWARD, potion.getItemMeta().getDisplayName()));
+		ActionBar.sendMessage(player, ChatColor.GREEN + MessageFormat.format(RewardMessage.STONE_REWARD, potion.getItemMeta().getDisplayName()));
 	}
 
 	@Override

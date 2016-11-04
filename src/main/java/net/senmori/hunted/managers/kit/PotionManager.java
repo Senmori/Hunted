@@ -2,8 +2,10 @@ package net.senmori.hunted.managers.kit;
 
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.managers.ConfigManager;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.Potion;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
@@ -23,35 +25,33 @@ public class PotionManager {
 		this.plugin = plugin;
 		potionEffectTypes = new ArrayList<>();
 		potionTypes = new ArrayList<>();
+        rand = new Random();
 		load();
 	}
 
 	public ItemStack getPotion() {
-		return (int) Math.random() * (10 - 1) + 1 >= 10 ? generateSplashPotion() : generatePotion();
+        int randNum = rand.nextInt(10 + 1);
+        
+        if(randNum >= plugin.getConfigManager().potionTierChance) {
+            return generatePotion(Material.SPLASH_POTION);
+        }
+        return generatePotion(Material.POTION);
 	}
 
 	/** Generate a random potion using {@link PotionEffectType } */
-	public ItemStack generatePotion() {
-		Potion potion = new Potion(getRandomPotionType());
-		int numEffects = rand.nextInt(3) + 1; // generate between 1 and 3
-		                                      // effects to put onto this
-		                                      // potion
+	private ItemStack generatePotion(Material material) {
+        ItemStack item = new ItemStack(material);
+        PotionMeta pMeta = (PotionMeta)item.getItemMeta();
+        int numEffects = rand.nextInt(3) + 1; // generate between 1 and 3 effects to put onto this potion
 		for (int i = 0; i < numEffects; i++) {
-			PotionEffect effect = new PotionEffect(getRandomPotionEffectType(), getDuration(), getAmplifier());
-			if (potion.getEffects().contains(effect)) {
+            PotionEffect effect = new PotionEffect(getRandomPotionEffectType(), getDuration(), getAmplifier());
+			if (pMeta.hasCustomEffects() && pMeta.getCustomEffects().contains(effect)) {
 				effect = new PotionEffect(getRandomPotionEffectType(), getDuration(), getAmplifier());
 			}
+			pMeta.addCustomEffect(effect, false);
 		}
-		return potion.toItemStack(1);
-	}
-
-	/** Generate a random splash potion */
-	public ItemStack generateSplashPotion() {
-		Potion potion = new Potion(getRandomPotionType());
-		potion.setLevel(rand.nextInt(plugin.getConfigManager().potionTierChance + 1) == plugin.getConfigManager().potionTierChance ? 0 : potion.getType().getMaxLevel());
-		potion.setSplash(true);
-		potion.setHasExtendedDuration(rand.nextInt(plugin.getConfigManager().potionTierChance + 1) == plugin.getConfigManager().potionTierChance);
-		return potion.toItemStack(1);
+		item.setItemMeta(pMeta);
+		return item;
 	}
 
 	/**
@@ -84,38 +84,28 @@ public class PotionManager {
 
 	private void load() {
 		// potion effect types (for drinkable potions & effects)
+        potionEffectTypes.add(PotionEffectType.ABSORPTION);
+        potionEffectTypes.add(PotionEffectType.BLINDNESS);
+        potionEffectTypes.add(PotionEffectType.CONFUSION);
+        potionEffectTypes.add(PotionEffectType.DAMAGE_RESISTANCE);
+        potionEffectTypes.add(PotionEffectType.FIRE_RESISTANCE);
+        potionEffectTypes.add(PotionEffectType.GLOWING);
+        potionEffectTypes.add(PotionEffectType.HARM);
+        potionEffectTypes.add(PotionEffectType.HEAL);
+        potionEffectTypes.add(PotionEffectType.HEALTH_BOOST);
+        potionEffectTypes.add(PotionEffectType.HUNGER);
+        potionEffectTypes.add(PotionEffectType.INCREASE_DAMAGE);
+        potionEffectTypes.add(PotionEffectType.INVISIBILITY);
+        potionEffectTypes.add(PotionEffectType.JUMP);
+        potionEffectTypes.add(PotionEffectType.LEVITATION);
+        potionEffectTypes.add(PotionEffectType.LUCK);
+        potionEffectTypes.add(PotionEffectType.NIGHT_VISION);
+        potionEffectTypes.add(PotionEffectType.POISON);
+        potionEffectTypes.add(PotionEffectType.REGENERATION);
+        potionEffectTypes.add(PotionEffectType.SATURATION);
 		potionEffectTypes.add(PotionEffectType.SLOW);
-		potionEffectTypes.add(PotionEffectType.INCREASE_DAMAGE);
-		potionEffectTypes.add(PotionEffectType.HEAL);
-		potionEffectTypes.add(PotionEffectType.HARM);
-		potionEffectTypes.add(PotionEffectType.JUMP);
-		potionEffectTypes.add(PotionEffectType.CONFUSION);
-		potionEffectTypes.add(PotionEffectType.REGENERATION);
-		potionEffectTypes.add(PotionEffectType.DAMAGE_RESISTANCE);
-		potionEffectTypes.add(PotionEffectType.FIRE_RESISTANCE);
+        potionEffectTypes.add(PotionEffectType.SPEED);
 		potionEffectTypes.add(PotionEffectType.WATER_BREATHING);
-		potionEffectTypes.add(PotionEffectType.INVISIBILITY);
-		potionEffectTypes.add(PotionEffectType.BLINDNESS);
-		potionEffectTypes.add(PotionEffectType.NIGHT_VISION);
-		potionEffectTypes.add(PotionEffectType.HUNGER);
 		potionEffectTypes.add(PotionEffectType.WEAKNESS);
-		potionEffectTypes.add(PotionEffectType.POISON);
-		potionEffectTypes.add(PotionEffectType.HEALTH_BOOST);
-		potionEffectTypes.add(PotionEffectType.ABSORPTION);
-		potionEffectTypes.add(PotionEffectType.SATURATION);
-		potionEffectTypes.add(PotionEffectType.SPEED);
-		potionEffectTypes.add(PotionEffectType.GLOWING);
-
-		// potion types (for splash potions)
-		potionTypes.add(PotionType.REGEN);
-		potionTypes.add(PotionType.SPEED);
-		potionTypes.add(PotionType.FIRE_RESISTANCE);
-		potionTypes.add(PotionType.POISON);
-		potionTypes.add(PotionType.INSTANT_HEAL);
-		potionTypes.add(PotionType.STRENGTH);
-		potionTypes.add(PotionType.JUMP);
-		potionTypes.add(PotionType.NIGHT_VISION);
-		potionTypes.add(PotionType.WATER_BREATHING);
-		potionTypes.add(PotionType.WEAKNESS);
 	}
 }

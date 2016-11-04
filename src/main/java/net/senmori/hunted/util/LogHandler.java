@@ -5,6 +5,7 @@ import net.senmori.hunted.Hunted;
 import java.util.logging.Level;
 
 public class LogHandler {
+    
 	public static void log(Level level, String message) {
 		Hunted.getInstance().getLogger().log(level, message);
 	}
@@ -15,7 +16,7 @@ public class LogHandler {
 
 	public static void debug(String message) {
 		if (Hunted.getInstance().getConfigManager().debug) {
-			log(Level.CONFIG, message);
+			log(Level.CONFIG, "[DBG] " + message);
 		}
 	}
 

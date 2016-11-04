@@ -46,8 +46,7 @@ public class StoneManager {
 	public void register(Stone stone) {
 		if (stone == null || stone.getType() == null) return;
 		masterStoneList.add(stone);
-		Hunted.getInstance().getConfigManager().getActiveMapConfiguration()
-		        .saveStoneLocation(stone, stone.getLocation());
+		Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveStoneLocation(stone, stone.getLocation());
 		switch (stone.getType()) {
 			case GUARDIAN:
 				getGuardianStones().add((GuardianStone) stone);

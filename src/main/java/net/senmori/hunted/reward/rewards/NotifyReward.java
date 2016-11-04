@@ -1,21 +1,28 @@
 package net.senmori.hunted.reward.rewards;
 
-import net.md_5.bungee.api.ChatColor;
+
+import java.util.HashSet;
+import java.util.Set;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.game.GameState;
 import net.senmori.hunted.reward.Reward;
 import net.senmori.hunted.stones.GuardianStone;
+import net.senmori.hunted.tasks.PlayerGlowTask;
+import net.senmori.hunted.util.ActionBar;
 import net.senmori.hunted.util.Reference.RewardMessage;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class NotifyReward extends Reward {
 	private String name;
+    private Set<UUID> active = new HashSet<UUID>();
 
 	public NotifyReward(String name) {
 		this.name = name;
@@ -41,25 +48,13 @@ public class NotifyReward extends Reward {
 				continue; // ignore everyone not playing
 			}
 			if (uuid.equals(player.getUniqueId().toString())) {
+                if(!active.contains(player.getUniqueId())) {
+                    new PlayerGlowTask(Hunted.getInstance(), player.getUniqueId(), Hunted.getInstance().getPotionManager().getDuration());
+                }
 				continue; // ignore player who actived this stone
 			}
-			String name = null;
-			for (GuardianStone g : Hunted.getInstance().getStoneManager().getGuardianStones()) {
-				// reach distance for SMP is 5, use that as default
-				if (g.getLocation().distanceSquared(player.getLocation()) <= 5) {
-					// if guardian stone isn't named, return the location of the
-					// guardian stone
-					if (name.isEmpty() || name == null) {
-						// name = [x,y,z,world]
-						name = "[" + g.getLocation().getBlockX() + "," + g.getLocation().getBlockY() + ","
-						        + g.getLocation().getBlockZ() + "," + g.getLocation().getWorld().getName() + "]";
-						continue;
-					}
-					name = g.getName();
-				}
-			}
 			if (Bukkit.getPlayer(uuid) != null) {
-				Bukkit.getPlayer(uuid).sendMessage(ChatColor.AQUA + MessageFormat.format(RewardMessage.NOTIFY_ALL, player.getName(), name));
+				ActionBar.sendMessage(Bukkit.getPlayer(uuid), ChatColor.AQUA + MessageFormat.format(RewardMessage.NOTIFY_ALL, player.getName()));
 			}
 		}
 	}
@@ -75,7 +70,7 @@ public class NotifyReward extends Reward {
 		}
 		// send a random player name from the list to the player receiving this message
 		
-		player.sendMessage(ChatColor.AQUA + MessageFormat.format(RewardMessage.NOTIFY_WITHIN, players.size(), Hunted.getInstance().getConfigManager().nearbyRadius));
+		ActionBar.sendMessage(player, ChatColor.AQUA + MessageFormat.format(RewardMessage.NOTIFY_WITHIN, players.size(), Hunted.getInstance().getConfigManager().nearbyRadius));
 		players.clear(); // clear list just in case it gets stuck in memory
 	}
 

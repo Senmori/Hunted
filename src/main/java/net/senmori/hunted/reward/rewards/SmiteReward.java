@@ -1,9 +1,11 @@
 package net.senmori.hunted.reward.rewards;
 
-import net.md_5.bungee.api.ChatColor;
+
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.reward.Reward;
+import net.senmori.hunted.util.ActionBar;
 import net.senmori.hunted.util.Reference.RewardMessage;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.Random;
@@ -18,7 +20,7 @@ public class SmiteReward extends Reward {
 	@Override
 	public void generateLoot(Player player) {
 		player.getWorld().strikeLightning(player.getLocation());
-		player.sendMessage(ChatColor.GOLD + RewardMessage.SMITE_MESSAGE);
+		ActionBar.sendMessage(player, ChatColor.GOLD + RewardMessage.SMITE_MESSAGE);
 
 		Random rand = new Random();
 		int chance = net.senmori.hunted.Hunted.getInstance().getConfig().getInt("smite-teleport-chance");

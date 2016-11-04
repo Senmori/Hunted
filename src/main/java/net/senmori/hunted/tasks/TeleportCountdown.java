@@ -1,5 +1,6 @@
 package net.senmori.hunted.tasks;
 
+import net.senmori.hunted.util.ActionBar;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -30,7 +31,7 @@ public class TeleportCountdown extends BukkitRunnable {
 	@Override
 	public void run() {
 		if (showCountdown) {
-			player.sendMessage(count + "...");
+			ActionBar.sendMessage(player, count + "...");
 		}
 		count--;
 		if (count <= 0) {

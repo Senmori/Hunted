@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class MapConfiguration {
+    private final static String MAP_LOCATIONS_KEY = "arena-loc";
+    private final static String LOBBY_LOCATIONS_KEY = "lobby-loc";
+    private final static String STORE_LOCATIONS_KEY = "store-loc";
 
 	private Hunted plugin;
 	private String name;
@@ -53,17 +56,17 @@ public class MapConfiguration {
 	}
 
 	public void saveLobbyLocation(SerializedLocation loc) {
-		saveLocation(loc, "lobby-loc");
+		saveLocation(loc, LOBBY_LOCATIONS_KEY);
 		save();
 	}
 
-	public void saveHuntedLocation(SerializedLocation loc) {
-		saveLocation(loc, "hunted-loc");
+	public void saveArenaLocation(SerializedLocation loc) {
+		saveLocation(loc, MAP_LOCATIONS_KEY);
 		save();
 	}
 
 	public void saveStoreLocation(SerializedLocation loc) {
-		saveLocation(loc, "store-loc");
+		saveLocation(loc, STORE_LOCATIONS_KEY);
 		save();
 	}
 
@@ -105,17 +108,17 @@ public class MapConfiguration {
 	}
 
 	public void removeHuntedLocation(SerializedLocation loc) {
-		removeLocation(loc, "hunted-loc");
+		removeLocation(loc, MAP_LOCATIONS_KEY);
 		save();
 	}
 
 	public void removeStoreLocation(SerializedLocation loc) {
-		removeLocation(loc, "store-loc");
+		removeLocation(loc, STORE_LOCATIONS_KEY);
 		save();
 	}
 
 	public void removeLobbyLocation(SerializedLocation loc) {
-		removeLocation(loc, "lobby-loc");
+		removeLocation(loc, LOBBY_LOCATIONS_KEY);
 		save();
 	}
 
@@ -127,13 +130,6 @@ public class MapConfiguration {
 	/** Load this configuration from file into appropriate maps */
 	public void load() {
 		LogHandler.info("Loading new map configuration (" + name + ")");
-		int totalLocations = 0;
-		int huntedLocations = 0;
-		int storeLocations = 0;
-		int lobbyLocations = 0;
-		int totalStones = 0;
-		int guardianStones = 0;
-		int teleportStones = 0;
 		// clear locations in current maps
 		plugin.getSpawnManager().getHuntedLocations().clear();
 		plugin.getSpawnManager().getLobbyLocations().clear();
@@ -142,16 +138,16 @@ public class MapConfiguration {
 		LogHandler.info("Cleared old map configuration!");
 		World world = Bukkit.getWorld(plugin.getConfigManager().activeWorld);
 		// load hunted locations
-		for (String name : config.getConfigurationSection("hunted-loc").getKeys(false)) {
+		for (String name : config.getConfigurationSection(MAP_LOCATIONS_KEY).getKeys(false)) {
 			int x = config.getInt("hunted-loc." + name + ".x");
 			int y = config.getInt("hunted-loc." + name + ".y");
 			int z = config.getInt("hunted-loc." + name + ".z");
 
 			Location loc = new Location(world, x, y, z);
-			plugin.getSpawnManager().addHuntedLocation(new SerializedLocation(loc, name));
+			plugin.getSpawnManager().addArenaLocation(new SerializedLocation(loc, name));
 		}
 		// load lobby locations
-		for (String name : config.getConfigurationSection("lobby-loc").getKeys(false)) {
+		for (String name : config.getConfigurationSection(LOBBY_LOCATIONS_KEY).getKeys(false)) {
 			int x = config.getInt("lobby-loc." + name + ".x");
 			int y = config.getInt("lobby-loc." + name + ".y");
 			int z = config.getInt("lobby-loc." + name + ".z");
@@ -160,7 +156,7 @@ public class MapConfiguration {
 			plugin.getSpawnManager().addLobbyLocation(new SerializedLocation(loc, name));
 		}
 		// load store locations
-		for (String name : config.getConfigurationSection("store-loc").getKeys(false)) {
+		for (String name : config.getConfigurationSection(STORE_LOCATIONS_KEY).getKeys(false)) {
 			int x = config.getInt("store-loc." + name + ".x");
 			int y = config.getInt("store-loc." + name + ".y");
 			int z = config.getInt("store-loc." + name + ".z");
@@ -196,8 +192,7 @@ public class MapConfiguration {
 					gs.setCooldown(cooldown);
 				}
 				if (lastActivated > 0) {
-					// lastActivated will be how long ago this stone was
-					// activated
+					// lastActivated will be how long ago this stone was activated
 					gs.setLastActivated(gs.getCooldown() - TimeUnit.MINUTES.toMillis(lastActivated));
 				}
 				continue;

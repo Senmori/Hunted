@@ -44,11 +44,11 @@ public class StuckCommand extends Subcommand {
 			return;
 		}
 		switch (state) {
+            case IN_STORE:
+                player.teleport(Hunted.getInstance().getSpawnManager().getRandomStoreLocation().getLocation());
+                return;
 			case IN_GAME:
 				player.teleport(Hunted.getInstance().getSpawnManager().getRandomHuntedLocation().getLocation());
-				return;
-			case IN_STORE:
-				player.teleport(Hunted.getInstance().getSpawnManager().getRandomStoreLocation().getLocation());
 				return;
 			default:
 				player.teleport(Hunted.getInstance().getSpawnManager().getRandomLobbyLocation().getLocation());

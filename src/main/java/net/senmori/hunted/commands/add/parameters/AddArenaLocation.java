@@ -1,8 +1,11 @@
 package net.senmori.hunted.commands.add.parameters;
 
+import java.text.MessageFormat;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.lib.SerializedLocation;
+import net.senmori.hunted.util.ActionBar;
+import net.senmori.hunted.util.Reference;
 import net.senmori.hunted.util.Reference.Permissions;
 import org.bukkit.ChatColor;
 
@@ -14,16 +17,16 @@ public class AddArenaLocation extends Subcommand {
 		this.name = "spawn";
 		this.needsPlayer = true;
 		this.description = "Adds a spawn location in the Hunted arena.";
-		this.permission = Permissions.COMMAND_ADD;
+		this.permission = Permissions.COMMAND_ADD_SPAWN;
 		this.requiredArgs = Arrays.asList("name");
 	}
 
 	@Override
 	protected void perform() {
 		int count = Hunted.getInstance().getSpawnManager().getHuntedLocations().size() + 1;
-		String name = args.length >= 2 ? args[1] : "HLoc-" + count;
-		Hunted.getInstance().getSpawnManager().addHuntedLocation(new SerializedLocation(getPlayer().getLocation(), name));
-		getPlayer().sendMessage(ChatColor.GREEN + "Successfully created new spawn location (" + name + ")");
+		String name = args.length >= 2 ? args[1] : "ArenaLoc-" + count;
+		Hunted.getInstance().getSpawnManager().addArenaLocation(new SerializedLocation(getPlayer().getLocation(), name));
+		ActionBar.sendMessage(getPlayer(), ChatColor.GREEN + MessageFormat.format(Reference.SuccessMessage.SPAWN_LOCATION_CREATED, name));
 	}
 
 }

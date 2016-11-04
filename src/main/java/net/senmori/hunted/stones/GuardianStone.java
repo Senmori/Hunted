@@ -1,9 +1,10 @@
 package net.senmori.hunted.stones;
 
-import net.md_5.bungee.api.ChatColor;
+
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.SerializedLocation;
 import net.senmori.hunted.util.Reference.RewardMessage;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -42,8 +43,6 @@ public class GuardianStone extends Stone {
 	 */
 	public void toggleIndicators() {
 		Block block = getLocation().getBlock();
-		if (!block.getType().equals(Material.REDSTONE_LAMP_OFF) || !block.getType().equals(Material.REDSTONE_LAMP_ON))
-		    return;
 		for (BlockFace face : Hunted.getInstance().getStoneManager().getValidFaces()) {
 			// if any adjacent blocks are redstone lamps, turn them on/off accordingly
 			if (block.getRelative(face).getType().equals(Material.REDSTONE_LAMP_OFF) || block.getRelative(face).getType().equals(Material.REDSTONE_LAMP_ON)) {

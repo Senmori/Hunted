@@ -37,10 +37,10 @@ public class ConfigManager {
 	public String activeMapConfiguration;
 
 	// database config options
-	public String dbUser;
-	public String dbPassword;
-	public String dbHost;
-	public int dbPort;
+	private String dbUser;
+	private String dbPassword;
+	private String dbHost;
+	private int dbPort;
 	public String dbName;
 
 	// map configuration holder
@@ -49,9 +49,10 @@ public class ConfigManager {
 	public ConfigManager(Hunted plugin) {
 		this.plugin = plugin;
 		mapConfigurations = new HashMap<>();
+        init();
 	}
 
-	public void init() {
+	private void init() {
 		// create plugin directory if it doesn't exist
 		if (!Hunted.getInstance().getDataFolder().exists()) {
 			Hunted.getInstance().getDataFolder().mkdirs();
@@ -68,8 +69,12 @@ public class ConfigManager {
 
 	private void loadConfig() {
 		// how would these two happen? If so, just delete and reload config .-.
-		if (Hunted.getInstance().getConfig().getConfigurationSection("settings") == null) return;
-		if (Hunted.getInstance().getConfig().getConfigurationSection("settings").getKeys(false).size() < 1) return; // something's wrong; reload pls
+		if (Hunted.getInstance().getConfig().getConfigurationSection("settings") == null) {
+            throw new IllegalStateException("Config file was modified beyong repair. Please delete the file and restart the server");
+        }
+		if (Hunted.getInstance().getConfig().getConfigurationSection("settings").getKeys(false).size() < 1) {
+            throw new IllegalStateException("Config settings were modified beyong repair. Please delete the file and restart the server");
+        }
 
 		debug = plugin.getConfig().getBoolean("settings.debug", false);
 		defaultCooldown = plugin.getConfig().getInt("settings.cooldown", 5);
@@ -83,8 +88,9 @@ public class ConfigManager {
 		ascentedItemChance = plugin.getConfig().getInt("settings.ascented-chance", 16);
 		receiveEffectTwice = plugin.getConfig().getInt("settings.receive-effect-twice", 20);
 		maxArrowsPerReward = plugin.getConfig().getInt("settings.max-arrows", 20);
-		activeWorld = plugin.getConfig().getString("settings.world");
-		activeMapConfiguration = plugin.getConfig().getString("settings.active-map-configuration");
+		activeWorld = plugin.getConfig().getString("settings.world", "world");
+		activeMapConfiguration = plugin.getConfig().getString("settings.active-map-configuration", "world");
+        maxPotsPerReward = plugin.getConfig().getInt("max-potions", 2);
 
 		// database
 		dbUser = plugin.getConfig().getString("database.username");

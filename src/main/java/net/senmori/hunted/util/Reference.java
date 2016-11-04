@@ -10,7 +10,7 @@ public class Reference {
 		// Add command
 		public static final String COMMAND_ADD = "hunted.commands.add";
 		// Add command parameter permissions
-		public static final String COMMAND_ADD_RESPAWN = "hunted.commands.add.respawn";
+		public static final String COMMAND_ADD_LOBBY = "hunted.commands.add.respawn";
 		public static final String COMMAND_ADD_SPAWN = "hunted.commands.add.spawn";
 		public static final String COMMAND_ADD_STONE = "hunted.commands.add.stone";
 		public static final String COMMAND_ADD_STORE = "hunted.commands.add.store";
@@ -32,7 +32,7 @@ public class Reference {
 		// list parameter permissions
 		public static final String COMMAND_LIST_GUARDIAN = "hunted.commands.list.guardian";
 		public static final String COMMAND_LIST_TELEPORT = "hunted.commands.list.teleport";
-		public static final String COMMAND_LIST_ARENA = "hunted.commands.list.arena";
+		public static final String COMMAND_LIST_SPAWN = "hunted.commands.list.arena";
 		public static final String COMMAND_LIST_LOBBY = "hunted.commands.list.lobby";
 		public static final String COMMAND_LIST_STORE = "hunted.commands.list.store";
 
@@ -55,6 +55,11 @@ public class Reference {
 		public static final String MAP_CONFIGURATION_CHANGED = "Successfully changed map configuration to {0}";
 		public static final String STONE_REMOVED = "Removed {0}!";
 		public static final String LOCATION_REMOVED = "Removed {0}!";
+        public static final String STONE_CREATED = "Succesfully added new Guardian Stone ( {0} )!";
+        public static final String LOBBY_LOCATION_CREATED = "Successfully added a new lobby location ( {0} ) )";
+        public static final String MAP_CONFIG_CREATED = "Successfully created the new map configuration ( {0} )";
+        public static final String STORE_LOCATION_CREATED = "Successfully created the new store location ( {0} )";
+        public static final String SPAWN_LOCATION_CREATED = "Successfully create a new spawn location ( {0} )";
 	}
 
 	// All error messages stored here
@@ -101,7 +106,7 @@ public class Reference {
 		/**
 		 * Standard message to notify all players(except rewardee) of the rewardee's location
 		 */
-		public static final String NOTIFY_ALL = "{0} is at {1}!";
+		public static final String NOTIFY_ALL = "{0} is so excited they are glowing!";
 
 		/** Standard message for when rewardee receives an irritating reward */
 		public static final String IRRITATING_MESSAGE = "Good luck fixing this...";
