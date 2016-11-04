@@ -1,5 +1,6 @@
 package net.senmori.hunted;
 
+import java.io.File;
 import net.senmori.hunted.commands.add.AddCommand;
 import net.senmori.hunted.commands.debug.DebugCommand;
 import net.senmori.hunted.commands.delete.DeleteCommand;
@@ -119,7 +120,9 @@ public class Hunted extends JavaPlugin {
         LogHandler.info("Listeners enabled!");
 
 		instance = this;
-	}
+        
+        File jar = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
+    }
 
 	@Override
 	public void onDisable() {

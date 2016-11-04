@@ -61,6 +61,7 @@ public class CommandManager implements CommandExecutor {
 			StringBuilder sb = new StringBuilder();
 			sb.append(ChatColor.GREEN + Strings.repeat('-', 16) + " " + ChatColor.YELLOW + "Hunted commands" + ChatColor.GREEN + " " + Strings.repeat('-', 16));
 			for (Subcommand sub : commands) {
+                if(sub.getName().equalsIgnoreCase("debug")) continue;
 				sb.append("\n");
 				sb.append(ChatColor.GREEN + sub.getName() + ChatColor.YELLOW + " - " + ChatColor.YELLOW
 				        + sub.getDescription());
