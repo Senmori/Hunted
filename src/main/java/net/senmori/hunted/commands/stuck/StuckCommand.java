@@ -3,6 +3,7 @@ package net.senmori.hunted.commands.stuck;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.lib.game.GameState;
+import net.senmori.hunted.util.ActionBar;
 import net.senmori.hunted.util.Reference.ErrorMessage;
 import net.senmori.hunted.util.Reference.Permissions;
 import org.bukkit.Bukkit;
@@ -31,7 +32,7 @@ public class StuckCommand extends Subcommand {
 					return;
 				}
 			} else { // no permission
-				getPlayer().sendMessage(ChatColor.RED + ErrorMessage.NO_COMMAND_PERMISSION);
+				ActionBar.sendMessage(getPlayer(), ChatColor.RED + ErrorMessage.NO_COMMAND_PERMISSION);
 				return;
 			}
 		}
@@ -40,7 +41,7 @@ public class StuckCommand extends Subcommand {
 
 	private void teleport(Player player, GameState state) {
 		if(!player.getWorld().getName().equalsIgnoreCase(Hunted.getInstance().getConfigManager().activeWorld)) {
-			player.sendMessage(ChatColor.RED + ErrorMessage.WRONG_WORLD_ERROR);
+			ActionBar.sendMessage(getPlayer(), ChatColor.RED + ErrorMessage.WRONG_WORLD_ERROR);
 			return;
 		}
 		switch (state) {
