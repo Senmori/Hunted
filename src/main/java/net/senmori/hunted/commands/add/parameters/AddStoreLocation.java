@@ -27,7 +27,7 @@ public class AddStoreLocation extends Subcommand {
 	protected void perform() {
 		int count = Hunted.getInstance().getSpawnManager().getStoreLocations().size() + 1;
 		String locName = args.length >= 2 ? args[1] : "Store-" + count;
-		Hunted.getInstance().getSpawnManager().addStoreLocation(new SerializedLocation(getPlayer().getLocation(), locName));
+		Hunted.getInstance().getSpawnManager().addStoreLocation(getPlayer().getLocation(), locName);
 		ActionBar.sendMessage(getPlayer(), ChatColor.GREEN + MessageFormat.format(Reference.SuccessMessage.STORE_LOCATION_CREATED, locName));
 	}
 

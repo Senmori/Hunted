@@ -1,8 +1,11 @@
 package net.senmori.hunted.commands.edit.parameters;
 
+import com.sun.net.httpserver.Authenticator;
+import java.io.IOException;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.util.ActionBar;
+import net.senmori.hunted.util.LogHandler;
 import net.senmori.hunted.util.Reference.ErrorMessage;
 import net.senmori.hunted.util.Reference.Permissions;
 import net.senmori.hunted.util.Reference.SuccessMessage;
@@ -27,8 +30,14 @@ public class EditActiveMap extends Subcommand {
 		File file = new File(Hunted.getInstance().getDataFolder() + File.separator + "configurations", fileName + ".yml");
 		
 		if (!file.exists()) {
-			ActionBar.sendMessage(getPlayer(), ChatColor.RED + ErrorMessage.NO_FILE_FOUND_ERROR);
-			return;
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                LogHandler.warning(MessageFormat.format(ErrorMessage.IMPORT_ERROR, fileName));
+                e.printStackTrace();
+                return;
+            }
+			ActionBar.sendMessage(getPlayer(), ChatColor.GREEN + MessageFormat.format(SuccessMessage.MAP_CONFIG_CREATED, fileName));
 		}
 
 		// change config setting, save file

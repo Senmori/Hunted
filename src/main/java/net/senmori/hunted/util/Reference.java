@@ -80,6 +80,8 @@ public class Reference {
 		public static final String NO_FILE_FOUND_ERROR = "{0} does not exist!";
 		
 		public static final String WRONG_WORLD_ERROR = "You are not in the correct world for this command!";
+        
+        public static final String COMMAND_COOLDOWN = "You can run this command in {0} {1} {2} seconds";
 	}
 
 	public class RewardMessage {

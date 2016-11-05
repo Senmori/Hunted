@@ -4,6 +4,7 @@ import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.MapConfiguration;
 import net.senmori.hunted.lib.SerializedLocation;
 import net.senmori.hunted.lib.game.LocationType;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
@@ -16,60 +17,36 @@ import java.util.Set;
 
 public class SpawnManager {
 	/** Where players spawn when they die or enter the Hunted world */
-	private Set<SerializedLocation> lobbyLocations;
+	private List<SerializedLocation> lobbyLocations = new ArrayList<>();
 	/** Where players spawn when they enter the Hunted arena */
-	private Set<SerializedLocation> huntedLocations;
+	private List<SerializedLocation> huntedLocations = new ArrayList<>();
 	/** Where players will spawn when they enter the Hunted store */
-	private Set<SerializedLocation> storeLocations;
+	private List<SerializedLocation> storeLocations = new ArrayList<>();
+    
+    private Hunted plugin = Hunted.getInstance();
 
-	// Default: respawnLocation = default world spawn, make sure to set this if
-	// you want it somewhere else
-	public SpawnManager() {
-		huntedLocations = new HashSet<>();
-		lobbyLocations = new HashSet<>();
-		storeLocations = new HashSet<>();
-	}
-
-	/*
+    
+	/* #####################################
 	 * Add location methods
+	 * #####################################
 	 */
-	/**
-	 * Add a location to {@link #huntedLocations} <br>
-	 * @param loc - {@link SerializedLocation}
-	 */
-	public void addArenaLocation(SerializedLocation loc) {
-		huntedLocations.add(loc);
-		Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveArenaLocation(loc);
-	}
 
 	/** Add a location to {@link #huntedLocations} */
-	public void addArenaLocation(Location loc, String locName) {
-		huntedLocations.add(new SerializedLocation(loc, locName));
-		Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveArenaLocation(new SerializedLocation(loc, locName));
+	public boolean addArenaLocation(Location loc, String locName) {
+        plugin.getConfigManager().getActiveMapConfiguration().saveArenaLocation(new SerializedLocation(loc, locName));
+		return huntedLocations.add(new SerializedLocation(loc, locName));
 	}
 
 	/** Add a location to {@link #lobbyLocations} */
-	public void addLobbyLocation(SerializedLocation loc) {
-		lobbyLocations.add(loc);
-		Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveLobbyLocation(loc);
-	}
-
-	/** Add a location to {@link #lobbyLocations} */
-	public void addLobbyLocation(Location loc, String locName) {
-		lobbyLocations.add(new SerializedLocation(loc, locName));
-		Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveLobbyLocation(new SerializedLocation(loc, locName));
+	public boolean addLobbyLocation(Location loc, String locName) {
+        plugin.getConfigManager().getActiveMapConfiguration().saveLobbyLocation(new SerializedLocation(loc, locName));
+		return lobbyLocations.add(new SerializedLocation(loc, locName));
 	}
 
 	/** Add a location to {@link #storeLocations} */
-	public void addStoreLocation(SerializedLocation loc) {
-		storeLocations.add(loc);
-		Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveStoreLocation(loc);
-	}
-
-	/** Add a location to {@link #storeLocations} */
-	public void addStoreLocation(Location loc, String name) {
-		storeLocations.add(new SerializedLocation(loc, name));
-		Hunted.getInstance().getConfigManager().getActiveMapConfiguration().saveStoreLocation(new SerializedLocation(loc, name));
+	public boolean addStoreLocation(Location loc, String name) {
+        plugin.getConfigManager().getActiveMapConfiguration().saveStoreLocation(new SerializedLocation(loc, name));
+		return storeLocations.add(new SerializedLocation(loc, name));
 	}
 
 	/*
@@ -79,7 +56,7 @@ public class SpawnManager {
 	 * Generic remove a location, it will look through all lists. Don't use this unless absolutely necessary.
 	 */
 	public boolean removeLocation(Location loc) {
-		MapConfiguration map = Hunted.getInstance().getConfigManager().getActiveMapConfiguration();
+		MapConfiguration map = plugin.getConfigManager().getActiveMapConfiguration();
 		SerializedLocation current = null;
 		for (SerializedLocation sLoc : getSerializedLocation(loc).keySet()) {
 			if (sLoc.getLocation().equals(loc)) {
@@ -111,17 +88,6 @@ public class SpawnManager {
 		return false;
 	}
 
-	/** Remove a location from {@link #lobbyLocations} */
-	public boolean removeLobbyLocation(SerializedLocation loc) {
-		// HashMap is empty, can't remove what's not there
-		if (lobbyLocations.isEmpty()) return true;
-		for (SerializedLocation sl : lobbyLocations) {
-			if (sl.getLocation().equals(loc.getLocation())) return lobbyLocations.remove(sl);
-		}
-		// that location didn't exist, therefore we can't remove it
-		return false;
-	}
-
 	public boolean removeLobbyLocation(Location loc) {
 		if (lobbyLocations.isEmpty()) return true;
 		for (SerializedLocation sl : lobbyLocations) {
@@ -130,27 +96,10 @@ public class SpawnManager {
 		return false;
 	}
 
-	/** Remove a location from {@link #huntedLocations} */
-	public boolean removeHuntedLocation(SerializedLocation loc) {
-		if (huntedLocations.isEmpty()) return true;
-		for (SerializedLocation sl : huntedLocations) {
-			if (sl.getLocation().equals(loc)) return huntedLocations.remove(sl);
-		}
-		return false;
-	}
-
 	public boolean removeHuntedLocation(Location loc) {
 		if (huntedLocations.isEmpty()) return true;
 		for (SerializedLocation sl : huntedLocations) {
 			if (sl.getLocation().equals(loc)) return huntedLocations.remove(sl);
-		}
-		return false;
-	}
-
-	public boolean removeStoreLocation(SerializedLocation loc) {
-		if (storeLocations.isEmpty()) return true;
-		for (SerializedLocation sl : storeLocations) {
-			if (sl.getLocation().equals(loc)) return storeLocations.remove(sl);
 		}
 		return false;
 	}
@@ -253,7 +202,7 @@ public class SpawnManager {
 		return list.get(0);
 	}
 
-	public Set<SerializedLocation> getLocationsByType(LocationType type) {
+	public List<SerializedLocation> getLocationsByType(LocationType type) {
         switch(type) {
             case ARENA:
                 return getHuntedLocations();
@@ -262,25 +211,24 @@ public class SpawnManager {
             case STORE:
                 return getStoreLocations();
             default:
-                return new HashSet<SerializedLocation>();
+                return new ArrayList<SerializedLocation>();
         }
     }
-	
-	
+    
 	/*
 	 * Generic getters
 	 */
 	/** Return all {@link #lobbyLocations} */
-	public Set<SerializedLocation> getLobbyLocations() {
+	public List<SerializedLocation> getLobbyLocations() {
 		return lobbyLocations;
 	}
 
 	/** Return all {@link #huntedLocations} */
-	public Set<SerializedLocation> getHuntedLocations() {
+	public List<SerializedLocation> getHuntedLocations() {
 		return huntedLocations;
 	}
 
-	public Set<SerializedLocation> getStoreLocations() {
+	public List<SerializedLocation> getStoreLocations() {
 		return storeLocations;
 	}
 

@@ -14,8 +14,7 @@ import java.text.MessageFormat;
 import java.util.concurrent.TimeUnit;
 
 public class GuardianStone extends Stone {
-	private long lastActivated; // System time[in ms] in which stone was last
-	                            // activated
+	private long lastActivated; // System time[in ms] in which stone was last activated
 	private long cooldown; // Default cooldown [in minutes]
 
 	public GuardianStone(SerializedLocation loc) {

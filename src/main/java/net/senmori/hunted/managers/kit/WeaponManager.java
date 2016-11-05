@@ -22,6 +22,7 @@ import java.util.Random;
 
 public class WeaponManager {
 	private Hunted plugin;
+    private Random rand;
 	private List<WeaponType> weaponTypes;
 
 	private List<SwordName> swordNames;
@@ -43,6 +44,7 @@ public class WeaponManager {
 		bowTitles = Arrays.asList(BowTitle.values());
 
 		weaponEnchants = Arrays.asList(WeaponEnchant.values());
+        rand = new Random();
 	}
 
 	/**
@@ -51,9 +53,8 @@ public class WeaponManager {
 	 * @return weapon
 	 */
 	public ItemStack generateWeapon() {
-		Random rand = new Random();
-		// 10% chance of it being as ascented weapon
-		boolean isAscented = rand.nextInt(plugin.getConfigManager().ascentedItemChance) % plugin.getConfigManager().ascentedItemChance == 0;
+		// n% chance of it being as ascented weapon
+		boolean isAscented = rand.nextInt(plugin.getConfigManager().ascentedItemChance + 1) % plugin.getConfigManager().ascentedItemChance == 0;
 		WeaponType type = getRandomWeaponType(isAscented);
 		// 20% chance of an item having a title
 		String displayName = getRandomName(type, rand.nextInt(11) % 5 == 0, isAscented);
@@ -67,15 +68,14 @@ public class WeaponManager {
 		if (weapon.getEnchantments().keySet().size() < 1) {
 			weapon.setDisplayName(null);
 		}
-		rand = null;
 		return weapon.toItemStack();
 	}
 
 	private WeaponType getRandomWeaponType(boolean ascented) {
-		WeaponType type = weaponTypes.get((int) (Math.random() * (WeaponType.values().length + 1) + 1));
+		WeaponType type = weaponTypes.get(rand.nextInt(WeaponType.values().length + 1));
 		if (ascented && !type.canBeAscented()) {
 			while (!type.canBeAscented()) {
-				type = weaponTypes.get((int) (Math.random() * (WeaponType.values().length + 1) + 1));
+				type = weaponTypes.get(rand.nextInt(WeaponType.values().length + 1));
 				if (!type.canBeAscented()) {
 					break;
 				}
@@ -88,20 +88,20 @@ public class WeaponManager {
 		String prefix = ChatColor.WHITE + "";
 		String name = "";
 		if (isAscented) {
-			prefix = ChatColor.GOLD + "" + ChatColor.WHITE;
+			prefix = ChatColor.GOLD + "";
 		}
 		if (type.isBow()) {
-			name += prefix + bowNames.get((int) (Math.random() * (bowNames.size() - 1) + 1)).getName();
+			name += prefix + bowNames.get(rand.nextInt(bowNames.size())).getName();
 			if (useTitle) {
 				name += ", ";
-				name += bowTitles.get((int) (Math.random() * (bowTitles.size() - 1) + 1)).getName();
+				name += bowTitles.get((rand.nextInt(bowTitles.size()))).getName();
 			}
 			return name;
 		}
-		name += prefix + swordNames.get((int) (Math.random() * (swordNames.size() - 1) + 1)).getName();
+		name += prefix + swordNames.get(rand.nextInt(swordNames.size())).getName();
 		if (useTitle) {
 			name += ", ";
-			name += swordTitles.get((int) (Math.random() * (swordTitles.size() - 1) + 1)).getName();
+			name += swordTitles.get(rand.nextInt(swordTitles.size())).getName();
 		}
 		return name;
 	}
@@ -112,13 +112,14 @@ public class WeaponManager {
 	private Map<Enchantment, Integer> getRandomEnchantments(WeaponType type, int maxEnchants, int maxLevel, int minLevel) {
 		// return empty map in case you cannot add null enchantments to
 		// itemstacks
+        Map<Enchantment, Integer> possible = new HashMap<>();
 		if (maxEnchants < 1) {
-			new HashMap<Enchantment, Integer>();
+			return possible;
 		}
-		Map<Enchantment, Integer> possible = new HashMap<>();
+		
 		for (WeaponEnchant we : weaponEnchants) {
 			if (we.getAssociatedTypes().contains(type) && !possible.containsKey(we.getEnchant())) {
-				int level = (int) (Math.random() * (maxLevel - minLevel) + minLevel);
+				int level = rand.nextInt(maxLevel - minLevel) + minLevel;
 				possible.put(we.getEnchant(), level);
 			}
 		}
@@ -144,6 +145,6 @@ public class WeaponManager {
 	}
 
 	private int getRandomDurability(WeaponType type) {
-		return (int) (Math.random() * (type.getType().getMaxDurability() - 40) + 40);
+		return rand.nextInt(type.getType().getMaxDurability() - 40) + 40;
 	}
 }

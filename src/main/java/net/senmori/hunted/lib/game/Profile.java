@@ -69,10 +69,25 @@ public class Profile {
 	/*
 	 * ###################### Inventory #############################
 	 */
+    
+    /**
+     * Get the player's last stored inventory state.
+     * @return player's inventory
+     */
 	public PlayerInventory getLastInventory() {
 		return this.lastInventory;
 	}
-	
+    
+    /**
+     * Update the stored inventory.
+     */
+	public void updateInventory() {
+        this.lastInventory = Bukkit.getPlayer(uuid).getInventory();
+    }
+    
+    /**
+     * Restore the player's inventory to it's last stored state.
+     */
 	public void restoreInventory() {
 		Player player = Bukkit.getPlayer(getUUID());
 		
@@ -85,6 +100,7 @@ public class Profile {
 			}
 		}
 		this.lastInventory.clear();
+        this.lastInventory = null;
 	}
 
 	/*

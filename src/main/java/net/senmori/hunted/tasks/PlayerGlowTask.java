@@ -1,5 +1,10 @@
 package net.senmori.hunted.tasks;
 
+import static com.sun.jmx.snmp.EnumRowStatus.active;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import net.minecraft.server.v1_10_R1.ChatComponentText;
 import net.minecraft.server.v1_10_R1.IChatBaseComponent;
@@ -24,18 +29,20 @@ public class PlayerGlowTask extends BukkitRunnable {
         this.plugin = plugin;
         this.uuid = playerUUID;
         this.duration = duration;
-        
         this.runTaskTimer(plugin, 0L, 20L);
     }
     
     @Override
     public void run() {
         player = Bukkit.getPlayer(uuid);
+        if(player == null) {
+            this.cancel();
+        }
         player.setGlowing(true);
         --duration;
         ActionBar.sendMessage(player, glowMessage + ChatColor.RED + duration);
         if(duration <= 0) {
-            Bukkit.getPlayer(uuid).setGlowing(false);
+            player.setGlowing(false);
             this.cancel();
         }
     }

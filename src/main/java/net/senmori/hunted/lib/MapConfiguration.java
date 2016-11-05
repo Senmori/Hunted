@@ -1,5 +1,9 @@
 package net.senmori.hunted.lib;
 
+import com.google.common.io.PatternFilenameFilter;
+import java.io.FilenameFilter;
+import java.util.HashMap;
+import java.util.Map;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.stones.Stone;
@@ -9,6 +13,7 @@ import net.senmori.hunted.util.LogHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -17,7 +22,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class MapConfiguration {
-    private final static String MAP_LOCATIONS_KEY = "arena-loc";
+    private final static String MAP_LOCATIONS_KEY = "spawn-loc";
     private final static String LOBBY_LOCATIONS_KEY = "lobby-loc";
     private final static String STORE_LOCATIONS_KEY = "store-loc";
 
@@ -42,14 +47,9 @@ public class MapConfiguration {
 				e.printStackTrace();
 			}
 		}
-		plugin.getConfigManager().addMapConfiguration(name, this);
+		config = YamlConfiguration.loadConfiguration(file);
 	}
-
-	public void saveStoneLocation(Stone stone, SerializedLocation loc) {
-		saveStone(stone, loc);
-		save();
-	}
-
+    
 	public void saveStoneLocation(Stone stone, Location loc) {
 		saveStone(stone, new SerializedLocation(loc, stone.getName()));
 		save();
@@ -71,9 +71,9 @@ public class MapConfiguration {
 	}
 
 	private void saveLocation(SerializedLocation loc, String parent) {
-		getConfig().set(parent + loc.getName() + ".x", loc.getX());
-		getConfig().set(parent + loc.getName() + ".y", loc.getY());
-		getConfig().set(parent + loc.getName() + ".z", loc.getZ());
+		getConfig().set(parent + "." +  loc.getName() + ".x", loc.getX());
+		getConfig().set(parent + "." +  loc.getName() + ".y", loc.getY());
+		getConfig().set(parent + "." +  loc.getName() + ".z", loc.getZ());
 		save();
 	}
 
@@ -138,67 +138,77 @@ public class MapConfiguration {
 		LogHandler.info("Cleared old map configuration!");
 		World world = Bukkit.getWorld(plugin.getConfigManager().activeWorld);
 		// load hunted locations
-		for (String name : config.getConfigurationSection(MAP_LOCATIONS_KEY).getKeys(false)) {
-			int x = config.getInt("hunted-loc." + name + ".x");
-			int y = config.getInt("hunted-loc." + name + ".y");
-			int z = config.getInt("hunted-loc." + name + ".z");
+        if(config.getConfigurationSection(MAP_LOCATIONS_KEY) != null && !config.getConfigurationSection(MAP_LOCATIONS_KEY).getKeys(true).isEmpty()) {
+            for (String name : config.getConfigurationSection(MAP_LOCATIONS_KEY).getKeys(true)) {
+                int x = config.getInt("spawn-loc." + name + ".x");
+                int y = config.getInt("spawn-loc." + name + ".y");
+                int z = config.getInt("spawn-loc." + name + ".z");
+        
+                Location loc = new Location(world, x, y, z);
+                plugin.getSpawnManager().addArenaLocation(loc, name);
+            }
+        }
 
-			Location loc = new Location(world, x, y, z);
-			plugin.getSpawnManager().addArenaLocation(new SerializedLocation(loc, name));
-		}
 		// load lobby locations
-		for (String name : config.getConfigurationSection(LOBBY_LOCATIONS_KEY).getKeys(false)) {
-			int x = config.getInt("lobby-loc." + name + ".x");
-			int y = config.getInt("lobby-loc." + name + ".y");
-			int z = config.getInt("lobby-loc." + name + ".z");
+        if(config.getConfigurationSection(LOBBY_LOCATIONS_KEY) != null && !config.getConfigurationSection(LOBBY_LOCATIONS_KEY).getKeys(true).isEmpty()) {
+            for (String name : config.getConfigurationSection(LOBBY_LOCATIONS_KEY).getKeys(true)) {
+                int x = config.getInt("lobby-loc." + name + ".x");
+                int y = config.getInt("lobby-loc." + name + ".y");
+                int z = config.getInt("lobby-loc." + name + ".z");
+        
+                Location loc = new Location(world, x, y, z);
+                plugin.getSpawnManager().addLobbyLocation(loc, name);
+            }
+        }
 
-			Location loc = new Location(world, x, y, z);
-			plugin.getSpawnManager().addLobbyLocation(new SerializedLocation(loc, name));
-		}
 		// load store locations
-		for (String name : config.getConfigurationSection(STORE_LOCATIONS_KEY).getKeys(false)) {
-			int x = config.getInt("store-loc." + name + ".x");
-			int y = config.getInt("store-loc." + name + ".y");
-			int z = config.getInt("store-loc." + name + ".z");
-
-			Location loc = new Location(world, x, y, z);
-			plugin.getSpawnManager().addStoreLocation(new SerializedLocation(loc, name));
-		}
-
+        if(config.getConfigurationSection(STORE_LOCATIONS_KEY) != null && !config.getConfigurationSection(STORE_LOCATIONS_KEY).getKeys(true).isEmpty()) {
+            for (String name : config.getConfigurationSection(STORE_LOCATIONS_KEY).getKeys(true)) {
+                int x = config.getInt("store-loc." + name + ".x");
+                int y = config.getInt("store-loc." + name + ".y");
+                int z = config.getInt("store-loc." + name + ".z");
+        
+                Location loc = new Location(world, x, y, z);
+                plugin.getSpawnManager().addStoreLocation(loc, name);
+            }
+        }
+        
 		// load stone locations
-		for (String name : config.getConfigurationSection("stone").getKeys(false)) {
-			int x = config.getInt("stone." + name + ".x");
-			int y = config.getInt("stone." + name + ".y");
-			int z = config.getInt("stone." + name + ".z");
-			String type = config.getString("stone." + name + ".type");
-			int cooldown = 0;
-			int lastActivated = 0;
-
-			Location loc = new Location(world, x, y, z);
-
-			// if it's a guardian stone
-			if (type.equalsIgnoreCase("guardian")) {
-				if (!(config.getInt("stone." + name + ".cooldown", 0) <= 0)) {
-					// stone has a custom cooldown
-					cooldown = config.getInt("stone." + name + ".cooldown");
-				}
-				if (!(config.getInt("stone." + name + ".elapsedTime", 0) <= 0)) {
-					// set the stone's elapsed time
-					lastActivated = config.getInt("stone." + name + ".elapsedTime");
-				}
-
-				GuardianStone gs = new GuardianStone(new SerializedLocation(loc, name));
-				if (cooldown > 0) {
-					gs.setCooldown(cooldown);
-				}
-				if (lastActivated > 0) {
-					// lastActivated will be how long ago this stone was activated
-					gs.setLastActivated(gs.getCooldown() - TimeUnit.MINUTES.toMillis(lastActivated));
-				}
-				continue;
-			}
-			new TeleportStone(new SerializedLocation(loc, name));
-		}
+        if(config.getConfigurationSection("stone") != null && !config.getConfigurationSection("stone").getKeys(true).isEmpty()) {
+            for (String name : config.getConfigurationSection("stone").getKeys(true)) {
+                int x = config.getInt("stone." + name + ".x");
+                int y = config.getInt("stone." + name + ".y");
+                int z = config.getInt("stone." + name + ".z");
+                String type = config.getString("stone." + name + ".type");
+                int cooldown = 0;
+                int lastActivated = 0;
+        
+                Location loc = new Location(world, x, y, z);
+        
+                // if it's a guardian stone
+                if (type.equalsIgnoreCase("guardian")) {
+                    if (!(config.getInt("stone." + name + ".cooldown", 0) <= 0)) {
+                        // stone has a custom cooldown
+                        cooldown = config.getInt("stone." + name + ".cooldown");
+                    }
+                    if (!(config.getInt("stone." + name + ".elapsedTime", 0) <= 0)) {
+                        // set the stone's elapsed time
+                        lastActivated = config.getInt("stone." + name + ".elapsedTime");
+                    }
+            
+                    GuardianStone gs = new GuardianStone(new SerializedLocation(loc, name));
+                    if (cooldown > 0) {
+                        gs.setCooldown(cooldown);
+                    }
+                    if (lastActivated > 0) {
+                        // lastActivated will be how long ago this stone was activated
+                        gs.setLastActivated(gs.getCooldown() - TimeUnit.MINUTES.toMillis(lastActivated));
+                    }
+                    continue;
+                }
+                new TeleportStone(new SerializedLocation(loc, name));
+            }
+        }
 		save();
 	}
 

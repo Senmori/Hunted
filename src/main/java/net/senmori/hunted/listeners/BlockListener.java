@@ -2,6 +2,7 @@ package net.senmori.hunted.listeners;
 
 import net.senmori.hunted.Hunted;
 
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +12,7 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.BlockRedstoneEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 
 public class BlockListener implements Listener {
 	private Hunted plugin;
@@ -32,10 +34,8 @@ public class BlockListener implements Listener {
     
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent e) {
-        
 		if (plugin.getPlayerManager().isPlaying(e.getPlayer().getUniqueId())) {
 			if (e.getBlock().getWorld().getName().equals(plugin.getConfigManager().activeWorld)) {
-
 				if(plugin.getPlayerManager().isExempt(e.getPlayer())) return;
 				e.setCancelled(plugin.getPlayerManager().canPlaceBlocks(e.getPlayer()));
 				e.setBuild(plugin.getPlayerManager().canPlaceBlocks(e.getPlayer()));
@@ -46,7 +46,6 @@ public class BlockListener implements Listener {
 	// called when a block's redstone level is changed
 	@EventHandler
 	public void onBlockRedstoneEvent(BlockRedstoneEvent e) {
-
 		if (plugin.getConfigManager().activeWorld.equals(e.getBlock().getWorld().getName())) {
 			e.setNewCurrent(e.getOldCurrent());
 		}
@@ -79,4 +78,13 @@ public class BlockListener implements Listener {
 			e.setCancelled(true);
 		}
 	}
+	
+	@EventHandler
+	public void onEntityExplode(EntityExplodeEvent e) {
+        if(e.getEntityType() == EntityType.CREEPER || e.getEntityType() == EntityType.PRIMED_TNT) {
+            e.setYield(0.0f);
+            e.blockList().clear(); // just in case
+            e.setCancelled(true);
+        }
+    }
 }

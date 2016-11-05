@@ -1,12 +1,16 @@
 package net.senmori.hunted.listeners;
 
 import static net.minecraft.server.v1_10_R1.SoundEffects.de;
+import static sun.audio.AudioPlayer.player;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.lib.game.GameState;
 import net.senmori.hunted.lib.game.Stat;
+import net.senmori.hunted.managers.game.EffectManager;
 import net.senmori.hunted.stones.GuardianStone;
 import net.senmori.hunted.stones.Stone;
 import net.senmori.hunted.stones.Stone.StoneType;
+import net.senmori.hunted.tasks.PlayerGlowTask;
 import net.senmori.hunted.tasks.TntExplosion;
 
 import org.bukkit.Bukkit;
@@ -44,9 +48,11 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 public class PlayerListener implements Listener {
 	private Hunted plugin;
+    private EffectManager effectManager;
 
 	public PlayerListener(Hunted plugin) {
 		this.plugin = plugin;
+        this.effectManager = plugin.getEffectManager();
 	}
     
 	@EventHandler
@@ -125,19 +131,25 @@ public class PlayerListener implements Listener {
 		}
 	}
 
-	// handle players logging in/out of hunted arena
+	// handle players logging in
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		// if player is not in Hunted world, set GameState to NOT_PLAYING
 		plugin.getPlayerManager().trackPlayer(e.getPlayer().getUniqueId());
+        if(plugin.getPlayerManager().isPlaying(e.getPlayer().getUniqueId()) && effectManager.hasGlowTask(e.getPlayer())) {
+            effectManager.addGlow(e.getPlayer());
+        }
 	}
 
 	// handle players logging out
 	@EventHandler
 	public void onPlayerLeave(PlayerQuitEvent e) {
 		if (plugin.getPlayerManager().isPlaying(e.getPlayer().getUniqueId())) {
-			plugin.getPlayerManager().untrackPlayer(e.getPlayer().getUniqueId());
-		}
+            if(effectManager.hasGlowTask(e.getPlayer())) {
+                effectManager.stopGlow(e.getPlayer());
+            }
+        }
+        plugin.getPlayerManager().untrackPlayer(e.getPlayer().getUniqueId());
 	}
 
 	@EventHandler
@@ -149,6 +161,9 @@ public class PlayerListener implements Listener {
 				} else {
 					e.setRespawnLocation(e.getRespawnLocation()); // because paranoia
 				}
+                if(effectManager.hasGlowTask(e.getPlayer())) {
+                    effectManager.stopGlow(e.getPlayer(), true);
+                }
 			}
 		}
 	}
@@ -157,8 +172,10 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onPlayerKick(PlayerKickEvent e) {
 		if (plugin.getPlayerManager().isPlaying(e.getPlayer().getUniqueId())) {
-			//new LogOutTimer(plugin, e.getPlayer().getUniqueId().toString(), 30);
             plugin.getPlayerManager().untrackPlayer(e.getPlayer().getUniqueId());
+            if(effectManager.hasGlowTask(e.getPlayer())) {
+                effectManager.stopGlow(e.getPlayer(), true);
+            }
 		}
 	}
 
@@ -168,6 +185,9 @@ public class PlayerListener implements Listener {
 		if (plugin.getPlayerManager().isPlaying(e.getPlayer().getUniqueId())) {
 			if (e.getFrom().getName().equals(plugin.getConfigManager().activeWorld)) {
 				plugin.getPlayerManager().leaveWorld(e.getPlayer());
+                if(effectManager.hasGlowTask(e.getPlayer())) {
+                    effectManager.stopGlow(e.getPlayer(), true);
+                }
 				return;
 			}
 			if (e.getPlayer().getWorld().getName().equals(plugin.getConfigManager().activeWorld)) {
@@ -186,6 +206,9 @@ public class PlayerListener implements Listener {
 			} else {
 				plugin.getPlayerManager().setState(e.getEntity().getUniqueId(), GameState.NOT_PLAYING);
 			}
+            if(effectManager.hasGlowTask(e.getEntity())) {
+                effectManager.stopGlow(e.getEntity(), true);
+            }
 		}
 	}
 
@@ -195,13 +218,18 @@ public class PlayerListener implements Listener {
 			Player killer = e.getEntity().getKiller();
 			plugin.getPlayerManager().getPlayer(killer.getUniqueId()).updateStat(Stat.KILLS, 1);
 		}
+		if(e.getEntity() instanceof Player) {
+            effectManager.stopGlow((Player)e.getEntity(), true);
+            plugin.getPlayerManager().getPlayer(((Player)e.getEntity()).getUniqueId()).updateStat(Stat.DEATHS, 1);
+            return;
+        }
 	}
 
 	@EventHandler
 	public void onPlayerHurtByEntity(EntityDamageByEntityEvent e) {
 		if (e.getEntity() instanceof Player) {
 			Player player = (Player) e.getEntity();
-			if (plugin.getPlayerManager().getState(player.getUniqueId()).equals(GameState.IN_STORE) || plugin.getPlayerManager().getState(player.getUniqueId()).equals(GameState.LOBBY)) {
+			if (plugin.getPlayerManager().getState(player.getUniqueId()) == GameState.IN_STORE || plugin.getPlayerManager().getState(player.getUniqueId()) == GameState.LOBBY) {
                 e.setDamage(0.0d);
 				e.setCancelled(true);
 			}
@@ -213,7 +241,7 @@ public class PlayerListener implements Listener {
 		if (e.getCause().equals(DamageCause.VOID)) return;
 		if (e.getEntity() instanceof Player) {
 			Player player = (Player) e.getEntity();
-			if (plugin.getPlayerManager().getState(player.getUniqueId()).equals(GameState.IN_STORE) || plugin.getPlayerManager().getState(player.getUniqueId()).equals(GameState.LOBBY)) {
+			if (plugin.getPlayerManager().getState(player.getUniqueId()) == GameState.IN_STORE || plugin.getPlayerManager().getState(player.getUniqueId()) == GameState.LOBBY) {
 				e.setCancelled(true);
 				e.setDamage(0.0d);
 			}
@@ -226,11 +254,12 @@ public class PlayerListener implements Listener {
 		if (e.getEntity() instanceof Player) {
 			Player player = (Player) e.getEntity();
 			if (plugin.getPlayerManager().getState(player.getUniqueId()).equals(GameState.IN_STORE)) {
-				e.setFoodLevel(e.getFoodLevel());
-				e.setCancelled(true);
+                player.setFoodLevel(e.getFoodLevel());
+                e.setCancelled(true);
 			}
 			if (plugin.getPlayerManager().getState(player.getUniqueId()).equals(GameState.LOBBY)) {
-				e.setFoodLevel(20);
+				player.setFoodLevel(20);
+                player.setSaturation(20.0f);
 			}
 		}
 	}

@@ -14,7 +14,7 @@ import org.bukkit.craftbukkit.libs.joptsimple.internal.Strings;
 
 public class ListGuardianStones extends Subcommand {
     
-    private static final String NUM_LOC = "There are {0} guardian stone locations for this map.";
+    private static final String NUM_LOC = "There are {0} guardian stones for this map.";
     
 	public ListGuardianStones() {
 		this.name = "guardian";

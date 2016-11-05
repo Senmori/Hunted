@@ -11,7 +11,7 @@ import org.bukkit.craftbukkit.libs.joptsimple.internal.Strings;
 
 public class ListTeleportStones extends Subcommand {
     
-    private static final String NUM_LOC = "There are {0} teleport stone locations for this map.";
+    private static final String NUM_LOC = "There are {0} teleport stones for this map.";
     
 	public ListTeleportStones() {
 		this.name = "teleport";

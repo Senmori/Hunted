@@ -9,6 +9,5 @@ package net.senmori.hunted.lib.game;
  * still stored for whatever reason <br>
  */
 public enum GameState {
-
 	LOBBY, IN_GAME, IN_STORE, NOT_PLAYING, OFFLINE;
 }

@@ -14,6 +14,7 @@ import net.senmori.hunted.listeners.InventoryListener;
 import net.senmori.hunted.listeners.PlayerListener;
 import net.senmori.hunted.managers.CommandManager;
 import net.senmori.hunted.managers.ConfigManager;
+import net.senmori.hunted.managers.game.EffectManager;
 import net.senmori.hunted.managers.game.PlayerManager;
 import net.senmori.hunted.managers.game.RewardManager;
 import net.senmori.hunted.managers.game.SpawnManager;
@@ -39,7 +40,7 @@ import java.util.logging.Logger;
 public class Hunted extends JavaPlugin {
 	// static variables
 	private static Hunted instance;
-	public static Logger log;
+	public static Logger logger;
 
 	// plugin vars
 	private PluginDescriptionFile pdf;
@@ -58,6 +59,7 @@ public class Hunted extends JavaPlugin {
 	// misc. managers
 	private ConfigManager configManager;
 	private CommandManager commandManager;
+    private EffectManager effectManager;
 
 	// Connection Pool
 	private Database database; // SQL
@@ -67,16 +69,12 @@ public class Hunted extends JavaPlugin {
 		pdf = getDescription();
 		name = pdf.getName();
 
-		log = getLogger();
+		logger = getLogger();
 		instance = this;
 
 		// Config
 		configManager = new ConfigManager(getInstance());
-		configManager.addMapConfiguration("test", new MapConfiguration("test"));
-
-		// SQL
-		//database = new Database("HuntedDB.db", "Hunted", getInstance());
-
+        
 		// game managers
 		playerManager = new PlayerManager(getInstance());
 		stoneManager = new StoneManager();
@@ -112,16 +110,18 @@ public class Hunted extends JavaPlugin {
 		rewardManager.addReward(new TeleportReward("teleport"));
 		rewardManager.addReward(new IrritatingReward("irritating"));
 		LogHandler.info("Rewards loaded!");
+        
+        effectManager = new EffectManager(this);
 
 		// Listeners
 		getServer().getPluginManager().registerEvents(new BlockListener(getInstance()), this);
 		getServer().getPluginManager().registerEvents(new PlayerListener(getInstance()), this);
         getServer().getPluginManager().registerEvents(new InventoryListener(getInstance()), this);
         LogHandler.info("Listeners enabled!");
+        
+        configManager.loadActiveMapConfiguration();
 
 		instance = this;
-        
-        File jar = new File(this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath());
     }
 
 	@Override
@@ -140,6 +140,10 @@ public class Hunted extends JavaPlugin {
 	public RewardManager getRewardManager() {
 		return rewardManager;
 	}
+	
+	public EffectManager getEffectManager() {
+        return effectManager;
+    }
 
 	public PlayerManager getPlayerManager() {
 		return playerManager;

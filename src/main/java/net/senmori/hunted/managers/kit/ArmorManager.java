@@ -3,10 +3,10 @@ package net.senmori.hunted.managers.kit;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.kit.armor.Armor;
 import net.senmori.hunted.kit.armor.ArmorEnchantment;
-import net.senmori.hunted.kit.armor.ArmorSlot;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class ArmorManager {
 
 	private List<ArmorEnchantment> possibleEnchantments;
 	private List<Armor> possibleArmor;
-	private List<ArmorSlot> possibleSlots;
+	private List<EquipmentSlot> possibleSlots;
 
 	public ArmorManager(Hunted plugin) {
 		this.plugin = plugin;
@@ -32,7 +32,7 @@ public class ArmorManager {
 
 	/** Main method for generating random armor */
 	public void generateArmor(Player player) {
-		List<ArmorSlot> possibleArmor = new ArrayList<>();
+		List<EquipmentSlot> possibleArmor = new ArrayList<>();
 		possibleArmor.addAll(possibleSlots);
 		int numArmorPieces = (int) (Math.random() * (3 - 1) + 1); // generate up
 		                                                          // to 3
@@ -44,11 +44,11 @@ public class ArmorManager {
 		player.sendMessage("Generating " + numArmorPieces + " pieces of armor");
 		Collections.shuffle(possibleArmor);
 		for (int i = 0; i < numArmorPieces; i++) {
-			ArmorSlot current = possibleArmor.get(i);
+            EquipmentSlot current = possibleArmor.get(i);
 			// add armor piece to inventory if player already has the same type
 			// of armor equipped
 			switch (current) {
-				case HELMET:
+				case HEAD:
 					ItemStack helmet = generateHelmet();
 					if (player.getInventory().getHelmet() != null) {
 						player.getInventory().addItem(helmet);
@@ -57,7 +57,7 @@ public class ArmorManager {
 					}
 					player.sendMessage("Helmet: " + helmet.getType());
 					continue;
-				case CHESTPLATE:
+				case CHEST:
 					ItemStack chest = generateChestplate();
 					if (player.getInventory().getChestplate() != null) {
 						player.getInventory().addItem(chest);
@@ -66,7 +66,7 @@ public class ArmorManager {
 					}
 					player.sendMessage("Chestplate: " + chest.getType());
 					continue;
-				case LEGGINGS:
+				case LEGS:
 					ItemStack legs = generateLeggings();
 					if (player.getInventory().getLeggings() != null) {
 						player.getInventory().addItem(legs);
@@ -75,7 +75,7 @@ public class ArmorManager {
 					}
 					player.sendMessage("Leggings: " + legs.getType());
 					continue;
-				case BOOTS:
+				case FEET:
 					ItemStack boots = generateBoots();
 					if (player.getInventory().getBoots() != null) {
 						player.getInventory().addItem(boots);
@@ -93,22 +93,22 @@ public class ArmorManager {
 	}
 
 	public ItemStack generateHelmet() {
-		return generatePiece(ArmorSlot.HELMET);
+		return generatePiece(EquipmentSlot.HEAD);
 	}
 
 	public ItemStack generateChestplate() {
-		return generatePiece(ArmorSlot.CHESTPLATE);
+		return generatePiece(EquipmentSlot.CHEST);
 	}
 
 	public ItemStack generateLeggings() {
-		return generatePiece(ArmorSlot.LEGGINGS);
+		return generatePiece(EquipmentSlot.LEGS);
 	}
 
 	public ItemStack generateBoots() {
-		return generatePiece(ArmorSlot.BOOTS);
+		return generatePiece(EquipmentSlot.FEET);
 	}
 
-	private ItemStack generatePiece(ArmorSlot slot) {
+	private ItemStack generatePiece(EquipmentSlot slot) {
 		Random rand = new Random();
 		Armor armor = possibleArmor.get(rand.nextInt(possibleArmor.size()));
 		if (!armor.getSlot().equals(slot)) {
@@ -133,14 +133,14 @@ public class ArmorManager {
 		return (short) (Math.random() * (stack.getType().getMaxDurability() - 40) + 40);
 	}
 
-	private Enchantment getRandomEnchant(ArmorSlot slot) {
+	private Enchantment getRandomEnchant(EquipmentSlot slot) {
 		ArmorEnchantment armorEnchant = null;
 		Random rand = new Random();
 		// return enchantment if it matches given slot, or it can be applied to
 		// any piece of armor
-		while (!armorEnchant.getSlot().equals(slot) || !armorEnchant.getSlot().equals(ArmorSlot.ALL)) {
+		while (!armorEnchant.canEnchant(slot)) {
 			armorEnchant = possibleEnchantments.get(rand.nextInt(possibleEnchantments.size() + 1));
-			if (armorEnchant.getSlot().equals(slot) || armorEnchant.getSlot().equals(ArmorSlot.ALL)) {
+			if (armorEnchant.canEnchant(slot)) {
 				break;
 			}
 		}
@@ -158,7 +158,7 @@ public class ArmorManager {
 		return possibleArmor;
 	}
 
-	public List<ArmorSlot> getPossibleSlots() {
+	public List<EquipmentSlot> getPossibleSlots() {
 		return possibleSlots;
 	}
 
@@ -171,7 +171,8 @@ public class ArmorManager {
 			possibleArmor.add(arm);
 		}
 
-		for (ArmorSlot as : ArmorSlot.values()) {
+		for (EquipmentSlot as : EquipmentSlot.values()) {
+            if(as == EquipmentSlot.HAND || as == EquipmentSlot.OFF_HAND) continue;
 			possibleSlots.add(as);
 		}
 	}

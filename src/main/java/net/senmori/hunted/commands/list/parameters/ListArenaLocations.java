@@ -1,6 +1,7 @@
 package net.senmori.hunted.commands.list.parameters;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Set;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
@@ -12,7 +13,7 @@ import org.bukkit.craftbukkit.libs.joptsimple.internal.Strings;
 
 public class ListArenaLocations extends Subcommand {
 
-    private static final String NUM_LOC = "There are {0} spawn locations for this map.";
+    private static final String NUM_LOC = "There are {0} {1} spawn locations for this map.";
     
     
 	public ListArenaLocations() {
@@ -24,9 +25,9 @@ public class ListArenaLocations extends Subcommand {
 
 	@Override
 	protected void perform() {
-        Set<SerializedLocation> locations = Hunted.getInstance().getSpawnManager().getLocationsByType(LocationType.ARENA);
+        List<SerializedLocation> locations = Hunted.getInstance().getSpawnManager().getLocationsByType(LocationType.ARENA);
         int numLocations = locations.size();
-        getPlayer().sendMessage(ChatColor.DARK_PURPLE + MessageFormat.format(NUM_LOC, (ChatColor.GOLD + String.valueOf(numLocations))));
+        getPlayer().sendMessage(ChatColor.DARK_PURPLE + MessageFormat.format(NUM_LOC, (ChatColor.GOLD + String.valueOf(numLocations)), ChatColor.DARK_PURPLE));
         getPlayer().sendMessage(ChatColor.GOLD + Strings.repeat('-', NUM_LOC.length()));
         String message = "{0}" + ChatColor.GOLD+ ": [" + ChatColor.RED + "{1}" + ChatColor.RED + ", " + ChatColor.RESET +"{2}" + ChatColor.RED +", " + ChatColor.RESET + "{3} + " + ChatColor.GOLD + "] - " + ChatColor.RESET + "{4}";
         
@@ -39,6 +40,7 @@ public class ListArenaLocations extends Subcommand {
             String z = color + (String.valueOf(loc.getZ()));
             String name = color + loc.getName();
             getPlayer().sendMessage(color + MessageFormat.format(message, cIndex, x, y, z, name));
+            index++;
         }
         getPlayer().sendMessage(ChatColor.GOLD + Strings.repeat('-', NUM_LOC.length()));
     }

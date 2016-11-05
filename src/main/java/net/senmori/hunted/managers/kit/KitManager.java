@@ -41,9 +41,7 @@ public class KitManager {
 	public void generateWeapon(Player player) {
 		ItemStack weapon = plugin.getWeaponManager().generateWeapon();
 		if (weapon.getType().equals(Material.BOW)) {
-			player.getInventory().addItem(
-			        new ItemStack(Material.ARROW, (int) (Math.random()
-			                * (plugin.getConfigManager().maxArrowsPerReward - 1) + 1)));
+			player.getInventory().addItem(new ItemStack(Material.ARROW, (int) (Math.random() * (plugin.getConfigManager().maxArrowsPerReward - 1) + 1)));
 		}
 		player.getInventory().addItem(weapon);
 	}

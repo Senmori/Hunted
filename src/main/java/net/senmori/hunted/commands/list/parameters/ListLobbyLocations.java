@@ -1,6 +1,7 @@
 package net.senmori.hunted.commands.list.parameters;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Set;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
@@ -23,7 +24,7 @@ public class ListLobbyLocations extends Subcommand {
 
 	@Override
 	protected void perform() {
-        Set<SerializedLocation> locations = Hunted.getInstance().getSpawnManager().getLocationsByType(LocationType.LOBBY);
+        List<SerializedLocation> locations = Hunted.getInstance().getSpawnManager().getLocationsByType(LocationType.LOBBY);
         int numLocations = locations.size();
         getPlayer().sendMessage(ChatColor.DARK_PURPLE + MessageFormat.format(NUM_LOC, (ChatColor.GOLD + String.valueOf(numLocations))));
         getPlayer().sendMessage(ChatColor.GOLD + Strings.repeat('-', NUM_LOC.length()));

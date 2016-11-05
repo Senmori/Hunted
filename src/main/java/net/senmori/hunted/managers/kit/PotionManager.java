@@ -89,7 +89,6 @@ public class PotionManager {
         potionEffectTypes.add(PotionEffectType.CONFUSION);
         potionEffectTypes.add(PotionEffectType.DAMAGE_RESISTANCE);
         potionEffectTypes.add(PotionEffectType.FIRE_RESISTANCE);
-        potionEffectTypes.add(PotionEffectType.GLOWING);
         potionEffectTypes.add(PotionEffectType.HARM);
         potionEffectTypes.add(PotionEffectType.HEAL);
         potionEffectTypes.add(PotionEffectType.HEALTH_BOOST);

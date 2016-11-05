@@ -1,7 +1,6 @@
 package net.senmori.hunted.lib.game;
 
 public enum KillMethod {
-
 	WOOD_WEAPON,
 	STONE_WEAPON,
 	IRON_WEAPON,

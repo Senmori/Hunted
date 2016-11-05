@@ -1,5 +1,12 @@
 package net.senmori.hunted.commands.stuck;
 
+import static net.minecraft.server.v1_10_R1.SoundEffects.ge;
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import net.minecraft.server.v1_10_R1.SystemUtils;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.lib.game.GameState;
@@ -13,6 +20,9 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 
 public class StuckCommand extends Subcommand {
+    private static final int REQ_ELAPSED_SECONDS = 60;
+    
+    private Map<UUID, Long> lastRanTime = new HashMap<>();
 
 	public StuckCommand() {
 		this.name = "stuck";
@@ -32,11 +42,11 @@ public class StuckCommand extends Subcommand {
 					return;
 				}
 			} else { // no permission
-				ActionBar.sendMessage(getPlayer(), ChatColor.RED + ErrorMessage.NO_COMMAND_PERMISSION);
+				getPlayer().sendMessage(ChatColor.RED + ErrorMessage.NO_COMMAND_PERMISSION);
 				return;
 			}
 		}
-		teleport(getPlayer(), Hunted.getInstance().getPlayerManager().getState(getPlayer().getUniqueId()));
+        teleport(getPlayer(), Hunted.getInstance().getPlayerManager().getState(getPlayer().getUniqueId()));
 	}
 
 	private void teleport(Player player, GameState state) {
@@ -56,5 +66,19 @@ public class StuckCommand extends Subcommand {
 
 		}
 	}
+	
+	private boolean canRun(Player player, int requiredElapsedMinutes) {
+        if(!lastRanTime.containsKey(player.getUniqueId())) {
+            return true;
+        }
+        return getCooldown(player) > requiredElapsedMinutes;
+    }
+    
+    private int getCooldown(Player player) {
+        if(!lastRanTime.containsKey(player.getUniqueId())) {
+            return 0;
+        }
+        return (int)TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis() - lastRanTime.get(player.getUniqueId()));
+    }
 
 }

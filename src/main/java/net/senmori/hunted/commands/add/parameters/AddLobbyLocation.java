@@ -26,7 +26,7 @@ public class AddLobbyLocation extends Subcommand {
 	protected void perform() {
 		int count = Hunted.getInstance().getSpawnManager().getLobbyLocations().size() + 1;
 		String locName = args.length >= 2 ? args[1] : "LobbyLoc-" + count;
-		Hunted.getInstance().getSpawnManager().addLobbyLocation(new SerializedLocation(getPlayer().getLocation(), locName));
+		Hunted.getInstance().getSpawnManager().addLobbyLocation(getPlayer().getLocation(), locName);
 		ActionBar.sendMessage(getPlayer(), ChatColor.GREEN + MessageFormat.format(Reference.SuccessMessage.LOBBY_LOCATION_CREATED, args[1]));
 	}
 

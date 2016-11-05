@@ -5,6 +5,7 @@ import net.senmori.hunted.lib.SerializedLocation;
 import net.senmori.hunted.lib.game.GameState;
 import net.senmori.hunted.lib.game.Profile;
 import net.senmori.hunted.stones.Stone;
+import net.senmori.hunted.util.ActionBar;
 import net.senmori.hunted.util.Reference.ErrorMessage;
 import net.senmori.hunted.util.Reference.Permissions;
 import org.bukkit.Bukkit;
@@ -17,18 +18,17 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class PlayerManager {
 
 	private Hunted plugin;
 	private Map<UUID, Profile> activePlayers;
-	private Map<UUID, ItemStack[]> playerInventories;
 	private Map<UUID, SerializedLocation> lastKnownLocation;
 
-	public PlayerManager(Hunted plugin) {
-		this.plugin = plugin;
+	public PlayerManager(JavaPlugin plugin) {
+		this.plugin = (Hunted)plugin;
 		activePlayers = new HashMap<UUID, Profile>();
-		playerInventories = new HashMap<UUID, ItemStack[]>();
 		lastKnownLocation = new HashMap<UUID, SerializedLocation>();
 	}
 
@@ -70,6 +70,8 @@ public class PlayerManager {
 			return;
 		}
 		setState(player.getUniqueId(), GameState.IN_GAME);
+        activePlayers.get(player.getUniqueId()).updateInventory();
+        
 		// clear inventory and potion effects
 		player.getInventory().clear();
 		player.getActivePotionEffects().clear();
@@ -78,7 +80,7 @@ public class PlayerManager {
 		Hunted.getInstance().getKitManager().generateKit(player);
 		// teleport to random location in arena
 		player.teleport(plugin.getSpawnManager().getRandomHuntedLocation().getLocation());
-		//ActionBarAPI.send(player, ChatColor.GREEN + "Good luck!");
+		ActionBar.sendMessage(player, ChatColor.GREEN + "Good luck!");
 	}
 
 	/**
@@ -88,6 +90,8 @@ public class PlayerManager {
 	 */
 	public void leaveArena(Player player) {
 		setState(player.getUniqueId(), GameState.LOBBY);
+        player.getInventory().clear();
+        activePlayers.get(player.getUniqueId()).restoreInventory();
 		player.teleport(plugin.getSpawnManager().getRandomLobbyLocation().getLocation());
 	}
 
@@ -96,9 +100,9 @@ public class PlayerManager {
 	 */
 	/** Teleport player to hunted store */
 	public void enterStore(Player player) {
-		if (!plugin.getSpawnManager().getStoreLocations().isEmpty()
-		        || plugin.getSpawnManager().getStoreLocations() == null) {
+		if (plugin.getSpawnManager().getStoreLocations() == null || plugin.getSpawnManager().getStoreLocations().isEmpty()) {
 			player.sendMessage(ChatColor.RED + ErrorMessage.NO_STORE_LOCATION_ERROR);
+            
 			return;
 		}
 		player.teleport(plugin.getSpawnManager().getRandomStoreLocation().getLocation());
@@ -109,8 +113,7 @@ public class PlayerManager {
 	 * Teleport player out of hunted store to location depending on {@link GameState}
 	 */
 	public void leaveStore(Player player) {
-		// TODO: eventually have a GUI that opens and the player can choose to
-		// go to the lobby or back to the arena
+		// TODO: eventually have a GUI that opens and the player can choose to go to the lobby or back to the arena
 		player.teleport(plugin.getSpawnManager().getRandomHuntedLocation().getLocation());
 	}
 
@@ -124,7 +127,6 @@ public class PlayerManager {
 	 */
 	public void enterWorld(Player player) {
 		lastKnownLocation.put(player.getUniqueId(), new SerializedLocation(player.getLocation(), player.getDisplayName()));
-		playerInventories.put(player.getUniqueId(), player.getInventory().getContents());
 		trackPlayer(player.getUniqueId());
 	}
 
@@ -188,8 +190,8 @@ public class PlayerManager {
 		switch (getState(uuid)) {
 			case IN_GAME:
 			case IN_STORE:
-			case LOBBY:
 				return true;
+            case LOBBY:
 			case NOT_PLAYING:
 			case OFFLINE:
 			default:
