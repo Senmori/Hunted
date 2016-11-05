@@ -12,9 +12,11 @@ import java.util.Random;
 
 public class IrritatingReward extends Reward {
 	private String name;
-
+    private Random random;
+    
 	public IrritatingReward(String name) {
 		this.name = name;
+        random = new Random();
 	}
 
 	/*
@@ -23,15 +25,16 @@ public class IrritatingReward extends Reward {
 	@Override
 	public void generateLoot(Player player) {
 		ItemStack[] inventory = player.getInventory().getContents();
-		Random rand = new Random();
 
 		for (int i = 0; i <= inventory.length; i++) {
 			int oldSlot = i;
-			int newSlot = rand.nextInt(inventory.length + 1);
-
+			int newSlot = random.nextInt(inventory.length);
+            if(oldSlot == newSlot) {
+                newSlot = random.nextInt(inventory.length);
+            }
+            
 			PlayerInventory pInv = player.getInventory();
-			// if oldSlot has an item, and new slot doesn't, move item to new
-			// slot
+			// if oldSlot has an item, and new slot doesn't, move item to new slot
 			if (pInv.getItem(oldSlot) != null && pInv.getItem(newSlot) == null) {
 				pInv.setItem(newSlot, pInv.getItem(oldSlot));
 				pInv.setItem(oldSlot, null);

@@ -53,7 +53,7 @@ public class GuardianStone extends Stone {
 	/**
 	 * Set cooldown for guardian stone
 	 *
-	 * @param {@link #cooldown} - time in minutes
+	 * @param cooldown time in minutes
 	 */
 	public void setCooldown(int cooldown) {
 		this.cooldown = TimeUnit.MINUTES.toMillis(cooldown);
@@ -62,7 +62,7 @@ public class GuardianStone extends Stone {
 	/**
 	 * Returns if the guardian stone is active or not
 	 *
-	 * @return
+	 * @return true if the guardian stone can be activated
 	 */
 	public boolean isActive() {
 		return getElapsedTime() >= TimeUnit.MILLISECONDS.toMinutes(cooldown);

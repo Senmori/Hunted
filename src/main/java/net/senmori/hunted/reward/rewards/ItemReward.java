@@ -3,6 +3,7 @@ package net.senmori.hunted.reward.rewards;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import net.senmori.hunted.Hunted;
 import net.senmori.hunted.kit.armor.Armor;
 import net.senmori.hunted.kit.item.KitItem;
@@ -24,19 +25,21 @@ public class ItemReward extends Reward {
     private int itemRewardSize = KitItem.values().length;
     private int armorRewardSize = Armor.values().length;
     private int weaponRewardSize = WeaponType.values().length;
+    private Random random;
     
     private int total;
 
 	public ItemReward(String name) {
 		this.name = name;
         total = itemRewardSize + armorRewardSize + weaponRewardSize;
+        random = new Random();
 	}
 
 	@Override
 	public void generateLoot(Player player) {
-        int index = (int)(Math.random() * (total - 1) + 1);
+        int index = random.nextInt(total + 1);
         if(index <= itemRewardSize) {
-            index = (int)(Math.random() * (index - 1) + 1);
+            index = random.nextInt(itemRewardSize + 1);
             KitItem curr = KitItem.values()[index >= itemRewardSize ? itemRewardSize : index];
             player.getInventory().addItem(new ItemStack(curr.getType(), curr.getMaxAmountReceivable()));
             ActionBar.sendMessage(player, ChatColor.GREEN + MessageFormat.format(Reference.RewardMessage.STONE_REWARD, curr.getType().toString().toLowerCase()));
@@ -44,14 +47,14 @@ public class ItemReward extends Reward {
         }
         index -= itemRewardSize;
         if(index <= armorRewardSize) {
-            index = (int)(Math.random() * (index - 1) + 1);
+            index = random.nextInt(armorRewardSize + 1);
             Armor armor = Armor.values()[index >= armorRewardSize ? armorRewardSize : index];
             player.getInventory().addItem(new ItemStack(armor.getType()));
             ActionBar.sendMessage(player, ChatColor.GREEN + MessageFormat.format(Reference.RewardMessage.STONE_REWARD, armor.getType().toString().toLowerCase()));
             return;
         }
         index -= armorRewardSize;
-        index = (int)(Math.random() * (index - 1) + 1);
+        index = random.nextInt(armorRewardSize + 1);
         WeaponType weapon = WeaponType.values()[index >= weaponRewardSize ? weaponRewardSize : index];
         player.getInventory().addItem(new ItemStack(weapon.getType()));
         ActionBar.sendMessage(player, ChatColor.GREEN + MessageFormat.format(Reference.RewardMessage.STONE_REWARD, weapon.getType().toString().toLowerCase()));

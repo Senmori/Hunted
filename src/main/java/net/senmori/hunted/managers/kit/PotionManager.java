@@ -30,9 +30,10 @@ public class PotionManager {
 	}
 
 	public ItemStack getPotion() {
-        int randNum = rand.nextInt(10 + 1);
+        int chance = Hunted.getInstance().getConfigManager().potionTierChance;
+        int randNum = rand.nextInt(chance + 1);
         
-        if(randNum >= plugin.getConfigManager().potionTierChance) {
+        if(randNum >= chance) {
             return generatePotion(Material.SPLASH_POTION);
         }
         return generatePotion(Material.POTION);

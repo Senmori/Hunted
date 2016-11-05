@@ -17,12 +17,12 @@ settings:
   # Max potions a player can receive as a reward
   max-potions: 2
   # The chance a potion will be tier 2 (n%)
-  potion-tier2-chance: 10
+  potion-tier2-chance: 1
   # Maximum potion amplifier level(starts at 0)
   max-amplifier-level: 1
   # The chance that when a player gets a smite reward, they also get teleported to a random location (n/100)
-  smite-teleport-chance: 10
-  # Radius in which to search for nearby players
+  smite-teleport-chance: 5
+  # Radius in which to search for nearby players(for certain rewards)
   radius: 50
   # Chance the player will receive an ascented item(n%)
   ascented-item-chance: 10
@@ -35,6 +35,15 @@ settings:
   # What map configuration is currently active
   # If empty, will use the first one found.
   active-map-configuration: ''
-  # Debug - don't touch this unless you like spam
-  # Also, you need a certain permission to see debug messages, just in case
-  debug: false
+  # If signs can be used to enter the Hunted world
+  sign-entrance: true
+  # If signs can be used to leave the Hunted world
+  sign-exit: true
+  # If signs can be used to enter the Hunted world
+  portal-entrance: true
+  # If signs can be used to leave the Hunted world
+  portal-exit: true
+  # How far this plugin should check for signs to enter/exit the Hunted world.
+  sign-depth: 1
+  # How far this plugin should check for signs underneath portals on entrance/exit on Hunted.
+  portal-sign-depth: 2

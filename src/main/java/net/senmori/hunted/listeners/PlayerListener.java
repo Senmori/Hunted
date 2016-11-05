@@ -67,7 +67,6 @@ public class PlayerListener implements Listener {
         // player is playing, store or lobby haven't been implemented yet
 		if (plugin.getPlayerManager().getState(e.getPlayer().getUniqueId()).equals(GameState.IN_GAME)) {
 			if (plugin.getConfigManager().activeWorld.equals(e.getPlayer().getWorld().getName())) {
-				if (plugin.getPlayerManager().isExempt(e.getPlayer())) return;
 				if (!Hunted.getInstance().getStoneManager().isValidActivator(e.getClickedBlock().getType())) {
 					e.setCancelled(true);
 					e.setUseInteractedBlock(Event.Result.DENY);

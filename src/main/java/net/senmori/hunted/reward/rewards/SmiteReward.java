@@ -23,7 +23,7 @@ public class SmiteReward extends Reward {
 		ActionBar.sendMessage(player, ChatColor.GOLD + RewardMessage.SMITE_MESSAGE);
 
 		Random rand = new Random();
-		int chance = net.senmori.hunted.Hunted.getInstance().getConfig().getInt("smite-teleport-chance");
+		int chance = Hunted.getInstance().getConfigManager().smiteTeleportChance;
 		if (rand.nextInt(chance + 1) % chance == 0) {
 			Hunted.getInstance().getRewardManager().getReward("teleport").generateLoot(player);
 		}

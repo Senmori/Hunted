@@ -22,7 +22,8 @@ public class PotionReward extends Reward {
 	@Override
 	public void generateLoot(Player player) {
 		ItemStack potion = Hunted.getInstance().getPotionManager().getPotion();
-		ActionBar.sendMessage(player, ChatColor.GREEN + MessageFormat.format(RewardMessage.STONE_REWARD, potion.getItemMeta().getDisplayName()));
+        player.getInventory().addItem(potion);
+		ActionBar.sendMessage(player, ChatColor.GOLD + MessageFormat.format(RewardMessage.STONE_REWARD, potion.getItemMeta().getDisplayName()));
 	}
 
 	@Override

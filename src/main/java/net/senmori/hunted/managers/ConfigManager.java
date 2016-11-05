@@ -1,6 +1,5 @@
 package net.senmori.hunted.managers;
 
-import java.io.FilenameFilter;
 import java.text.MessageFormat;
 import java.util.LinkedHashMap;
 import net.senmori.hunted.Hunted;
@@ -15,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class ConfigManager {
 	private Hunted plugin;
@@ -64,10 +64,10 @@ public class ConfigManager {
 		}
 
 		file = new File(Hunted.getInstance().getDataFolder(), "config.yml");
-		if (!file.exists()) {
-			file.getParentFile().mkdirs();
-			Hunted.getInstance().saveDefaultConfig();
-		}
+		if(!file.exists()) {
+            plugin.saveDefaultConfig();
+        }
+        
 		config = YamlConfiguration.loadConfiguration(file);
 		loadConfig();
 	}
@@ -75,10 +75,10 @@ public class ConfigManager {
 	private void loadConfig() {
 		// how would these two happen? If so, just delete and reload config .-.
 		if (Hunted.getInstance().getConfig().getConfigurationSection("settings") == null) {
-            throw new IllegalStateException("Config file was modified beyong repair. Please delete the file and restart the server");
+            throw new IllegalStateException("Config file was modified beyond repair. Please delete the file and restart the server");
         }
 		if (Hunted.getInstance().getConfig().getConfigurationSection("settings").getKeys(false).size() < 1) {
-            throw new IllegalStateException("Config settings were modified beyong repair. Please delete the file and restart the server");
+            throw new IllegalStateException("Config settings were modified beyond repair. Please delete the file and restart the server");
         }
         
 		defaultCooldown = plugin.getConfig().getInt("settings.cooldown", 5);

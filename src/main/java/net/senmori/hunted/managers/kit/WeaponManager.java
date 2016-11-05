@@ -54,7 +54,7 @@ public class WeaponManager {
 	 */
 	public ItemStack generateWeapon() {
 		// n% chance of it being as ascented weapon
-		boolean isAscented = rand.nextInt(plugin.getConfigManager().ascentedItemChance + 1) % plugin.getConfigManager().ascentedItemChance == 0;
+		boolean isAscented = rand.nextInt(plugin.getConfigManager().ascentedItemChance + 1) == plugin.getConfigManager().ascentedItemChance;
 		WeaponType type = getRandomWeaponType(isAscented);
 		// 20% chance of an item having a title
 		String displayName = getRandomName(type, rand.nextInt(11) % 5 == 0, isAscented);
@@ -76,7 +76,7 @@ public class WeaponManager {
 		if (ascented && !type.canBeAscented()) {
 			while (!type.canBeAscented()) {
 				type = weaponTypes.get(rand.nextInt(WeaponType.values().length + 1));
-				if (!type.canBeAscented()) {
+				if (type.canBeAscented()) {
 					break;
 				}
 			}

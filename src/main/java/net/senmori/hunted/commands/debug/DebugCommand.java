@@ -25,7 +25,6 @@ public class DebugCommand extends Subcommand {
 	@Override
 	protected void perform() {
        Hunted.getInstance().getPlayerManager().setState(getPlayer().getUniqueId(), GameState.IN_GAME);
-        getPlayer().sendMessage("GAME STATE: " + Hunted.getInstance().getPlayerManager().getState(player.getUniqueId()));
     }
 
 }
