@@ -89,7 +89,6 @@ public class PlayerListener implements Listener {
                 e.setCancelled(true);
                 e.setUseInteractedBlock(Event.Result.DENY);
                 e.setUseItemInHand(Event.Result.DENY);
-                return;
             }
         }
     }
@@ -178,7 +177,6 @@ public class PlayerListener implements Listener {
             }
             if(e.getPlayer().getWorld().getName().equals(plugin.getConfigManager().activeWorld)) {
                 plugin.getPlayerManager().enterWorld(e.getPlayer());
-                return;
             }
         }
     }
@@ -207,7 +205,6 @@ public class PlayerListener implements Listener {
         if(e.getEntity() instanceof Player) {
             effectManager.stopGlow((Player) e.getEntity(), true);
             plugin.getPlayerManager().getPlayer(( (Player) e.getEntity() ).getUniqueId()).updateStat(Stat.DEATHS, 1);
-            return;
         }
     }
 

@@ -26,22 +26,21 @@ public class IrritatingReward extends Reward {
         ItemStack[] inventory = player.getInventory().getContents();
 
         for(int i = 0; i <= inventory.length; i++) {
-            int oldSlot = i;
             int newSlot = random.nextInt(inventory.length);
-            if(oldSlot == newSlot) {
+            if(i == newSlot) {
                 newSlot = random.nextInt(inventory.length);
             }
 
             PlayerInventory pInv = player.getInventory();
             // if oldSlot has an item, and new slot doesn't, move item to new slot
-            if(pInv.getItem(oldSlot) != null && pInv.getItem(newSlot) == null) {
-                pInv.setItem(newSlot, pInv.getItem(oldSlot));
-                pInv.setItem(oldSlot, null);
+            if(pInv.getItem(i) != null && pInv.getItem(newSlot) == null) {
+                pInv.setItem(newSlot, pInv.getItem(i));
+                pInv.setItem(i, null);
             } else { // otherwise, switch slots
-                ItemStack oldItem = pInv.getItem(oldSlot);
+                ItemStack oldItem = pInv.getItem(i);
                 ItemStack newItem = pInv.getItem(newSlot);
 
-                pInv.setItem(oldSlot, newItem);
+                pInv.setItem(i, newItem);
                 pInv.setItem(newSlot, oldItem);
             }
         }

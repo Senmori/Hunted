@@ -42,7 +42,6 @@ public class HuntedGiveCommand extends Subcommand {
         } else {
             getPlayer().sendMessage(getUsageTemplate(true));
         }
-        return;
     }
 
 }

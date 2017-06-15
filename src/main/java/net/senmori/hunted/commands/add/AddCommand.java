@@ -50,6 +50,5 @@ public class AddCommand extends Subcommand {
         } else {
             getPlayer().sendMessage(getUsageTemplate(true));
         }
-        return;
     }
 }

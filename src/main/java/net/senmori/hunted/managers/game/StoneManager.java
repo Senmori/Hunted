@@ -56,7 +56,6 @@ public class StoneManager {
                 getTeleportStones().add((TeleportStone) stone);
                 return;
             default:
-                return;
         }
     }
 
@@ -97,7 +96,6 @@ public class StoneManager {
                         getTeleportStones().remove(stone);
                         break;
                     default:
-                        continue;
                 }
             }
         }
@@ -117,7 +115,6 @@ public class StoneManager {
                         getStones().remove(s);
                         break;
                     default:
-                        continue;
                 }
             }
         }

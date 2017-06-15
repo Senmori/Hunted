@@ -76,8 +76,8 @@ public enum KitItem {
     /**
      * Categorize {@link ItemReward} by what the item does <br>
      * {@link #FOOD} - food item <br>
-     * {@link UTILITY} - performs a function other than what it normally does(compass, etc.) <br>
-     * {@link OTHER} - does not match criteria for first two categories <br>
+     * {@link #UTILITY} - performs a function other than what it normally does(compass, etc.) <br>
+     * {@link #OTHER} - does not match criteria for first two categories <br>
      */
     public enum Category {
         FOOD, UTILITY, OTHER

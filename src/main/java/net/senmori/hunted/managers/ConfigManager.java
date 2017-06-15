@@ -39,15 +39,11 @@ public class ConfigManager {
     public int maxPotsPerReward;
     public String activeWorld;
     public String activeMapConfiguration;
-    public String dbName;
+
     private Hunted plugin;
     private File file;
     private FileConfiguration config;
-    // database config options
-    private String dbUser;
-    private String dbPassword;
-    private String dbHost;
-    private int dbPort;
+
     // map configuration holder
     private Map<String, MapConfiguration> mapConfigurations;
 

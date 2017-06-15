@@ -1,6 +1,7 @@
 package net.senmori.hunted.managers.kit;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -82,8 +83,6 @@ public class ArmorManager {
                     player.sendMessage("Boots: " + boots.getType());
                     continue;
                 default:
-                    continue;
-
             }
         }
     }
@@ -159,13 +158,10 @@ public class ArmorManager {
     }
 
     private void load() {
-        for(ArmorEnchantment e : ArmorEnchantment.values()) {
-            possibleEnchantments.add(e);
-        }
+        possibleEnchantments.addAll(Arrays.asList(ArmorEnchantment.values()));
 
-        for(Armor arm : Armor.values()) {
-            possibleArmor.add(arm);
-        }
+        possibleArmor.addAll(Arrays.asList(Armor.values()));
+
 
         for(EquipmentSlot as : EquipmentSlot.values()) {
             if(as == EquipmentSlot.HAND || as == EquipmentSlot.OFF_HAND)
