@@ -43,7 +43,9 @@ settings:
   portal-entrance: true
   # If signs can be used to leave the Hunted world
   portal-exit: true
-  # How far this plugin should check for signs to enter/exit the Hunted world.
+  # How far down this plugin should check for signs to enter/exit the Hunted world.
+  # Depth is calculated from the block the player is standing on
   sign-depth: 1
   # How far this plugin should check for signs underneath portals on entrance/exit on Hunted.
-  portal-sign-depth: 2
+  # Depth is calculated from the block the player is standing on
+  portal-sign-depth: 1

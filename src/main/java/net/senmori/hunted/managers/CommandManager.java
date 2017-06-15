@@ -1,6 +1,8 @@
 package net.senmori.hunted.managers;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import net.senmori.hunted.commands.Subcommand;
 import net.senmori.hunted.util.LogHandler;
 import org.bukkit.Bukkit;
@@ -12,93 +14,90 @@ import org.bukkit.craftbukkit.libs.joptsimple.internal.Strings;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class CommandManager implements CommandExecutor {
-	private JavaPlugin plugin;
-	private String commandPrefix;
-	private List<Subcommand> commands = new ArrayList<Subcommand>();
+    private static List<CommandManager> managers = new ArrayList<CommandManager>();
+    private JavaPlugin plugin;
+    private String commandPrefix;
+    private List<Subcommand> commands = new ArrayList<Subcommand>();
 
-	private static List<CommandManager> managers = new ArrayList<CommandManager>();
+    public CommandManager(JavaPlugin plugin) {
+        this.plugin = plugin;
+        addCommandManager(this);
 
-	public CommandManager(JavaPlugin plugin) {
-		this.plugin = plugin;
-		addCommandManager(this);
+    }
 
-	}
+    public static CommandManager getCommandManager(String prefix) {
+        for(CommandManager m : managers) {
+            if(m.commandPrefix.equals(prefix))
+                return m;
+        }
 
-	public void registerCommand(Subcommand command) {
-		if(!commands.add(command)) {
-			LogHandler.warning(command.getName() + " is already registered!");
-		}
-	}
+        return null;
+    }
 
-	public void setCommandPrefix(String commandPrefix) {
-		this.commandPrefix = commandPrefix;
-		plugin.getCommand(commandPrefix).setExecutor(this);
-	}
+    public static void addCommandManager(CommandManager m) {
+        managers.add(m);
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		List<String> argsList = new ArrayList<>();
+    public static void removeCommandManager(CommandManager m) {
+        managers.remove(m);
+    }
 
-		if (args.length > 0) {
-			String commandName = args[0].toLowerCase();
+    public void registerCommand(Subcommand command) {
+        if(! commands.add(command)) {
+            LogHandler.warning(command.getName() + " is already registered!");
+        }
+    }
 
-			for (int i = 1; i < args.length; i++) {
-				argsList.add(args[i]);
-			}
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        List<String> argsList = new ArrayList<>();
 
-			for (Subcommand command : commands) {
-				if (command.getName().equals(commandName) || command.getAliases().contains(commandName)) {
-					command.execute(sender, argsList.toArray(new String[argsList.size()]));
-					return true;
-				}
-			}
-		} else {
-			// display list of subcommand names, along with their descriptions
-			StringBuilder sb = new StringBuilder();
-			sb.append(ChatColor.GREEN + Strings.repeat('-', 16) + " " + ChatColor.YELLOW + "Hunted commands" + ChatColor.GREEN + " " + Strings.repeat('-', 16));
-			for (Subcommand sub : commands) {
-                if(sub.getName().equalsIgnoreCase("debug")) continue;
-				sb.append("\n");
-				sb.append(ChatColor.GREEN + sub.getName() + ChatColor.YELLOW + " - " + ChatColor.YELLOW
-				        + sub.getDescription());
-			}
-			sb.append(ChatColor.GREEN + Strings.repeat('-', 49));
-			if (sender instanceof Player) {
-				Player player = (Player) sender;
-				player.sendMessage(sb.toString());
-				return true;
-			}
-			Bukkit.dispatchCommand(sender, "help " + commandPrefix);
-		}
+        if(args.length > 0) {
+            String commandName = args[0].toLowerCase();
 
-		return true;
-	}
+            for(int i = 1; i < args.length; i++) {
+                argsList.add(args[i]);
+            }
 
-	public String getCommandPrefix() {
-		return commandPrefix;
-	}
+            for(Subcommand command : commands) {
+                if(command.getName().equals(commandName) || command.getAliases().contains(commandName)) {
+                    command.execute(sender, argsList.toArray(new String[argsList.size()]));
+                    return true;
+                }
+            }
+        } else {
+            // display list of subcommand names, along with their descriptions
+            StringBuilder sb = new StringBuilder();
+            sb.append(ChatColor.GREEN + Strings.repeat('-', 16) + " " + ChatColor.YELLOW + "Hunted commands" + ChatColor.GREEN + " " + Strings.repeat('-', 16));
+            for(Subcommand sub : commands) {
+                if(sub.getName().equalsIgnoreCase("debug"))
+                    continue;
+                sb.append("\n");
+                sb.append(ChatColor.GREEN + sub.getName() + ChatColor.YELLOW + " - " + ChatColor.YELLOW + sub.getDescription());
+            }
+            sb.append(ChatColor.GREEN + Strings.repeat('-', 49));
+            if(sender instanceof Player) {
+                Player player = (Player) sender;
+                player.sendMessage(sb.toString());
+                return true;
+            }
+            Bukkit.dispatchCommand(sender, "help " + commandPrefix);
+        }
 
-	public List<Subcommand> getCommands() {
-		return commands;
-	}
+        return true;
+    }
 
-	public static CommandManager getCommandManager(String prefix) {
-		for (CommandManager m : managers) {
-			if (m.commandPrefix.equals(prefix)) return m;
-		}
+    public String getCommandPrefix() {
+        return commandPrefix;
+    }
 
-		return null;
-	}
+    public void setCommandPrefix(String commandPrefix) {
+        this.commandPrefix = commandPrefix;
+        plugin.getCommand(commandPrefix).setExecutor(this);
+    }
 
-	public static void addCommandManager(CommandManager m) {
-		managers.add(m);
-	}
-
-	public static void removeCommandManager(CommandManager m) {
-		managers.remove(m);
-	}
+    public List<Subcommand> getCommands() {
+        return commands;
+    }
 }

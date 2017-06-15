@@ -1,122 +1,121 @@
 package net.senmori.hunted.lib.game;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 public class Profile {
 
-	private UUID uuid;
-	private GameState gameState;
-	protected Map<Stat, Integer> stats;
-	private PlayerInventory lastInventory;
-	
-	//Scoreboard
-	private Scoreboard board;
-	private Objective obj;
-	private Score kills;
-	private Score gamemode;
+    protected Map<Stat, Integer> stats;
+    private UUID uuid;
+    private GameState gameState;
+    private PlayerInventory lastInventory;
 
-	public Profile(Player player) {
-		this.uuid = player.getUniqueId();
-		stats = new HashMap<Stat, Integer>();
-		stats.put(Stat.KILLS, 0);
-		stats.put(Stat.DEATHS, 0);
-		stats.put(Stat.BOW_KILLS, 0);
-		stats.put(Stat.CHESTS_LOOTED, 0);
-		stats.put(Stat.MOBS_KILLED, 0);
-		stats.put(Stat.DAMAGE_DEALT, 0);
-		stats.put(Stat.DAMAGE_TAKEN, 0);
-		stats.put(Stat.STONES_ACTIVATED, 0);
-		stats.put(Stat.ASCENTED_REWARDS_RECEIVED, 0);
-		stats.put(Stat.CURRENT_KILLSTREAK, 0);
-		this.lastInventory = player.getInventory();
-	}
-	
+    //Scoreboard
+    private Scoreboard board;
+    private Objective obj;
+    private Score kills;
+    private Score gamemode;
+
+    public Profile(Player player) {
+        this.uuid = player.getUniqueId();
+        stats = new HashMap<Stat, Integer>();
+        stats.put(Stat.KILLS, 0);
+        stats.put(Stat.DEATHS, 0);
+        stats.put(Stat.BOW_KILLS, 0);
+        stats.put(Stat.CHESTS_LOOTED, 0);
+        stats.put(Stat.MOBS_KILLED, 0);
+        stats.put(Stat.DAMAGE_DEALT, 0);
+        stats.put(Stat.DAMAGE_TAKEN, 0);
+        stats.put(Stat.STONES_ACTIVATED, 0);
+        stats.put(Stat.ASCENTED_REWARDS_RECEIVED, 0);
+        stats.put(Stat.CURRENT_KILLSTREAK, 0);
+        this.lastInventory = player.getInventory();
+    }
+
+    /*
+     * States
+     */
+    public GameState getState() {
+        return gameState != null ? gameState : GameState.OFFLINE;
+    }
+
+    public void setState(GameState state) {
+        this.gameState = state;
+    }
+
 	/*
-	 * States
+     * #################### Statistic methods ####################
 	 */
-	public GameState getState() {
-		return gameState != null ? gameState : GameState.OFFLINE;
-	}
 
-	public void setState(GameState state) {
-		this.gameState = state;
-	}
+    public void updateStat(Stat statName, int amount) {
+        if(stats.get(statName) != null) {
+            int curr = stats.get(statName);
+            stats.put(statName, curr += amount);
+            return;
+        }
+        stats.put(statName, amount);
+    }
 
-	/*
-	 * #################### Statistic methods ####################
-	 */
-	
-	public void updateStat(Stat statName, int amount) {
-		if(stats.get(statName) != null) {
-			int curr = stats.get(statName);
-			stats.put(statName, curr += amount);
-			return;
-		}
-		stats.put(statName, amount);
-	}
-	
-	
+
 	/*
 	 * ###################### Inventory #############################
 	 */
-    
+
     /**
      * Get the player's last stored inventory state.
+     *
      * @return player's inventory
      */
-	public PlayerInventory getLastInventory() {
-		return this.lastInventory;
-	}
-    
+    public PlayerInventory getLastInventory() {
+        return this.lastInventory;
+    }
+
     /**
      * Update the stored inventory.
      */
-	public void updateInventory() {
+    public void updateInventory() {
         this.lastInventory = Bukkit.getPlayer(uuid).getInventory();
     }
-    
+
     /**
      * Restore the player's inventory to it's last stored state.
      */
-	public void restoreInventory() {
-		Player player = Bukkit.getPlayer(getUUID());
-		
-		player.getInventory().setArmorContents(this.lastInventory.getArmorContents());
-		player.getInventory().setExtraContents(this.lastInventory.getExtraContents());
-		
-		for(int i = 0; i < this.lastInventory.getSize(); i++) {
-			if(this.lastInventory.getItem(i) != null) {
-				player.getInventory().setItem(i, this.lastInventory.getItem(i));
-			}
-		}
-		this.lastInventory.clear();
+    public void restoreInventory() {
+        Player player = Bukkit.getPlayer(getUUID());
+
+        player.getInventory().setArmorContents(this.lastInventory.getArmorContents());
+        player.getInventory().setExtraContents(this.lastInventory.getExtraContents());
+
+        for(int i = 0; i < this.lastInventory.getSize(); i++) {
+            if(this.lastInventory.getItem(i) != null) {
+                player.getInventory().setItem(i, this.lastInventory.getItem(i));
+            }
+        }
+        this.lastInventory.clear();
         this.lastInventory = null;
-	}
+    }
 
 	/*
 	 * ###################### Generic Getters ######################
 	 */
 
-	public UUID getUUID() {
-		return uuid;
-	}
-	
-	public Player getPlayer() {
-		return Bukkit.getPlayer(getUUID());
-	}
-	
-	public Map<Stat, Integer> getStats() {
-		return stats;
-	}
+    public UUID getUUID() {
+        return uuid;
+    }
+
+    public Player getPlayer() {
+        return Bukkit.getPlayer(getUUID());
+    }
+
+    public Map<Stat, Integer> getStats() {
+        return stats;
+    }
 
 }

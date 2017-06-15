@@ -4,12 +4,12 @@ import net.senmori.hunted.commands.Subcommand;
 
 public class EditConfig extends Subcommand {
 
-	public EditConfig() {
-	}
+    public EditConfig() {
+    }
 
-	@Override
-	protected void perform() {
+    @Override
+    protected void perform() {
 
-	}
+    }
 
 }

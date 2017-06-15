@@ -3,9 +3,9 @@ package net.senmori.hunted.reward;
 import org.bukkit.entity.Player;
 
 public abstract class Reward {
-	public abstract void generateLoot(Player player);
+    public abstract void generateLoot(Player player);
 
-	public String getName() {
-		return null;
-	}
+    public String getName() {
+        return null;
+    }
 }
