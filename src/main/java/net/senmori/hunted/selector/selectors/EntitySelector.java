@@ -67,10 +67,6 @@ public class EntitySelector {
         return argument;
     }
 
-    public static void createEntityPredicate(EntitySelectorFactory factory) {
-        //TODO: Add external factory support
-    }
-
     @Nullable
     public static Player matchOnePlayer(CommandSender sender, String token) {
         return null;
