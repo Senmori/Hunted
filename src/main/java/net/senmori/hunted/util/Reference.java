@@ -1,9 +1,6 @@
 package net.senmori.hunted.util;
 
-import net.senmori.hunted.stones.GuardianStone;
-import net.senmori.hunted.stones.Stone;
-
-public class Reference {
+public final class Reference {
     public class Permissions {
         // Command permissions
 

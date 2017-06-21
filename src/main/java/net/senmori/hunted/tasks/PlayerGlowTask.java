@@ -2,7 +2,7 @@ package net.senmori.hunted.tasks;
 
 import java.util.UUID;
 import net.senmori.hunted.Hunted;
-import net.senmori.hunted.util.ActionBar;
+import net.senmori.hunted.util.HuntedUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -31,7 +31,7 @@ public class PlayerGlowTask extends BukkitRunnable {
         }
         player.setGlowing(true);
         --duration;
-        ActionBar.sendMessage(player, glowMessage + ChatColor.RED + duration);
+        HuntedUtil.sendMessage(player, glowMessage + ChatColor.RED + duration);
         if(duration <= 0) {
             player.setGlowing(false);
             this.cancel();

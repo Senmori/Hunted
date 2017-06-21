@@ -25,25 +25,7 @@ public class SerializedLocation {
 
     public Location getLocation() {
         World w = Bukkit.getWorld(world);
-        if(w == null)
-            return null;
-        return new Location(w, x, y, z);
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public int getZ() {
-        return z;
-    }
-
-    public String getWorld() {
-        return world;
+        return w == null ? null : new Location(w, x, y, z);
     }
 
     public String getName() {

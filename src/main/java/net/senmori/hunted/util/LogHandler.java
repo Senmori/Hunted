@@ -13,10 +13,6 @@ public class LogHandler {
         log(Level.ALL, message);
     }
 
-    public static void dbWarning(String message) {
-        log(Level.WARNING, "[DB] " + message);
-    }
-
     public static void warning(String message) {
         log(Level.WARNING, message);
     }
