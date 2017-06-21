@@ -14,4 +14,29 @@ public class HuntedUtil {
         PacketPlayOutChat ppoc = new PacketPlayOutChat(cbc, ChatMessageType.GAME_INFO);
         ((CraftPlayer)player ).getHandle().playerConnection.sendPacket(ppoc);
     }
+
+    public static int getInt(String value, int defaultValue) {
+        try {
+            return Integer.parseInt(value);
+        }
+        catch (Throwable var3) {
+            return defaultValue;
+        }
+    }
+
+    public static int floor(double value) {
+        int i = (int)value;
+        return value < (double)i ? i - 1 : i;
+    }
+
+    public static int clampAngle(int angle) {
+        angle = angle % 360;
+        if (angle >= 180) {
+            angle -= 360;
+        }
+        if (angle < -180) {
+            angle += 360;
+        }
+        return angle;
+    }
 }

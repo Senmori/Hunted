@@ -10,7 +10,20 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.Class>${project.groupId}.${project.artifactId}.${project.name}</main.Class>
         <author>Senmori</author>
+        <acfVersion>0.5.0-SNAPSHOT</acfVersion>
+        <spigotVersion>1.12-R0.1-SNAPSHOT</spigotVersion>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>aikar</id>
+            <url>https://ci.emc.gs/nexus/content/groups/aikar/</url>
+        </repository>
+        <repository>
+            <id>spigot</id>
+            <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
 
     <!-- Dependencies -->
     <dependencies>
@@ -18,7 +31,13 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.12-R0.1-SNAPSHOT</version>
+            <version>${spigotVersion}</version>
+        </dependency>
+        <dependency>
+            <groupId>co.aikar</groupId>
+            <artifactId>acf-bukkit</artifactId>
+            <version>${acfVersion}</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
     <!-- Maven build parameters -->
@@ -38,7 +57,32 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
+                    <relocations>
+                        <relocation>
+                            <pattern>co.aikar.commands</pattern>
+                            <shadedPattern>hunted.acf</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
