@@ -1,4 +1,4 @@
-package net.senmori.hunted.lib.selectors;
+package net.senmori.hunted.selector.selectors;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
@@ -10,24 +10,32 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
-public class EntityNamePredicateFactory implements EntitySelectorFactory {
+public class EntityTagPredicateFactory implements EntitySelectorFactory {
     @Nonnull
     @Override
     public List<Predicate<Entity>> createPredicates(Map<String, String> arguments, String tokenSelector, CommandSender sender, Vector location) {
         List<Predicate<Entity>> list = Lists.newArrayList();
-        String name = EntitySelector.getArgument(arguments, EntitySelector.ARG_PLAYER_NAME);
-        final boolean invert = name != null && name.startsWith("!");
+        String tags = EntitySelector.getArgument(arguments, EntitySelector.ARG_ENTITY_TAG);
+        final boolean invert = tags != null && tags.startsWith("!");
 
         if(invert) {
-            name = name.substring(1);
+            tags = tags.substring(1);
         }
 
-        if(name != null) {
-            final String eName = name;
+        if(tags != null) {
+            final String type = tags;
+
             list.add(new Predicate<Entity>() {
                 @Override
                 public boolean apply(@Nullable Entity entity) {
-                    return entity != null && entity.getName().equals(eName) != invert;
+                    if(entity == null) {
+                        return false;
+                    }
+                    if("".equals(type)) {
+                        return entity.getScoreboardTags().isEmpty() != invert;
+                    } else {
+                        return entity.getScoreboardTags().contains(type) != invert;
+                    }
                 }
             });
         }

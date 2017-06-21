@@ -1,4 +1,4 @@
-package net.senmori.hunted.lib.selectors;
+package net.senmori.hunted.selector.selectors;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
@@ -8,34 +8,26 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-public class EntityTagPredicateFactory implements EntitySelectorFactory {
+public class EntityXPPredicateFactory implements EntitySelectorFactory {
     @Nonnull
     @Override
     public List<Predicate<Entity>> createPredicates(Map<String, String> arguments, String tokenSelector, CommandSender sender, Vector location) {
         List<Predicate<Entity>> list = Lists.newArrayList();
-        String tags = EntitySelector.getArgument(arguments, EntitySelector.ARG_ENTITY_TAG);
-        final boolean invert = tags != null && tags.startsWith("!");
+        final int min = EntitySelector.getInt(arguments, EntitySelector.ARG_LEVEL_MIN, -1);
+        final int max = EntitySelector.getInt(arguments, EntitySelector.ARG_LEVEL_MAX, -1);
 
-        if(invert) {
-            tags = tags.substring(1);
-        }
-
-        if(tags != null) {
-            final String type = tags;
-
+        if(min > -1 || max > -1) {
             list.add(new Predicate<Entity>() {
                 @Override
                 public boolean apply(@Nullable Entity entity) {
-                    if(entity == null) {
+                    if(entity == null || !(entity instanceof Player)) {
                         return false;
                     }
-                    if("".equals(type)) {
-                        return entity.getScoreboardTags().isEmpty() != invert;
-                    } else {
-                        return entity.getScoreboardTags().contains(type) != invert;
-                    }
+                    Player player = (Player)entity;
+                    return (min <= -1 || player.getExpToLevel() >= min) && (max <= -1 || player.getExpToLevel() <= max);
                 }
             });
         }

@@ -1,4 +1,4 @@
-package net.senmori.hunted.lib.selectors;
+package net.senmori.hunted.selector.selectors;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
@@ -19,7 +19,6 @@ import net.senmori.hunted.util.HuntedUtil;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -61,20 +60,7 @@ public class EntitySelector {
         }
     };
     // ALL default selectors
-    private static final List<EntitySelectorFactory> entitySelectorFactories = Lists.newArrayList();
     private static Set<String> WORLD_BINDING_ARGS = Sets.newHashSet(ARG_COORD_X, ARG_COORD_Y, ARG_COORD_Z, ARG_DELTA_X, ARG_DELTA_Y, ARG_DELTA_Z, ARG_RANGE_MIN, ARG_RANGE_MAX);
-
-    static {
-        createEntityPredicate(new EntityTypePredicateFactory());
-        createEntityPredicate(new EntityXPPredicateFactory());
-        createEntityPredicate(new EntityGamemodeSelectorFactory());
-        createEntityPredicate(new EntityTeamPredicateFactory());
-        createEntityPredicate(new EntityScorePredicateFactory());
-        createEntityPredicate(new EntityNamePredicateFactory());
-        createEntityPredicate(new EntityTagPredicateFactory());
-        createEntityPredicate(new RadiusPredicateFactory());
-        createEntityPredicate(new RotationPredicateFactory());
-    }
 
     public static String addArgument(String argument) {
         VALID_ARGS.add(argument);
@@ -82,7 +68,7 @@ public class EntitySelector {
     }
 
     public static void createEntityPredicate(EntitySelectorFactory factory) {
-        entitySelectorFactories.add(factory);
+        //TODO: Add external factory support
     }
 
     @Nullable
@@ -122,9 +108,7 @@ public class EntitySelector {
                     if(world != null) {
                         List<Predicate<Entity>> predicates = Lists.newArrayList();
                         // fill predicates list
-                        for(EntitySelectorFactory factory : entitySelectorFactories) {
-                            predicates.addAll(factory.createPredicates(map, s, sender, vector3D));
-                        }
+                            //TODO: Add predicates to list from factory list
 
                         // get predicates above this
                         if("s".equalsIgnoreCase(s) && sender instanceof Entity) {
@@ -295,19 +279,19 @@ public class EntitySelector {
                 AxisAlignedBB boundingBox = new AxisAlignedBB((double)location.getX() -1, (double)location.getY() - 1, (double)location.getZ() -1,
                                                                      (double)location.getX() + dx + 1, (double)location.getY() + dy + 1, (double)location.getZ() + dz + 1);
                 if(allEntityFlag && !randomFlag) {
-                    list.addAll( ((CraftWorld)world).getHandle().b(entityClass, alivePredicate)); // getPlayers
+                    //list.addAll( ((CraftWorld)world).getHandle().b(entityClass, alivePredicate)); // getPlayers
                 } else {
-                    list.addAll( ((CraftWorld)world).getHandle().a(entityClass, boundingBox, alivePredicate)); // getEntitiesWithinBoundingBox
+                    //list.addAll( ((CraftWorld)world).getHandle().a(entityClass, boundingBox, alivePredicate)); // getEntitiesWithinBoundingBox
                 }
             }
             else if(type.equals("a")) {
-                list.addAll(((CraftWorld)world).getHandle().b(entityClass, inputPredicate)); // getPlayers
+                //list.addAll(((CraftWorld)world).getHandle().b(entityClass, inputPredicate)); // getPlayers
             }
             else if(!type.equals("p") && (!type.equals("r") || allEntityFlag)) {
-                list.addAll(((CraftWorld)world).getHandle().a(entityClass, inputPredicate)); // getEntities
+                //list.addAll(((CraftWorld)world).getHandle().a(entityClass, inputPredicate)); // getEntities
             }
             else {
-                list.addAll(((CraftWorld)world).getHandle().b(entityClass, alivePredicate)); // getPlayers
+                //list.addAll(((CraftWorld)world).getHandle().b(entityClass, alivePredicate)); // getPlayers
             }
         } else {
             final AxisAlignedBB boundingBox = getAABB(location, dx, dy, dz);
@@ -319,9 +303,9 @@ public class EntitySelector {
                         return entity != null && ((CraftEntity)entity).getHandle().al().c(boundingBox);
                     }
                 };
-                list.addAll(((CraftWorld)world).getHandle().b(entityClass, Predicates.and(alivePredicate, intersect))); // getPlayers
+                //list.addAll(((CraftWorld)world).getHandle().b(entityClass, Predicates.and(alivePredicate, intersect))); // getPlayers
             } else {
-                list.addAll(((CraftWorld)world).getHandle().a(entityClass, boundingBox, alivePredicate)); // getEntitiesWithinBoundingBox
+                //list.addAll(((CraftWorld)world).getHandle().a(entityClass, boundingBox, alivePredicate)); // getEntitiesWithinBoundingBox
             }
         }
         return list;

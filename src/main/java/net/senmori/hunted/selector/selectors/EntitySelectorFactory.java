@@ -1,4 +1,4 @@
-package net.senmori.hunted.lib.selectors;
+package net.senmori.hunted.selector.selectors;
 
 import com.google.common.base.Predicate;
 import java.util.List;
