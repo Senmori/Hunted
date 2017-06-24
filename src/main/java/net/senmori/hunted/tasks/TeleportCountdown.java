@@ -28,7 +28,7 @@ public class TeleportCountdown extends BukkitRunnable {
     @Override
     public void run() {
         if(showCountdown) {
-            HuntedUtil.sendMessage(player, count + "...");
+            HuntedUtil.actionBar(player, count + "...");
         }
         count--;
         if(count <= 0) {

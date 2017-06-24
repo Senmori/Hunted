@@ -34,7 +34,7 @@ public class SerializedLocation {
 
     @Override
     public boolean equals(Object loc) {
-        if(! ( loc instanceof SerializedLocation ))
+        if(!( loc instanceof SerializedLocation ))
             return false;
         return this.getLocation().equals(( (SerializedLocation) loc ).getLocation());
     }

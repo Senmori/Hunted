@@ -18,8 +18,7 @@ public class HuntedUtil {
     public static int getInt(String value, int defaultValue) {
         try {
             return Integer.parseInt(value);
-        }
-        catch (Throwable var3) {
+        } catch (Throwable var3) {
             return defaultValue;
         }
     }

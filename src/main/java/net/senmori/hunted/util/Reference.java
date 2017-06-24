@@ -61,7 +61,7 @@ public final class Reference {
 
     // All error messages stored here
     public class ErrorMessage {
-        public static final String IMPORT_ERROR = "Error importing {0}. Is it mispelled?";
+        public static final String IMPORT_ERROR = "Error importing {0}. Is it misspelled?";
 
         public static final String STONE_CREATION_ERROR = "Error creating a Stone. Are you looking at the block you want to make a Stone?";
         public static final String STONE_DELETE_ERROR = "Error deleting a Stone. Are you looking at it?";
@@ -82,38 +82,38 @@ public final class Reference {
     }
 
     public class RewardMessage {
-        /**
-         * Returns if the appropriate {@link Stone} is active or not
+        /*
+         * Returns if the appropriate {@link net.senmori.hunted.stone.Stone} is active or not
          */
         public static final String COLD_STONE = "This stone is cold. Come back in {0} minute(s).";
 
-        /**
-         * Standard reward message whena player receives a reward from a {@link GuardianStone}
+        /*
+         * Standard reward message when a player receives a reward from a {@link net.senmori.hunted.stone.GuardianStone}
          */
         public static final String STONE_REWARD = "You received {0}!";
 
-        /**
+        /*
          * Standard message for when a player receives an effect reward
          */
         public static final String EFFECT_REWARD = "Ouch! You've got some {0} going on.";
         public static final String EFFECT_UNLUCKY = "Wow, you're really unlucky. Have some {0}";
 
-        /**
+        /*
          * Standard smite message
          */
         public static final String SMITE_MESSAGE = "Thou hast been smitten! Puny mortal.";
 
-        /**
+        /*
          * Standard message to notify the rewardee of how many players are within an 'x' block radius
          */
         public static final String NOTIFY_WITHIN = "There are {0} players within {1} blocks of you.";
 
-        /**
+        /*
          * Standard message to notify all players(except rewardee) of the rewardee's location
          */
         public static final String NOTIFY_ALL = "{0} is so excited they are glowing!";
 
-        /**
+        /*
          * Standard message for when rewardee receives an irritating reward
          */
         public static final String IRRITATING_MESSAGE = "Good luck fixing this...";

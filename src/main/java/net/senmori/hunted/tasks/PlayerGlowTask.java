@@ -31,7 +31,7 @@ public class PlayerGlowTask extends BukkitRunnable {
         }
         player.setGlowing(true);
         --duration;
-        HuntedUtil.sendMessage(player, glowMessage + ChatColor.RED + duration);
+        HuntedUtil.actionBar(player, glowMessage + ChatColor.RED + duration);
         if(duration <= 0) {
             player.setGlowing(false);
             this.cancel();

@@ -7,10 +7,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class MapConfiguration {
-    private final static String MAP_LOCATIONS_KEY = "spawn-loc";
-    private final static String LOBBY_LOCATIONS_KEY = "lobby-loc";
-    private final static String STORE_LOCATIONS_KEY = "store-loc";
-
     private Hunted plugin;
     private String name;
 
